@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import logo from '../../assets/l2.png';
+import { useNavigate } from 'react-router-dom';
+
 import './Navbar.css';
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+
 
   return (
     <nav className="navbar">
@@ -22,7 +28,7 @@ const Navbar = () => {
           </div>
 
           <div className="nav-actions">
-            <button className="btn btn-secondary">Sign In</button>
+            <button className="btn btn-secondary" onClick={() => navigate('/register')}>Sign In</button>
             <button className="btn btn-primary">Get Started</button>
           </div>
 
