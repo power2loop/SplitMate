@@ -1,0 +1,29 @@
+splitmate/
+│── frontend/ (React + Vite)
+│   ├── src/
+│   │   ├── components/      # Navbar, ExpenseCard, GroupCard, Charts, AIChat
+│   │   ├── pages/           # Login, Signup, Profile, Dashboard, Groups, Reports
+│   │   ├── context/         # AuthContext, ExpenseContext, GroupContext
+│   │   ├── services/        # API calls (auth, expenses, groups, aiAgent)
+│   │   ├── utils/           # dateUtils, currencyUtils, balanceCalculator
+│   │   ├── App.js
+│   │   └── main.js
+│
+│── backend/ (Node + Express + MongoDB)
+│   ├── src/
+│   │   ├── models/          # User, Expense, Group, Settlement
+│   │   ├── controllers/     # authController, expenseController, groupController, aiController
+│   │   ├── routes/          # authRoutes, expenseRoutes, groupRoutes, aiRoutes
+│   │   ├── middlewares/     # authMiddleware, errorHandler
+│   │   ├── services/        # expenseSplitService, reportService, aiService
+│   │   ├── utils/           # jwtUtils, balanceCalculator
+│   │   ├── config/          # db.js, env configs
+│   │   ├── app.js           # Express app
+│   │   └── server.js        # Entry point
+│
+│── docs/                    # API docs, architecture diagram
+│── README.md
+│── .env
+│── package.json
+
+i want to use this folder structure for my splitmate project suggest how to do give me step by step
