@@ -10,12 +10,11 @@ const Hero = () => {
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title animate-fade-in">
-              Split expenses with friends, 
+              Track personal & group expenses,
               <span className="gradient-text"> effortlessly</span>
             </h1>
             <p className="hero-description animate-fade-in">
-              The smart way to track shared expenses, split bills, and settle up with friends. 
-              No more awkward money conversations or complicated calculations.
+              The smarter way to manage your money — split bills with friends, track personal expenses, and settle up without awkward conversations or complicated calculations.
             </p>
             <div className="hero-actions animate-scale-in">
               <button className="btn btn-primary btn-large hero-cta">
@@ -26,43 +25,30 @@ const Hero = () => {
                 Watch Demo
               </button>
             </div>
-            <div className="hero-stats animate-slide-in-left">
-              <div className="stat">
-                <strong>500K+</strong>
-                <span>Active Users</span>
-              </div>
-              <div className="stat">
-                <strong>$50M+</strong>
-                <span>Split & Settled</span>
-              </div>
-              <div className="stat">
-                <strong>4.9★</strong>
-                <span>App Store Rating</span>
-              </div>
-            </div>
+
           </div>
           <div className="hero-visual animate-slide-in-right">
             <div className="feature-cards">
               <div className="feature-card card-1">
                 <Users className="icon icon-primary" />
                 <h3>Group Management</h3>
-                <p>Create and manage expense groups with ease</p>
+                <p>Easily create and manage shared groups for splitting expenses.</p>
               </div>
               <div className="feature-card card-2">
                 <Calculator className="icon icon-accent" />
                 <h3>Smart Calculations</h3>
-                <p>Automatic splitting and balance calculations</p>
+                <p>Automatic balance tracking for both group and personal expenses.</p>
               </div>
               <div className="feature-card card-3">
                 <Smartphone className="icon icon-primary" />
-                <h3>Mobile First</h3>
-                <p>Track expenses on the go with our mobile app</p>
+                <h3>AI Agent</h3>
+                <p>Get quick answers about your spending and balances.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 };
 

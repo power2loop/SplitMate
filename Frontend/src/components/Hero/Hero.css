@@ -1,22 +1,19 @@
+/* Container */
 .hero {
   min-height: 100vh;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding-top: 80px; /* Account for fixed navbar */
+  padding-top: clamp(56px, 6vw, 80px);
+  /* fluid top pad for fixed navbar */
 }
 
+/* Background */
 .hero-background {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(37, 99, 235, 0.03) 0%, 
-    rgba(16, 185, 129, 0.03) 100%
-  );
+  inset: 0;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.03) 0%, rgba(16, 185, 129, 0.03) 100%);
   z-index: -1;
 }
 
@@ -27,45 +24,70 @@
   right: -50%;
   width: 100%;
   height: 100%;
-  background: radial-gradient(
-    circle,
-    rgba(37, 99, 235, 0.1) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.10) 0%, transparent 70%);
   animation: float 6s ease-in-out infinite;
 }
 
+/* Layout: mobile-first single column */
 .hero-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-3xl);
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 4vw, 48px);
+  /* fluid gap */
   align-items: center;
-  min-height: 600px;
+  min-height: clamp(520px, 70vh, 700px);
+  text-align: center;
+  /* better for single column */
 }
 
+/* Tablet and up: two columns */
+@media (min-width: 640px) {
+  .hero-content {
+    grid-template-columns: 1fr 1fr;
+    text-align: initial;
+    gap: clamp(24px, 5vw, 64px);
+  }
+}
+
+/* Text */
 .hero-text {
-  max-width: 600px;
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .hero-text {
+    margin-inline: 0;
+  }
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
   font-weight: 800;
   line-height: 1.1;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: clamp(12px, 2.5vw, 20px);
   color: var(--text-primary);
 }
 
 .hero-description {
-  font-size: 1.25rem;
-  line-height: 1.6;
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  line-height: 1.65;
   color: var(--text-secondary);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: clamp(16px, 3vw, 28px);
 }
 
+/* Actions */
 .hero-actions {
   display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-xl);
+  gap: clamp(10px, 2vw, 16px);
+  margin-bottom: clamp(16px, 3vw, 28px);
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .hero-actions {
+    justify-content: flex-start;
+  }
 }
 
 .hero-cta {
@@ -77,16 +99,9 @@
 .hero-cta::before {
   content: '';
   position: absolute;
-  top: 0;
+  inset: 0;
   left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.8s ease;
 }
 
@@ -94,34 +109,17 @@
   left: 100%;
 }
 
-.hero-stats {
-  display: flex;
-  gap: var(--spacing-lg);
-}
 
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
 
-.stat strong {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
-}
 
-.stat span {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
 
+/* Visual area */
 .hero-visual {
   position: relative;
-  height: 500px;
+  height: clamp(320px, 45vw, 500px);
 }
 
+/* If you still use floating feature cards, keep these responsive sizes; otherwise, you can remove the whole block */
 .feature-cards {
   position: relative;
   height: 100%;
@@ -132,95 +130,93 @@
   position: absolute;
   background: var(--surface);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-lg);
+  padding: clamp(var(--spacing-md), 2.5vw, var(--spacing-lg));
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border);
-  width: 280px;
-  transition: all var(--transition-normal);
+  width: clamp(220px, 32vw, 280px);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .feature-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-6px) scale(1.02);
   box-shadow: var(--shadow-xl);
 }
 
-.card-1 {
-  top: 0;
-  left: 0;
-  animation: float 3s ease-in-out infinite;
-}
-
-.card-2 {
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  animation: float 3s ease-in-out infinite 1s;
-}
-
-.card-3 {
-  bottom: 0;
-  left: 20%;
-  animation: float 3s ease-in-out infinite 2s;
-}
-
-.feature-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: var(--spacing-sm) 0 var(--spacing-xs);
-  color: var(--text-primary);
-}
-
-.feature-card p {
-  color: var(--text-secondary);
-  line-height: 1.5;
-  font-size: 0.875rem;
-}
-
-/* Mobile Styles */
-@media (max-width: 768px) {
-  .hero {
-    padding-top: 60px;
-  }
-  
-  .hero-content {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
-    text-align: center;
-  }
-  
-  .hero-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .hero-stats {
-    justify-content: center;
-  }
-  
-  .hero-visual {
-    height: 300px;
-    order: -1;
-  }
-  
-  .feature-card {
-    width: 240px;
-    padding: var(--spacing-md);
-  }
-  
+/* Desktop float positions */
+@media (min-width: 1024px) {
   .card-1 {
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    animation: float 3s ease-in-out infinite;
   }
-  
+
   .card-2 {
-    top: 40%;
-    right: -20px;
+    top: 25%;
+    right: 0;
     transform: translateY(-50%);
+    animation: float 3s ease-in-out infinite 1s;
   }
-  
+
   .card-3 {
     bottom: 0;
-    left: -20px;
+    left: 20%;
+    animation: float 3s ease-in-out infinite 2s;
+  }
+}
+
+/* Tablet positions (tighter) */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .card-1 {
+    top: 0;
+    left: 10%;
+  }
+
+  .card-2 {
+    top: 40%;
+    right: 4%;
+    transform: translateY(-50%);
+  }
+
+  .card-3 {
+    bottom: 0;
+    left: 6%;
+  }
+}
+
+/* Mobile: stack visual above, no absolute overlap to avoid clipping */
+@media (max-width: 639.98px) {
+  .hero-visual {
+    order: -1;
+    height: clamp(280px, 48vw, 360px);
+  }
+
+  .feature-card {
+    position: relative;
+    width: min(90%, 320px);
+    margin: 0 auto clamp(12px, 3vw, 16px);
+  }
+
+  .card-1,
+  .card-2,
+  .card-3 {
+    top: auto;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* Typography/animation helpers */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
   }
 }

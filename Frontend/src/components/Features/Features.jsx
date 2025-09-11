@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-  Calculator, 
-  Users, 
-  Smartphone, 
-  CreditCard, 
-  Bell, 
-  Shield 
+import {
+  Calculator,
+  Users,
+  Smartphone,
+  CreditCard,
+  Bell,
+  Shield
 } from 'lucide-react';
 import './Features.css';
 
@@ -14,17 +14,17 @@ const Features = () => {
     {
       icon: Calculator,
       title: "Smart Splitting",
-      description: "Automatically calculate who owes what with intelligent expense splitting algorithms."
+      description: "Automatically calculate who owes what with intelligent expense algorithms."
     },
     {
       icon: Users,
       title: "Group Management",
-      description: "Create and manage multiple groups for different occasions - trips, roommates, or regular hangouts."
+      description: "Create and manage multiple groups for trips, roommates, or regular hangouts."
     },
     {
       icon: Smartphone,
-      title: "Mobile First",
-      description: "Track expenses on the go with our beautifully designed mobile app that works offline."
+      title: "AI Agent",
+      description: "Ask simple questions about your spending and balances, and get instant answers."
     },
     {
       icon: CreditCard,
@@ -33,8 +33,8 @@ const Features = () => {
     },
     {
       icon: Bell,
-      title: "Smart Reminders",
-      description: "Gentle reminders for pending payments and expense settlements without being pushy."
+      title: "Expense Reports",
+      description: " View monthly and yearly reports with charts to understand your spending habits.."
     },
     {
       icon: Shield,
@@ -48,19 +48,18 @@ const Features = () => {
       <div className="container">
         <div className="features-header">
           <h2 className="heading-2 text-center animate-fade-in">
-            Everything you need to split expenses
+            Everything you need to track expenses
           </h2>
           <p className="text-large text-muted text-center animate-fade-in">
-            Powerful features designed to make splitting bills and tracking expenses effortless
-          </p>
+            Powerful features designed to make splitting bills and managing personal expenses effortless.          </p>
         </div>
-        
+
         <div className="features-grid">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`feature-item animate-scale-in`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >

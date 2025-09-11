@@ -2,43 +2,50 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.home {
+
+  width: 90%;
+  margin: 5% auto;
 }
 
 :root {
   /* Color Palette */
-  --primary: #2563eb;
+  --primary: #389cff;
   --primary-light: #3b82f6;
   --primary-dark: #1d4ed8;
   --secondary: #64748b;
   --secondary-light: #94a3b8;
-  --accent: #10b981;
+  --accent: #3793f0;
   --accent-light: #34d399;
-  
+
   /* Background Colors */
   --background: #ffffff;
   --background-alt: #f8fafc;
   --surface: #ffffff;
-  
+
   /* Text Colors */
   --text-primary: #0f172a;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
   --text-white: #ffffff;
-  
+
   /* Border and Effects */
   --border: #e2e8f0;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  
+
   /* Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
-  
+
   /* Spacing */
   --spacing-xs: 8px;
   --spacing-sm: 16px;
@@ -47,7 +54,7 @@
   --spacing-xl: 48px;
   --spacing-2xl: 64px;
   --spacing-3xl: 96px;
-  
+
   /* Transitions */
   --transition-fast: 0.15s ease-out;
   --transition-normal: 0.3s ease-out;
@@ -55,7 +62,6 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--background);
@@ -107,7 +113,7 @@ body {
   .md-hidden {
     display: none;
   }
-  
+
   .md-block {
     display: block;
   }
@@ -119,6 +125,7 @@ body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -130,6 +137,7 @@ body {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -141,6 +149,7 @@ body {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -152,6 +161,7 @@ body {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -159,9 +169,12 @@ body {
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
