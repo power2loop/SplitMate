@@ -2,7 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import "./AuthForm.css";
 import register from "../../assets/register.svg"
 import login from "../../assets/log.svg"
-import userModel from '../../models/userModel';
+import { FcGoogle } from "react-icons/fc";
+import { MdOutlineAlternateEmail } from "react-icons/md";
+import { TbLockPassword } from "react-icons/tb";
+import { FaRegUser } from "react-icons/fa6";
+
 
 const AuthForm = () => {
     const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -18,15 +22,14 @@ const AuthForm = () => {
                     <form action="#" className="signInFormR">
                         <h2 className="titleR">Sign in</h2>
                         <div className="inputFieldR">
-                            <i className="fas fa-user"></i>
+                            <MdOutlineAlternateEmail />
                             <input type="email" id="SiEmail" placeholder="Email" />
                         </div>
                         <div className="inputFieldR">
-                            <i className="fas fa-lock"></i>
+                           <TbLockPassword />
                             <input type="password" id="SiPassword" placeholder="Password" />
                         </div>
-                        <input
-                            type="button"
+                        <input type="button"
                             id="SignIn"
                             className="btnR solidR"
                             value="Sign in"
@@ -34,17 +37,14 @@ const AuthForm = () => {
                         <p className="socialTextR">Or Sign in with social platforms</p>
                         <div className="socialMediaR">
                             <a href="#" className="socialIconR">
-                                <i className="fab fa-facebook-f"></i>
+                                <FcGoogle />
                             </a>
-                            <a href="#" className="socialIconR" id="Google-btn1">
-                                <i className="fab fa-google"></i>
-                            </a>
-                            <a href="#" className="socialIconR">
-                                <i className="fab fa-apple"></i>
+                            {/* <a href="#" className="socialIconR">
+                                <TiVendorMicrosoft />
                             </a>
                             <a href="#" className="socialIconR">
-                                <i className="fab fa-microsoft"></i>
-                            </a>
+                                
+                            </a> */}
                         </div>
                     </form>
 
@@ -52,15 +52,15 @@ const AuthForm = () => {
                     <form action="#" className="signUpFormR">
                         <h2 className="titleR">Sign up</h2>
                         <div className="inputFieldR">
-                            <i className="fas fa-user"></i>
+                            <FaRegUser />
                             <input type="text" id="SuName" placeholder="Username" />
                         </div>
                         <div className="inputFieldR">
-                            <i className="fas fa-envelope"></i>
+                            <MdOutlineAlternateEmail />
                             <input type="email" id="SuEmail" placeholder="Email" />
                         </div>
                         <div className="inputFieldR">
-                            <i className="fas fa-lock"></i>
+                            <TbLockPassword />
                             <input type="password" id="SuPassword" placeholder="Password" />
                         </div>
                         <input
@@ -70,19 +70,16 @@ const AuthForm = () => {
                             value="Sign up"
                         />
                         <p className="socialTextR">Or Sign up with social platforms</p>
-                        <div className="socialMediaR">
+                        <div className="socialMediaR" style={{marginBottom: '25px'}}>
                             <a href="#" className="socialIconR">
-                                <i className="fab fa-facebook-f"></i>
+                                <FcGoogle />
                             </a>
-                            <a href="#" className="socialIconR" id="Google-btn2">
-                                <i className="fab fa-google"></i>
-                            </a>
-                            <a href="#" className="socialIconR">
-                                <i className="fab fa-apple"></i>
+                            {/* <a href="#" className="socialIconR">
+                                <TiVendorMicrosoft />
                             </a>
                             <a href="#" className="socialIconR">
-                                <i className="fab fa-microsoft"></i>
-                            </a>
+                                
+                            </a> */}
                         </div>
                     </form>
                 </div>
@@ -94,8 +91,8 @@ const AuthForm = () => {
                     <div className="contentR">
                         <h3>New here ?</h3>
                         <p>
-                            Discover, Share, Thrive! Join the vibrant community at Pichunt.
-                            Sign up today and start your visual journey with us!
+                            Split, Settle, Smile! Join the vibrant community at SplitMate.
+                            Sign up today and start tracking and sharing expenses with ease!
                         </p>
                         <button
                             className="btnR transparentR"
@@ -111,8 +108,8 @@ const AuthForm = () => {
                     <div className="contentR">
                         <h3>One of us ?</h3>
                         <p>
-                            Already one of us? Welcome back to Pichunt! Sign in to continue
-                            exploring, sharing, and connecting through captivating visuals.
+                            Already one of us? Welcome back to SplitMate!
+                            Sign in to keep tracking, sharing, and settling expenses with your crew.
                         </p>
                         <button
                             className="btnR transparentR"
