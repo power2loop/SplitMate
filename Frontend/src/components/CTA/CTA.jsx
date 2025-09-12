@@ -1,10 +1,14 @@
 import React from 'react';
 import { ArrowRight, Download, Star, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './CTA.css';
 
 const CTA = () => {
+
+  const navigate = useNavigate();
+  
   return (
-    <section className="cta section">
+    <section className="cta section" id='CTA'>
       <div className="container">
         <div className="cta-content">
           <div className="cta-text">
@@ -33,7 +37,7 @@ const CTA = () => {
             </div>
             
             <div className="cta-actions animate-scale-in">
-              <button className="btn btn-primary btn-large cta-primary">
+              <button className="btn btn-primary btn-large cta-primary" onClick={() => navigate('register')}>
                 <span>Get Started Free</span>
                 <ArrowRight className="icon" />
               </button>

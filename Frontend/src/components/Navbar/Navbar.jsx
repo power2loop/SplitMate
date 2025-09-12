@@ -10,8 +10,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-
-
   return (
     <nav className="navbar">
       <div className="container">
@@ -29,7 +27,7 @@ const Navbar = () => {
 
           <div className="nav-actions">
             <button className="btn btn-secondary" onClick={() => navigate('/register')}>Sign In</button>
-            <button className="btn btn-primary">Get Started</button>
+            <button className="btn btn-primary" onClick={() => navigate('register')}>Get Started</button>
           </div>
 
           <button

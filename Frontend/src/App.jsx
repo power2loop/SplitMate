@@ -11,6 +11,7 @@ const backend_url = "http://localhost:5000/";
 
 function App() {
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -20,6 +21,7 @@ function App() {
         <Route path="/globe" element={<Globe />} />
       </Routes>
     </Router>
+    </>
   );
 }
 

@@ -52,7 +52,6 @@
 .mobile-menu-btn {
   background: none;
   border: none;
-  cursor: pointer;
   padding: 8px;
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
