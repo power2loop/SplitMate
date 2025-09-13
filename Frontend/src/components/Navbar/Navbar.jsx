@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import logo from '../../assets/l2.png';
 import { Link, useNavigate } from 'react-router-dom';
-
 import './Navbar.css';
 
 const Navbar = () => {
@@ -17,7 +16,13 @@ const Navbar = () => {
           {/* Brand Logo */}
           <div className="nav-brand">
             <Link to="/" style={{ textDecoration: "none" }}>
-              <h2 className="brand-text">
+            {/* <img
+                  src={logo}
+                  alt="logo"
+                  style={{ width: '40px', height: '45px' }}
+                /> */}
+
+              <h2 className="brand-text-logo">
                 <img
                   src={logo}
                   alt="logo"
