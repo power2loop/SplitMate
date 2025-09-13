@@ -6,7 +6,7 @@ import Hero from '../../components/Hero/Hero';
 import Navbar from '../../components/Navbar/Navbar';
 import './LandingPage.css'
 
-const Home = () => {
+const LandingPage = () => {
   return (
     <>
       <Navbar />
@@ -18,4 +18,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default LandingPage

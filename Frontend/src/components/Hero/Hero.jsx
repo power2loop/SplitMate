@@ -22,14 +22,13 @@ const Hero = () => {
               conversations or complicated calculations.
             </p>
 
-            {/* ✅ Buttons */}
+
             <div className="hero-actions animate-scale-in">
               <a href='#CTA' className="btn btn-primary btn-large hero-cta">
                 <span>Explore Splitmate</span>
                 <ArrowRight className="icon" />
               </a>
 
-              {/* 👉 This triggers the dialog */}
               <button
                 className="btn btn-secondary btn-large"
                 onClick={() => setShowVideo(true)}
@@ -65,20 +64,14 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* ✅ Dialog renders conditionally */}
       {showVideo && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-          onClick={() => setShowVideo(false)} // 👈 click anywhere on the backdrop
+          onClick={() => setShowVideo(false)}
         >
           <div
-            className="
-      w-full max-w-4xl
-      aspect-video
-      rounded-xl overflow-hidden
-    "
-            onClick={(e) => e.stopPropagation()} // 👈 stop closing when clicking inside
+            className="w-full max-w-4xl aspect-video rounded-xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
           >
             <HeroVideoDialog
               className="w-full h-full block dark:hidden"

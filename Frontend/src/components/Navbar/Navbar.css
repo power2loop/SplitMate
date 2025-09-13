@@ -14,29 +14,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-sm) 0;
+  padding: var(--spacing-sm) var(--spacing-md);
 }
 
 .nav-brand {
   display: flex;
   align-items: center;
-
 }
 
 .brand-text {
   display: flex;
   align-items: center;
   gap: 4px;
-
   font-size: 1.5rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-
 }
 
+/* Default (desktop) menu */
 .nav-menu {
   display: flex;
   align-items: center;
@@ -55,13 +53,17 @@
   padding: 8px;
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
+  z-index: 1100;
+  /* make sure it’s above nav */
+  display: block;
+  /* force show by default */
 }
 
 .mobile-menu-btn:hover {
   background: var(--background-alt);
 }
 
-/* Mobile Styles */
+/* 🔹 Mobile Styles */
 @media (max-width: 768px) {
   .nav-menu {
     position: absolute;
@@ -73,20 +75,28 @@
     padding: var(--spacing-md);
     border-bottom: 1px solid var(--border);
     box-shadow: var(--shadow-lg);
-    transform: translateY(-100%);
+
+    /* Hidden by default */
+    transform: translateY(-120%);
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-normal);
   }
 
-  .nav-menu-open {
+  /* Show menu when open */
+  .nav-menu.nav-menu-open {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
   }
 
+  /* Actions go inside dropdown */
   .nav-actions {
-    display: none;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    display: flex;
+    /* 👈 force visible on mobile */
   }
 
   .nav-link {
@@ -94,8 +104,14 @@
     width: 100%;
     text-align: center;
   }
+
+  .mobile-menu-btn {
+    display: block;
+    /* 👈 visible on mobile */
+  }
 }
 
+/* 🔹 Desktop hides hamburger */
 @media (min-width: 769px) {
   .mobile-menu-btn {
     display: none;
