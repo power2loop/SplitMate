@@ -1,5 +1,40 @@
 .Home-Container {
-    display: flex;
-    height: 100vh;
-    background-color: #ff0d0d;
+  display: flex;
+  min-height: 100vh;
+  background: #ffffff; /* optional dark bg for the content area */
+  color: #000000;
+}
+
+/* only style the main content area */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  grid-auto-rows: 200px;
+}
+
+.main-content > .card-small {
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid #1a1a1a;
+  border-radius: 10px;
+}
+
+.main-content #greet p{
+    font-size: xx-large;
+    font-weight: 700;
+}
+
+.main-content #greet p span{
+    color: #0070e0;
+    font-size: 3.5vw;
+}
+
+.main-content > .card-large {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 1rem;
+  grid-column: 1 / -1;
 }
