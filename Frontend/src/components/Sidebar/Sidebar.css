@@ -4,7 +4,6 @@
   top: 0;
   height: 100vh;
   width: 80px;
-  background: #ffffff;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
@@ -25,7 +24,7 @@
 .sidebar-brand {
   display: flex;
   align-items: center;
-  color: rgb(0, 0, 0);
+  color: rgb(77, 77, 77);
   font-size: 18px;
   font-weight: 600;
   white-space: nowrap;
@@ -119,7 +118,7 @@
 }
 
 .user-profile:hover {
-  background: #9ec3ff;
+  background: #7eafff;
 }
 
 .user-avatar {
@@ -128,7 +127,7 @@
   border-radius: 50%;
   margin-right: 16px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, #0a68ff, #7eafff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,7 +155,7 @@
 
 .user-role {
   font-size: 12px;
-  color: #9ca3af;
+  color: #545454;
   margin: 2px 0 0 0;
 }
 

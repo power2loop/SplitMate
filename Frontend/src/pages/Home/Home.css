@@ -1,30 +1,39 @@
 .Home-Container {
   display: flex;
   min-height: 100vh;
-  background: #ffffff; /* optional dark bg for the content area */
-  color: #000000;
+  /* background: #ff0000; optional dark bg for the content area */
 }
 
 /* only style the main content area */
 .main-content {
-  flex: 1;
-  padding: 2rem;
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-  grid-auto-rows: 200px;
+  /* background-color: #00c6ff; */
+  padding: 7px;
+  height: 100vh;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  flex-direction: column;
 }
 
-.main-content > .card-small {
-  border-radius: 12px;
-  padding: 1rem;
-  border: 1px solid #1a1a1a;
-  border-radius: 10px;
+.main-content .cards{
+  height: 45%;
+  /* background-color: #1a1a1a; */
+  display: flex;
+  justify-content:flex-start;
+  gap: 8vw;
+  flex-direction: row;
+  align-items:flex-start;
+}
+
+.cards > .card-small {
+  padding: 15px 0;
+  /* border: 1px solid #ffffff; */
 }
 
 .main-content #greet p{
     font-size: xx-large;
     font-weight: 700;
+    color: #4b4b4b;
 }
 
 .main-content #greet p span{
@@ -34,13 +43,10 @@
 }
 
 .main-content > .card-large {
-  background: #1a1a1a;
-  border-radius: 12px;
-  padding: 1rem;
+  /* background: #e96464; */
   grid-column: 1 / -1;
+  height: 50%;
 }
-
-
 
 .gradient-text {
   /* create a big blue gradient that can move */

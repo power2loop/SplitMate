@@ -133,9 +133,9 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="sidebar-footer">
         <a href="#" className="user-profile">
-          <div className="user-avatar">MA</div>
+          <div className="user-avatar">AG</div>
           <div className="user-info">
-            <p className="user-name">Manu Arora</p>
+            <p className="user-name">Aryan Gupta</p>
             <p className="user-role">Developer</p>
           </div>
         </a>
