@@ -1,0 +1,43 @@
+/* Container */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-in-out;
+}
+
+.glass-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Toggle Buttons */
+.btn-toggle {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    /* gray-400 */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-toggle:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-toggle.active {
+    color: #fff;
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    border: none;
+    box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+}
+
+/* Chart Container */
+canvas {
+    max-height: 250px;
+}

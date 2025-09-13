@@ -1,0 +1,67 @@
+/* Glass Card Common Styles */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s ease-in-out;
+    color: #f9fafb;
+}
+
+.glass-card:hover {
+    transform: translateY(-3px);
+}
+
+/* AIInsights */
+.ai-insights h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #a78bfa;
+    /* purple-400 */
+    margin-bottom: 0.5rem;
+}
+
+.ai-insights p {
+    font-size: 0.9rem;
+    color: #d1d5db;
+    /* gray-300 */
+    line-height: 1.5;
+}
+
+/* StatsGrid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.stats-card h3 {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #94a3b8;
+    /* gray-400 */
+    margin-bottom: 0.5rem;
+}
+
+.stats-card .value {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.stats-card.investments .value {
+    color: #22c55e;
+    /* green */
+}
+
+.stats-card.growth .value {
+    color: #a78bfa;
+    /* purple */
+}

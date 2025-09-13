@@ -1,0 +1,64 @@
+/* Transactions Section */
+.transactions-container {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.transactions-header input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    color: white;
+    outline: none;
+}
+
+.transactions-header select {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    color: white;
+}
+
+.expense-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    transition: background 0.2s ease-in-out;
+}
+
+.expense-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.expense-card .amount {
+    font-weight: bold;
+    color: #f87171;
+    /* red */
+}
+
+.expense-card button {
+    background: transparent;
+    border: none;
+    color: #f87171;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.expense-card button:hover {
+    color: #ef4444;
+}
