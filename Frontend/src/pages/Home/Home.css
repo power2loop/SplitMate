@@ -28,8 +28,9 @@
 }
 
 .main-content #greet p span{
-    color: #0070e0;
     font-size: 3.5vw;
+    font-size: clamp(1.25rem, 4vw, 2.5rem);
+    font-weight: bolder;
 }
 
 .main-content > .card-large {
@@ -37,4 +38,40 @@
   border-radius: 12px;
   padding: 1rem;
   grid-column: 1 / -1;
+}
+
+
+
+.gradient-text {
+  /* create a big blue gradient that can move */
+  background: linear-gradient(
+    270deg,
+    #00c6ff,
+    #0072ff,
+    #00c6ff
+  );
+  background-size: 400% 400%;
+
+  /* clip the background to the text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25);
+  /* animation */
+  animation: gradientFlow 10s ease infinite;
+  display: inline-block; /* needed for background-clip to behave */
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
