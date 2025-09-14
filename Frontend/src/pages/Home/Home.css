@@ -1,5 +1,4 @@
 .Home-Container {
   display: flex;
   min-height: 100vh;
-  /* background: #ff0000; optional dark bg for the content area */
 }

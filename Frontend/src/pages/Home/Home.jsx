@@ -1,12 +1,15 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Home.css";
 
 const Home = () => {
+    const location = useLocation();
+  const isHomeOnly = location.pathname === "/home";
+  
   return (
     <div className="Home-Container">
-      <Sidebar />
+      {isHomeOnly && <Sidebar />}
       
       <Outlet />
     </div>

@@ -18,6 +18,7 @@
   gap: 8vw;
   flex-direction: row;
   align-items:flex-start;
+  /* background-color: #ff2727; */
 }
 
 .cards > .card-small {
