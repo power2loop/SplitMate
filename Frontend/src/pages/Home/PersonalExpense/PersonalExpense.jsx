@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import AIInsights from "../../components/PersonalExpenses/Dashboard/AIInsights";
-import StatsGrid from "../../components/PersonalExpenses/Dashboard/StatsGrid";
-import ExpenseForm from "../../components/PersonalExpenses/ExpenseForm/ExpenseForm";
-import AnalyticsChart from "../../components/PersonalExpenses/Analytics/AnalyticsChart";
-import TransactionList from "../../components/PersonalExpenses/TransactionList/TransactionList";
+import AIInsights from "../../../components/PersonalExpenses/Dashboard/AIInsights";
+import StatsGrid from "../../../components/PersonalExpenses/Dashboard/StatsGrid";
+import ExpenseForm from "../../../components/PersonalExpenses/ExpenseForm/ExpenseForm";
+import AnalyticsChart from "../../../components/PersonalExpenses/Analytics/AnalyticsChart";
+import TransactionList from "../../../components/PersonalExpenses/TransactionList/TransactionList";
 import "./PersonalExpense.css";
 
 const PersonalExpense = () => {

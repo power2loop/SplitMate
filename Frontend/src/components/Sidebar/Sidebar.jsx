@@ -1,37 +1,54 @@
 import React, { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/l2.png";
 import "./Sidebar.css";
 
 export default function Sidebar() {
-  const [activeItem, setActiveItem] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const location = useLocation();
 
   const navItems = [
     {
-      id: "expenses",
-      label: "Expenses",
+      id: "dashboard",
+      label: "Dashboard",
+      path: "/home",
       icon: (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="nav-icon"
-        >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
           <rect x="3" y="3" width="7" height="7" />
           <rect x="14" y="3" width="7" height="7" />
           <rect x="14" y="14" width="7" height="7" />
           <rect x="3" y="14" width="7" height="7" />
         </svg>
       ),
+    },
+    {
+      id: "expenses",
+      label: "Expenses",
+      icon: (
+        <svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  strokeWidth="2"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  className="nav-icon"
+>
+  <rect x="2" y="6" width="20" height="12" rx="2" ry="2" />
+  <circle cx="12" cy="12" r="3" />
+  <path d="M6 12h.01M18 12h.01" />
+</svg>
+
+      ),
       children: [
-        { id: "personal", label: "Personal Expense" },
-        { id: "group", label: "Group Expense" },
+        { id: "personal", label: "Personal Expense", path: "/home/personalexpense" },
+        { id: "group", label: "Group Expense", path: "/home/ge" },
       ],
     },
     {
       id: "profile",
       label: "Profile",
+      path: "/home/",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -41,7 +58,8 @@ export default function Sidebar() {
     },
     {
       id: "aiagent",
-      label: "Ai Agent",
+      label: "AI Agent",
+      path: "/home/",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
           <circle cx="12" cy="12" r="3" />
@@ -49,97 +67,84 @@ export default function Sidebar() {
         </svg>
       ),
     },
-    {
-      id: "logout",
-      label: "Logout",
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-          <polyline points="16,17 21,12 16,7" />
-          <line x1="21" y1="12" x2="9" y2="12" />
-        </svg>
-      ),
-    },
   ];
 
-  const handleNavClick = (id, hasChildren) => {
-    setActiveItem(id);
-    if (hasChildren) {
-      setOpenDropdown(id); // open immediately on click
-    } else {
-      setOpenDropdown(null);
-    }
-  };
-
   return (
-    <div className="sidebar">
-      {/* Header */}
+    <aside className="sidebar">
+      {/* Brand */}
       <div className="sidebar-header">
         <div className="sidebar-brand">
-          <div className="brand-icon">
-            <img src={logo} alt="SplitMate Logo" />
-          </div>
+          <img src={logo} alt="SplitMate" className="brand-icon" />
           <span className="brand-text">SplitMate</span>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="sidebar-nav">
-        {navItems.map((item) => (
-          <div
-            key={item.id}
-            className="nav-wrapper"
-            onMouseEnter={() => item.children && setOpenDropdown(item.id)}
-            onMouseLeave={() => item.children && setOpenDropdown(null)}
-          >
-            <a
-              href="#"
-              className={`nav-item ${activeItem === item.id ? "active" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(item.id, !!item.children);
-              }}
+        {navItems.map((item) => {
+          const isActive =
+            location.pathname === item.path ||
+            item.children?.some((c) => location.pathname.startsWith(c.path));
+          return (
+            <div
+              key={item.id}
+              className="nav-wrapper"
+              onMouseEnter={() => item.children && setOpenDropdown(item.id)}
+              onMouseLeave={() => item.children && setOpenDropdown(null)}
             >
-              {item.icon}
-              <span className="nav-text">{item.label}</span>
-            </a>
+              {item.path ? (
+                <NavLink
+                  to={item.path}
+                  end
+                  className={({ isActive }) =>
+                    `nav-item ${isActive || isActive ? "active" : ""}`
+                  }
+                >
+                  {item.icon}
+                  <span className="nav-text">{item.label}</span>
+                </NavLink>
+              ) : (
+                <button
+                  className={`nav-item ${isActive ? "active" : ""}`}
+                  onClick={() =>
+                    setOpenDropdown(openDropdown === item.id ? null : item.id)
+                  }
+                >
+                  {item.icon}
+                  <span className="nav-text">{item.label}</span>
+                </button>
+              )}
 
-            {/* Dropdown */}
-            {item.children && (
-              <div
-                className={`dropdown ${
-                  openDropdown === item.id ? "open" : ""
-                }`}
-              >
-                {item.children.map((child) => (
-                  <a
-                    key={child.id}
-                    href="#"
-                    className="dropdown-item"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      console.log(`Clicked ${child.id}`);
-                    }}
-                  >
-                    {child.label}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+              {item.children && (
+                <div className={`dropdown ${openDropdown === item.id ? "open" : ""}`}>
+                  {item.children.map((child) => (
+                    <NavLink
+                      key={child.id}
+                      to={child.path}
+                      className={({ isActive }) =>
+                        `dropdown-item ${isActive ? "active" : ""}`
+                      }
+                    >
+                      {child.label}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </nav>
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <a href="#" className="user-profile">
+        <div className="user-profile">
           <div className="user-avatar">AG</div>
           <div className="user-info">
             <p className="user-name">Aryan Gupta</p>
             <p className="user-role">Developer</p>
           </div>
-        </a>
+        </div>
       </div>
-    </div>
+    </aside>
   );
 }

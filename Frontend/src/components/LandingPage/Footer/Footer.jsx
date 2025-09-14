@@ -1,6 +1,6 @@
 import React from 'react';
 import { Github, Mail } from 'lucide-react';
-import logo from '../../assets/l2.png';
+import logo from '../../../assets/l2.png';
 import './Footer.css';
 
 const Footer = () => {
