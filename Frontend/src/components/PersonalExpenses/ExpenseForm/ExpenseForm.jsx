@@ -29,6 +29,7 @@ const ExpenseForm = ({ onAddExpense }) => {
 
     const categories = [
         { value: "Food & Dining", icon: "🍽️" },
+        { value: "Grocery", icon: "🛒" },
         { value: "Transportation", icon: "🚗" },
         { value: "Shopping", icon: "🛍️" },
         { value: "Entertainment", icon: "🎬" },

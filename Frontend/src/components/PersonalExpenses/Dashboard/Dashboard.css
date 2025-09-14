@@ -1,67 +1,271 @@
-/* Glass Card Common Styles */
-.glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: transform 0.2s ease-in-out;
-    color: #f9fafb;
+/* Blue & White Theme Dashboard Styles */
+
+/* AI Insights Card */
+.ai-insights-card {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
 }
 
-.glass-card:hover {
-    transform: translateY(-3px);
+.ai-insights-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
-/* AIInsights */
-.ai-insights h2 {
-    font-size: 1.25rem;
+.ai-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.ai-insights-card h2 {
+    font-size: 18px;
     font-weight: 700;
-    color: #a78bfa;
-    /* purple-400 */
-    margin-bottom: 0.5rem;
+    color: white;
+    margin: 0;
 }
 
-.ai-insights p {
-    font-size: 0.9rem;
-    color: #d1d5db;
-    /* gray-300 */
+.ai-insights-card p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
     line-height: 1.5;
+    margin: 0;
 }
 
-/* StatsGrid */
+/* Stats Grid - MAXIMUM SEPARATION */
 .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 24px;
+    width: 100%;
+
 }
 
-@media (min-width: 768px) {
+.stats-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    width: 100%;
+    max-width: 48%;
+    /* min-width: 400px; */
+
+    box-sizing: border-box;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* Card Icon - LEFT SIDE */
+.card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 4px;
+    /* Slight alignment adjustment */
+}
+
+.this-month-icon {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.investments-icon {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+/* Card Info - RIGHT SIDE WITH ALL CONTENT */
+.card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Header Section */
+.card-info h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0 0 6px 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 12px 0;
+    line-height: 1;
+}
+
+/* This Month Card - EXACT STRUCTURE FROM IMAGE 1 */
+.this-month-card .card-details {
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Breakdown Section - UNDER THE ICON AS IN IMAGES */
+.card-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.breakdown-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 400;
+}
+
+.breakdown-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Investments Card - EXACT STRUCTURE FROM IMAGE 2 */
+.investments-card .card-value {
+    color: #059669;
+}
+
+.investments-card .card-info h3 {
+    text-align: left;
+}
+
+.investments-card .card-value {
+    text-align: left;
+}
+
+/* Investment Progress - POSITIONED UNDER VALUE */
+.investment-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 85%;
+    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+    border-radius: 4px;
+}
+
+.progress-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #059669;
+    white-space: nowrap;
+}
+
+/* Mobile responsive */
+@media (max-width: 1200px) {
     .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .stats-card {
+        width: 420px;
+        min-width: 360px;
     }
 }
 
-.stats-card h3 {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #94a3b8;
-    /* gray-400 */
-    margin-bottom: 0.5rem;
+@media (max-width: 900px) {
+    .stats-grid {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .stats-card {
+        width: 100%;
+        max-width: 500px;
+        min-width: auto;
+    }
 }
 
-.stats-card .value {
-    font-size: 1.75rem;
-    font-weight: 700;
+@media (max-width: 768px) {
+    .ai-insights-card {
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+
+    .stats-card {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .card-header {
+        gap: 16px;
+    }
+
+    .card-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .card-value {
+        font-size: 28px;
+    }
+
+    .ai-insights-card h2 {
+        font-size: 16px;
+    }
 }
 
-.stats-card.investments .value {
-    color: #22c55e;
-    /* green */
-}
-
-.stats-card.growth .value {
-    color: #a78bfa;
-    /* purple */
+/* Light theme base */
+body {
+    background: #f8fafc;
+    color: #1e293b;
 }

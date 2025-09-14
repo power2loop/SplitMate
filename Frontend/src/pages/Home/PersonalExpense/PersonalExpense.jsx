@@ -6,6 +6,8 @@ import AnalyticsChart from "../../../components/PersonalExpenses/Analytics/Analy
 import TransactionList from "../../../components/PersonalExpenses/TransactionList/TransactionList";
 import "./PersonalExpense.css";
 
+
+
 const PersonalExpense = () => {
     const [expenses, setExpenses] = useState([]);
 
