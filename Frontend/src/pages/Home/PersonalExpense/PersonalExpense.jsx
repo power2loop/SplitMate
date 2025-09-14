@@ -4,6 +4,7 @@ import StatsGrid from "../../../components/PersonalExpenses/Dashboard/StatsGrid"
 import ExpenseForm from "../../../components/PersonalExpenses/ExpenseForm/ExpenseForm";
 import AnalyticsChart from "../../../components/PersonalExpenses/Analytics/AnalyticsChart";
 import TransactionList from "../../../components/PersonalExpenses/TransactionList/TransactionList";
+import Navbar from "../../../components/PersonalExpenses/Navbar/Navbars";
 import "./PersonalExpense.css";
 
 
@@ -17,6 +18,10 @@ const PersonalExpense = () => {
 
     return (
         <div className="page-container">
+            <div className="navbars">
+                <Navbar expenses={expenses} />
+            </div>
+
             {/* AI Insights Section */}
             <div className="ai-insights">
                 <AIInsights expenses={expenses} />

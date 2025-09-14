@@ -105,10 +105,10 @@ const AnalyticsChart = ({ expenses }) => {
     };
 
     return (
-        <div className="glass-card rounded-2xl p-6">
-            <div className="flex justify-between mb-4">
-                <h2 className="text-lg font-bold">Spending Analytics</h2>
-                <div className="flex space-x-2">
+        <div className="analytics-container">
+            <div className="analytics-header">
+                <h2 className="analytics-title">Spending Analytics</h2>
+                <div className="chart-buttons">
                     {["category", "trend", "comparison"].map((t) => (
                         <button
                             key={t}
@@ -120,7 +120,7 @@ const AnalyticsChart = ({ expenses }) => {
                     ))}
                 </div>
             </div>
-            <div className="h-64">
+            <div className="chart-container">
                 <canvas ref={chartRef}></canvas>
             </div>
         </div>

@@ -1,14 +1,37 @@
-/* Container */
-.glass-card {
+/* Analytics Container */
+.analytics-container {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease-in-out;
+    border-radius: 1rem;
+    padding: 1.5rem;
 }
 
-.glass-card:hover {
+.analytics-container:hover {
     transform: translateY(-2px);
+}
+
+/* Analytics Header */
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.analytics-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+/* Chart Buttons Container */
+.chart-buttons {
+    display: flex;
+    gap: 0.5rem;
 }
 
 /* Toggle Buttons */
@@ -18,7 +41,6 @@
     font-size: 0.85rem;
     font-weight: 500;
     color: #cbd5e1;
-    /* gray-400 */
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.2s ease-in-out;
@@ -32,12 +54,16 @@
 
 .btn-toggle.active {
     color: #fff;
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    background: linear-gradient(135deg, #3273ed, #1e50d9);
     border: none;
     box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
 }
 
 /* Chart Container */
+.chart-container {
+    height: 16rem;
+}
+
 canvas {
     max-height: 250px;
 }

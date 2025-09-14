@@ -16,12 +16,6 @@ const Navbar = () => {
           {/* Brand Logo */}
           <div className="nav-brand">
             <Link to="/" style={{ textDecoration: "none" }}>
-            {/* <img
-                  src={logo}
-                  alt="logo"
-                  style={{ width: '40px', height: '45px' }}
-                /> */}
-
               <h2 className="brand-text-logo">
                 <img
                   src={logo}
