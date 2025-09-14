@@ -1,6 +1,6 @@
 /* Blue & White Theme Dashboard Styles */
 
-/* AI Insights Card */
+/* Enhanced AI Insights Card */
 .ai-insights-card {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     border-radius: 16px;
@@ -8,6 +8,26 @@
     margin-bottom: 24px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.ai-insights-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+}
+
+.ai-insights-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(30px, -30px);
 }
 
 .ai-insights-header {
@@ -15,6 +35,8 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
 }
 
 .ai-icon {
@@ -26,6 +48,22 @@
     align-items: center;
     justify-content: center;
     color: white;
+    transition: transform 0.3s ease;
+    animation: aiPulse 2s infinite;
+}
+
+@keyframes aiPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+    }
 }
 
 .ai-insights-card h2 {
@@ -33,13 +71,17 @@
     font-weight: 700;
     color: white;
     margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .ai-insights-card p {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.9);
-    line-height: 1.5;
+    line-height: 1.6;
     margin: 0;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Stats Grid - MAXIMUM SEPARATION */
@@ -49,27 +91,50 @@
     align-items: stretch;
     margin-bottom: 24px;
     width: 100%;
-
 }
 
+/* Enhanced Stats Cards */
 .stats-card {
     background: #ffffff;
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid #e2e8f0;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-
+    transition: all 0.3s ease;
     width: 100%;
     max-width: 48%;
-    /* min-width: 400px; */
-
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    transition: background 0.3s ease;
+}
+
+.this-month-card::before {
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+.investments-card::before {
+    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
 }
 
 .stats-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+}
+
+.stats-card:hover::before {
+    height: 4px;
 }
 
 .card-header {
@@ -78,7 +143,7 @@
     gap: 20px;
 }
 
-/* Card Icon - LEFT SIDE */
+/* Enhanced Card Icons */
 .card-icon {
     width: 56px;
     height: 56px;
@@ -88,7 +153,27 @@
     justify-content: center;
     flex-shrink: 0;
     margin-top: 4px;
-    /* Slight alignment adjustment */
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.card-icon::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stats-card:hover .card-icon::after {
+    opacity: 1;
+}
+
+.stats-card:hover .card-icon {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .this-month-icon {
@@ -115,6 +200,11 @@
     margin: 0 0 6px 0;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.stats-card:hover .card-info h3 {
+    color: #3b82f6;
 }
 
 .card-value {
@@ -123,9 +213,14 @@
     color: #1e293b;
     margin: 0 0 12px 0;
     line-height: 1;
+    transition: all 0.3s ease;
 }
 
-/* This Month Card - EXACT STRUCTURE FROM IMAGE 1 */
+.stats-card:hover .card-value {
+    transform: scale(1.02);
+}
+
+/* This Month Card - Enhanced */
 .this-month-card .card-details {
     margin-bottom: 20px;
 }
@@ -137,9 +232,14 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    transition: color 0.3s ease;
 }
 
-/* Breakdown Section - UNDER THE ICON AS IN IMAGES */
+.stats-card:hover .detail-item {
+    color: #475569;
+}
+
+/* Breakdown Section - Enhanced */
 .card-breakdown {
     display: flex;
     flex-direction: column;
@@ -151,22 +251,40 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 4px 0;
+    padding: 6px 0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.breakdown-item:hover {
+    background: #f8fafc;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .breakdown-label {
     font-size: 14px;
     color: #64748b;
     font-weight: 400;
+    transition: color 0.3s ease;
 }
 
 .breakdown-value {
     font-size: 14px;
     font-weight: 600;
     color: #1e293b;
+    transition: color 0.3s ease;
 }
 
-/* Investments Card - EXACT STRUCTURE FROM IMAGE 2 */
+.breakdown-item:hover .breakdown-label {
+    color: #475569;
+}
+
+.breakdown-item:hover .breakdown-value {
+    color: #3b82f6;
+}
+
+/* Investments Card - Enhanced */
 .investments-card .card-value {
     color: #059669;
 }
@@ -179,7 +297,7 @@
     text-align: left;
 }
 
-/* Investment Progress - POSITIONED UNDER VALUE */
+/* Enhanced Investment Progress */
 .investment-progress {
     display: flex;
     align-items: center;
@@ -193,6 +311,7 @@
     background: #f1f5f9;
     border-radius: 4px;
     overflow: hidden;
+    position: relative;
 }
 
 .progress-fill {
@@ -200,6 +319,18 @@
     width: 85%;
     background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
     border-radius: 4px;
+    transition: all 0.3s ease;
+    animation: progressGlow 2s infinite alternate;
+}
+
+@keyframes progressGlow {
+    0% {
+        box-shadow: 0 0 0 rgba(245, 158, 11, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+    }
 }
 
 .progress-text {
@@ -207,6 +338,11 @@
     font-weight: 700;
     color: #059669;
     white-space: nowrap;
+    transition: transform 0.3s ease;
+}
+
+.stats-card:hover .progress-text {
+    transform: scale(1.05);
 }
 
 /* Mobile responsive */
@@ -216,8 +352,7 @@
     }
 
     .stats-card {
-        width: 420px;
-        min-width: 360px;
+        max-width: 48%;
     }
 }
 
@@ -241,6 +376,11 @@
         margin-bottom: 20px;
     }
 
+    .ai-insights-card::before {
+        width: 60px;
+        height: 60px;
+    }
+
     .stats-card {
         padding: 20px;
         max-width: 100%;
@@ -261,6 +401,10 @@
 
     .ai-insights-card h2 {
         font-size: 16px;
+    }
+
+    .ai-insights-card p {
+        font-size: 13px;
     }
 }
 
