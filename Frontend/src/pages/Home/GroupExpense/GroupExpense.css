@@ -1,28 +1,31 @@
+/* Page wrapper with vertical flow and gradient */
 .group-expense {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     background: linear-gradient(135deg, #4e54c8, #8f94fb);
-    color: white;
+    color: #fff;
     font-family: Arial, sans-serif;
+    width: 100%;
 }
 
-/* Navbar stays at the top */
-.group-expense nav {
+/* Sticky navbar area */
+.group-expense-nav {
     position: sticky;
     top: 0;
     z-index: 1000;
+    backdrop-filter: blur(8px);
 }
 
-/* Content below navbar */
+/* Content area grows under navbar */
 .group-expense-content {
     flex: 1;
     padding: 20px;
 }
 
-/* Smooth fade animation when switching views */
+/* Fade-in for view switches */
 .group-expense-content>* {
-    animation: fadeIn 0.4s ease-in-out;
+    animation: fadeIn .4s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -35,4 +38,9 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Ensure inner dashboards are transparent so the page gradient shows */
+.dashboard {
+    background: transparent;
 }
