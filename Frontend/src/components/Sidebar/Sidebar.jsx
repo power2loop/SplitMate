@@ -26,23 +26,23 @@ export default function Sidebar() {
       label: "Expenses",
       icon: (
         <svg
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  className="nav-icon"
->
-  <rect x="2" y="6" width="20" height="12" rx="2" ry="2" />
-  <circle cx="12" cy="12" r="3" />
-  <path d="M6 12h.01M18 12h.01" />
-</svg>
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="nav-icon"
+        >
+          <rect x="2" y="6" width="20" height="12" rx="2" ry="2" />
+          <circle cx="12" cy="12" r="3" />
+          <path d="M6 12h.01M18 12h.01" />
+        </svg>
 
       ),
       children: [
         { id: "personal", label: "Personal Expense", path: "/home/personalexpense" },
-        { id: "group", label: "Group Expense", path: "/home/ge" },
+        { id: "group", label: "Group Expense", path: "/home/groupexpense" },
       ],
     },
     {

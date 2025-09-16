@@ -4,11 +4,12 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import NotFound from './pages/NotFound/NotFound';
 import AuthForm from './pages/AuthForm/AuthForm';
 import Home from './pages/Home/Home'
-import GE from "./pages/Home/GE/GE";
+import GE from "./pages/Home/GroupExpense/GroupExpense";
 // import PE from "./pages/Home/PE/PE";
 import Dashboard from './components/Dashboard/Dashboard'
 import PersonalExpense from './pages/Home/PersonalExpense/PersonalExpense';
 import './index.css';
+import GroupExpense from './pages/Home/GroupExpense/GroupExpense';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<Home />}>
             <Route index element={<Dashboard />} />
-            <Route path="ge" element={<GE />} />
+            <Route path="groupexpense" element={<GroupExpense />} />
             <Route path="personalexpense" element={<PersonalExpense />} />
           </Route>
           <Route path="/register" element={<AuthForm />} />
