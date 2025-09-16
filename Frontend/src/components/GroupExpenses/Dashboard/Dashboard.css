@@ -1,53 +1,77 @@
-:root {
-    --bg1: #5b5bd4;
-    --bg2: #8f6adf;
-    --white: #ffffff;
-    --glass: rgba(255, 255, 255, 0.14);
-    --glass-strong: rgba(255, 255, 255, 0.22);
-    --text: #f2f3ff;
-    --muted: rgba(255, 255, 255, 0.75);
-    --chip: #2f2f3a;
-    --success: #36c98f;
-    --shadow: 0 10px 30px rgba(20, 10, 60, 0.35);
+/* Page-level background to remove blue frame around dashboard */
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    background: linear-gradient(135deg, #f8fbff, #eef4ff);
 }
 
-/* page background with blurred blobs */
+/* If your app has an outer wrapper, make it transparent */
+.layout,
+.page,
+.container,
+.group-expense {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+:root {
+    --blue-700: #1e3a8a;
+    --blue-600: #2563eb;
+    --blue-500: #3b82f6;
+    --blue-100: #e0efff;
+    --blue-50: #f5f9ff;
+
+    --white: #ffffff;
+    --text: #0f172a;
+    --muted: #475569;
+    --border: #e2e8f0;
+    --shadow: 0 10px 28px rgba(2, 6, 23, 0.10);
+}
+
+/* Light background */
 .dash-root {
     min-height: 100vh;
-    padding: 32px;
+    padding: 28px;
     color: var(--text);
-    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    background: linear-gradient(135deg, #f8fbff, #eef4ff);
     position: relative;
     overflow: hidden;
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    border-radius: 0;
+    /* ensure no inset rounding reveals outer bg */
 }
 
-/* soft blobs */
+/* very light blobs */
 .dash-root::before,
 .dash-root::after {
     content: "";
     position: absolute;
-    width: 420px;
-    height: 420px;
+    width: 520px;
+    height: 520px;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.55;
+    filter: blur(110px);
+    opacity: .35;
     pointer-events: none;
 }
 
 .dash-root::before {
-    background: #ff89f5;
-    left: -60px;
-    bottom: -80px;
+    background: #cfe7ff;
+    left: -120px;
+    bottom: -140px;
 }
 
 .dash-root::after {
-    background: #f2c38f;
-    right: 80px;
-    top: 80px;
+    background: #e7dbff;
+    right: 140px;
+    top: 60px;
 }
 
-/* header row */
+/* header */
 .dash-topbar {
     display: flex;
     align-items: center;
@@ -57,36 +81,36 @@
 }
 
 .dash-topbar h1 {
-    font-size: 32px;
-    letter-spacing: .2px;
+    font-size: 28px;
     margin: 0;
+    color: #0b1324;
 }
 
+/* actions */
 .dash-actions {
     display: flex;
-    gap: 14px;
+    gap: 12px;
 }
 
 .btn {
-    border: none;
-    border-radius: 14px;
-    padding: 12px 18px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 10px 16px;
     font-weight: 600;
-    backdrop-filter: blur(10px);
     cursor: pointer;
-    transition: transform .08s ease, background .2s ease, opacity .2s ease;
+    transition: transform .08s ease, background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+    box-shadow: var(--shadow);
 }
 
 .btn.ghost {
-    background: var(--glass);
-    color: var(--white);
-    box-shadow: var(--shadow);
+    background: var(--white);
+    color: var(--blue-700);
+    border-color: var(--border);
 }
 
 .btn.primary {
-    background: linear-gradient(135deg, #6d7cff, #8f5bff);
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
     color: var(--white);
-    box-shadow: var(--shadow);
 }
 
 .btn:hover {
@@ -95,7 +119,7 @@
 
 .btn:active {
     transform: translateY(0);
-    opacity: .9;
+    opacity: .96;
 }
 
 /* grid */
@@ -106,28 +130,38 @@
     margin-top: 12px;
 }
 
-/* glass group card */
+/* empty state */
+.empty-hint {
+    grid-column: 1 / -1;
+    color: #475569;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+}
+
+/* card */
 .group-card {
     display: flex;
     justify-content: space-between;
     gap: 24px;
     width: 100%;
     padding: 22px;
-    border-radius: 16px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
     box-shadow: var(--shadow);
     color: inherit;
     text-align: left;
     cursor: pointer;
-    backdrop-filter: blur(18px);
-    transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+    transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
 }
 
 .group-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 14px 36px rgba(14, 10, 60, 0.45);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.10));
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.14);
+    border-color: #cbd5e1;
 }
 
 /* left */
@@ -137,20 +171,21 @@
 }
 
 .group-title {
-    margin: 0 0 4px;
-    font-size: 20px;
+    margin: 0 0 6px;
+    font-size: 18px;
     font-weight: 800;
+    color: #0b1324;
 }
 
 .group-sub {
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     color: var(--muted);
 }
 
 .group-meta {
     display: flex;
     gap: 16px;
-    color: var(--muted);
+    color: #64748b;
     font-size: 14px;
     margin-bottom: 12px;
 }
@@ -170,20 +205,25 @@
     border-radius: 50%;
     font-size: 12px;
     font-weight: 700;
-    color: #fff;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+    color: #0b1324;
+    background: var(--blue-100);
+    border: 1px solid #bfdbfe;
 }
 
 .avatar.blue {
-    background: #5aa4ff;
+    background: #93c5fd;
 }
 
 .avatar.green {
-    background: #39c790;
+    background: #86efac;
+    color: #064e3b;
+    border-color: #bbf7d0;
 }
 
 .avatar.pink {
-    background: #ff6fa8;
+    background: #fecdd3;
+    color: #4c0519;
+    border-color: #fecaca;
 }
 
 /* right */
@@ -198,28 +238,30 @@
 .total-spent p,
 .your-balance p {
     margin: 0;
-    color: var(--muted);
+    color: #64748b;
     font-size: 12px;
     letter-spacing: .2px;
 }
 
 .total-spent h2 {
     margin: 2px 0 0;
-    font-size: 26px;
+    font-size: 24px;
+    color: #0b1324;
 }
 
 .your-balance span {
     display: inline-block;
-    background: #2f3042;
-    color: #e8ebff;
+    background: var(--blue-50);
+    color: #0b1324;
     padding: 4px 10px;
     border-radius: 8px;
     font-weight: 800;
     letter-spacing: .2px;
+    border: 1px solid var(--border);
 }
 
-/* small screens */
-@media (max-width: 520px) {
+/* responsive */
+@media (max-width:520px) {
     .dash-topbar {
         flex-direction: column;
         align-items: flex-start;
@@ -236,5 +278,125 @@
 
     .card-right {
         align-items: flex-start;
+    }
+}
+
+/* modal */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 1000;
+}
+
+.modal-wrap {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 1001;
+    padding: 24px;
+}
+
+.modal-card {
+    width: min(520px, 92vw);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 30px 60px rgba(2, 6, 23, 0.18);
+    color: var(--text);
+    animation: fadeIn .18s ease;
+}
+
+.modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px 8px;
+}
+
+.modal-head h3 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--blue-700);
+}
+
+.icon-btn {
+    border: 1px solid transparent;
+    background: transparent;
+    color: #0f172a;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+
+.icon-btn:hover {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+}
+
+.modal-body {
+    padding: 12px 18px 18px;
+}
+
+.field-label {
+    display: block;
+    font-size: 12px;
+    color: #475569;
+    margin: 8px 0 8px;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+}
+
+.field textarea,
+.field input,
+.field select {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: #0f172a;
+    outline: none;
+    font: inherit;
+}
+
+.field textarea::placeholder,
+.field input::placeholder {
+    color: #94a3b8;
+}
+
+.field.select select {
+    appearance: none;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.btn.wide {
+    min-width: 160px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
