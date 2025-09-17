@@ -26,7 +26,7 @@ function App() {
           </Route>
 
           <Route path="/register" element={<AuthForm />} />
-          <Route path="/error" element={<NotFound />} />
+          <Route path="/*" element={<NotFound />} />
           <Route path="/groupdetails" element={<GroupDetails />} />
         </Routes>
       </Router>

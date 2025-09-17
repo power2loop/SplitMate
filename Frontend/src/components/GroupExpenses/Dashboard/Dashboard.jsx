@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import {useNavigate} from 'react-router-dom';
-import "./Dashboard.css";
 import "./GroupExpenseDashboard.css";
 
 /* ---------- Local storage helpers ---------- */
@@ -176,45 +175,53 @@ const Dashboard = () => {
             </div>
 
             {/* Groups */}
-            <div className="geGrid">
-                {groups.length === 0 ? (
-                    <div className="geEmpty">No groups yet. Create one or join with an invite code.</div>
-                ) : (
-                    groups.map((g) => (
-                        <button key={g.id} className="group-card" onClick={() => navigate(`details/${g.id}`)}>
-                            <div className="card-left">
-                                <h3 className="group-title">{g.name}</h3>
-                                <p className="group-sub">{g.description}</p>
-                                <div className="group-meta">
-                        <button key={g.id} className="geCard" onClick={() => console.log("open group", g.id)}>
-                            <div className="geCardLeft">
-                                <h3 className="geCardTitle">{g.name}</h3>
-                                <p className="geCardSub">{g.description}</p>
-                                <div className="geCardMeta">
-                                    <span>👥 {g.membersCount} members</span>
-                                    <span>🧾 {g.expensesCount} expenses</span>
-                                </div>
-                                <div className="geAvatars">
-                                    {(g.members || []).map((m) => (
-                                        <span key={m.id} className={`geAvatar ${m.color || "blue"}`}>{m.initials}</span>
-                                    ))}
-                                </div>
-                            </div>
+<div className="geGrid">
+  {groups.length === 0 ? (
+    <div className="geEmpty">
+      No groups yet. Create one or join with an invite code.
+    </div>
+  ) : (
+    groups.map((g) => (
+      <button
+        key={g.id}
+        className="geCard"
+        onClick={() => navigate(`details/${g.id}`)}
+      >
+        <div className="geCardLeft">
+          <h3 className="geCardTitle">{g.name}</h3>
+          <p className="geCardSub">{g.description}</p>
+          <div className="geCardMeta">
+            <span>👥 {g.membersCount} members</span>
+            <span>🧾 {g.expensesCount} expenses</span>
+          </div>
+          <div className="geAvatars">
+            {(g.members || []).map((m) => (
+              <span
+                key={m.id}
+                className={`geAvatar ${m.color || "blue"}`}
+              >
+                {m.initials}
+              </span>
+            ))}
+          </div>
+        </div>
 
-                            <div className="geCardRight">
-                                <div>
-                                    <p className="geHint">Total Spent</p>
-                                    <h2 className="geAmount">{currency(g.totalSpent || 0)}</h2>
-                                </div>
-                                <div>
-                                    <p className="geHint">Your Balance</p>
-                                    <span className="geBadge">{currency(g.balance || 0)}</span>
-                                </div>
-                            </div>
-                        </button>
-                    ))
-                )}
-            </div>
+        <div className="geCardRight">
+          <div>
+            <p className="geHint">Total Spent</p>
+            <h2 className="geAmount">{currency(g.totalSpent || 0)}</h2>
+          </div>
+          <div>
+            <p className="geHint">Your Balance</p>
+            <span className="geBadge">{currency(g.balance || 0)}</span>
+          </div>
+        </div>
+      </button>
+    ))
+  )}
+</div>
+
+            
 
             {/* Modals */}
             {modal === "join" && (
