@@ -1,0 +1,73 @@
+/* Expense.css */
+.expense-card {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  padding: 14px;
+  backdrop-filter: blur(16px);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+}
+.header {
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0.95;
+  margin-bottom: 10px;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.expense-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+.thumb-icon {
+  font-size: 18px;
+}
+.texts {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.title {
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sub {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.right {
+  text-align: right;
+}
+.amt {
+  font-weight: 800;
+}
+.cat {
+  font-size: 12px;
+  opacity: 0.8;
+}

@@ -1,0 +1,386 @@
+.goa-trip-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: #333333;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+    scroll-behavior: smooth;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.title-section h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.title-section p {
+  margin: 5px 0 0 0;
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+}
+
+.invite-btn,
+.settings-btn,
+.add-expense-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.add-expense-btn {
+  background: rgba(16, 185, 129, 0.8);
+}
+
+.invite-btn:hover,
+.settings-btn:hover,
+.add-expense-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.add-expense-btn:hover {
+  background: rgba(16, 185, 129, 1);
+}
+
+.navigation-tabs {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 30px;
+  padding: 5px;
+  color: #000;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tab.active {
+  background: rgba(0, 63, 253, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.content-grid {
+margin: 0px 10px;
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+  place-items: center;       
+  justify-items: stretch;    
+  align-items: stretch; 
+  width: 100%;
+}
+
+.group-summary-card,
+.member-balances-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  width: 90%;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.group-summary-card h3,
+.member-balances-card h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.count {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.invite-code {
+  background: rgba(255, 193, 7, 0.9);
+  color: #000;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.member-info {
+  flex: 1;
+}
+
+.member-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.member-email {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.member-balance {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.member-balance.gets {
+  background: rgba(16, 185, 129, 0.8);
+}
+
+.member-balance.owes {
+  background: rgba(239, 68, 68, 0.8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .goa-trip-container {
+    padding: 15px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .navigation-tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-right {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .invite-btn,
+  .settings-btn,
+  .add-expense-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .member-item {
+    flex-wrap: wrap;
+  }
+
+  .member-balance {
+    margin-left: auto;
+  }
+}
+
+/* Invite modal */
+.invite-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+.invite-dialog {
+  width: 360px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  backdrop-filter: blur(18px);
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.invite-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.invite-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+.close-btn {
+color: #000;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.invite-sub {
+  margin: 10px 0 14px;
+  opacity: 0.95;
+  font-size: 13px;
+}
+.code-box {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  padding: 12px;
+}
+.code-text {
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #facc15;
+  text-align: center;
+}
+.regen-btn {
+  background: rgba(255, 255, 255, 0.25);
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.actions {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.copy-btn {
+  border: none;
+  color: #000000;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.share-btn {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.copy-btn:active,
+.share-btn:active,
+.regen-btn:active,
+.close-btn:active {
+  transform: translateY(1px);
+}

@@ -10,6 +10,7 @@ import Dashboard from './components/Dashboard/Dashboard'
 import PersonalExpense from './pages/Home/PersonalExpense/PersonalExpense';
 import './index.css';
 import GroupExpense from './pages/Home/GroupExpense/GroupExpense';
+import Overview from './components/GroupExpenses/GroupDetails/Overview/Overview';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           </Route>
           <Route path="/register" element={<AuthForm />} />
           <Route path="/error" element={<NotFound />} />
+          <Route path="/overview" element={<Overview/>} />
         </Routes>
       </Router>
     </>
