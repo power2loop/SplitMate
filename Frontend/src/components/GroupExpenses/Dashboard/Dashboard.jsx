@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./Dashboard.css";
+import "./GroupExpenseDashboard.css";
 
 /* ---------- Local storage helpers ---------- */
 const STORAGE_KEY = "splitmate.groups";
-
 const getStoredGroups = () => {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -21,12 +20,7 @@ const setStoredGroups = (arr) => {
 const currency = (n) =>
     new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(n);
 
-
-// --------------------- functions ------------
-
-
-
-/* ---------- Modal primitives ---------- */
+/* ---------- Modal primitive ---------- */
 function Modal({ title, children, onClose }) {
     const dialogRef = useRef(null);
 
@@ -44,34 +38,36 @@ function Modal({ title, children, onClose }) {
 
     return (
         <>
-            <div className="modal-backdrop" onClick={onClose} />
-            <div className="modal-wrap" role="dialog" aria-modal="true" aria-labelledby="modal-title" ref={dialogRef}>
-                <div className="modal-card">
-                    <div className="modal-head">
-                        <h3 id="modal-title">{title}</h3>
-                        <button className="icon-btn" aria-label="Close" onClick={onClose}>✕</button>
+            <div className="geModalBackdrop" onClick={onClose} />
+            <div className="geModalWrap" role="dialog" aria-modal="true" aria-labelledby="geModalTitle" ref={dialogRef}>
+                <div className="geModalCard">
+                    <div className="geModalHead">
+                        <h3 id="geModalTitle" className="geModalTitle">{title}</h3>
+                        <button className="geIconBtn" aria-label="Close" onClick={onClose}>✕</button>
                     </div>
-                    <div className="modal-body">{children}</div>
+                    <div className="geModalBody">{children}</div>
                 </div>
             </div>
         </>
     );
 }
 
+/* ---------- Join Group Modal ---------- */
 function JoinGroupModal({ onCancel, onSubmit }) {
     const [code, setCode] = useState("");
     const disabled = code.trim().length !== 6;
 
     return (
         <form
+            className="geForm"
             onSubmit={(e) => {
                 e.preventDefault();
                 if (!disabled) onSubmit(code.trim());
             }}
         >
-            <label className="field-label">Invite Code</label>
-            <div className="field">
-                <span className="field-icon">🔑</span>
+            <label className="geFieldLabel">Invite Code</label>
+            <div className="geField">
+                <span className="geFieldIcon">🔑</span>
                 <input
                     type="text"
                     inputMode="numeric"
@@ -79,54 +75,60 @@ function JoinGroupModal({ onCancel, onSubmit }) {
                     placeholder="Enter 6-digit code"
                     value={code}
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    className="geInput"
                 />
             </div>
 
-            <div className="modal-actions">
-                <button type="button" className="btn ghost wide" onClick={onCancel}>Cancel</button>
-                <button type="submit" className="btn primary wide" disabled={disabled}>↪ Join Group</button>
+            <div className="geModalActions">
+                <button type="button" className="geBtn geBtnGhost geBtnWide" onClick={onCancel}>Cancel</button>
+                <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={disabled}>↪ Join Group</button>
             </div>
         </form>
     );
 }
 
+/* ---------- Create Group Modal ---------- */
 function CreateGroupModal({ onCancel, onSubmit }) {
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
-    const [type, setType] = useState("Trip");
+    const [type, setType] = useState("Family");
     const disabled = name.trim().length < 3;
 
     return (
-        <form onSubmit={(e) => {
-            e.preventDefault();
-            if (!disabled) onSubmit({ name: name.trim(), description: desc.trim(), type });
-        }}>
-
-            <label className="field-label">Group Name</label>
-            <div className="field">
-                <span className="field-icon">👥</span>
+        <form
+            className="geForm"
+            onSubmit={(e) => {
+                e.preventDefault();
+                if (!disabled) onSubmit({ name: name.trim(), description: desc.trim(), type });
+            }}
+        >
+            <label className="geFieldLabel">Group Name</label>
+            <div className="geField">
+                <span className="geFieldIcon">👥</span>
                 <input
                     type="text"
                     placeholder="e.g., Goa Trip 2024"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    className="geInput"
                 />
             </div>
 
-            <label className="field-label">Description (Optional)</label>
-            <div className="field">
+            <label className="geFieldLabel">Description (Optional)</label>
+            <div className="geField">
                 <textarea
                     placeholder="Brief description of the group"
                     rows={3}
                     value={desc}
                     onChange={(e) => setDesc(e.target.value)}
+                    className="geTextarea"
                 />
             </div>
 
-            <label className="field-label">Group Type</label>
-            <div className="field select">
-                <span className="field-icon">🎒</span>
-                <select value={type} onChange={(e) => setType(e.target.value)}>
+            <label className="geFieldLabel">Group Type</label>
+            <div className="geField geSelect">
+                <span className="geFieldIcon">🎒</span>
+                <select value={type} onChange={(e) => setType(e.target.value)} className="geSelectEl">
                     <option>Family</option>
                     <option>Office collegue</option>
                     <option>Friends</option>
@@ -134,9 +136,9 @@ function CreateGroupModal({ onCancel, onSubmit }) {
                 </select>
             </div>
 
-            <div className="modal-actions">
-                <button type="button" className="btn ghost wide" onClick={onCancel}>Cancel</button>
-                <button type="submit" className="btn primary wide" disabled={disabled}>Create Group</button>
+            <div className="geModalActions">
+                <button type="button" className="geBtn geBtnGhost geBtnWide" onClick={onCancel}>Cancel</button>
+                <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={disabled}>Create Group</button>
             </div>
         </form>
     );
@@ -147,53 +149,53 @@ const Dashboard = () => {
     const [modal, setModal] = useState(null); // null | "join" | "create"
     const [groups, setGroups] = useState(() => getStoredGroups());
 
-    // persist whenever groups change
-    useEffect(() => {
-        setStoredGroups(groups);
-    }, [groups]);
-
+    useEffect(() => { setStoredGroups(groups); }, [groups]);
     const addGroup = (g) => setGroups((prev) => [g, ...prev]);
 
     return (
-        <div className="dash-root">
-            {/* Header row */}
-            <div className="dash-topbar">
-                <h1>Your Groups</h1>
-                <div className="dash-actions">
-                    <button className="btn ghost" onClick={() => setModal("join")}>↪ Join Group</button>
-                    <button className="btn primary" onClick={() => setModal("create")}>＋ Create Group</button>
+        <div className="geRoot">
+            {/* soft blobs */}
+            <div className="geBlob geBlobLeft" />
+            <div className="geBlob geBlobRight" />
+
+            {/* Header */}
+            <div className="geTopBar">
+                <h1 className="geTitle">Your Groups</h1>
+                <div className="geActions">
+                    <button className="geBtn geBtnGhost" onClick={() => setModal("join")}>↪ Join Group</button>
+                    <button className="geBtn geBtnPrimary" onClick={() => setModal("create")}>＋ Create Group</button>
                 </div>
             </div>
 
-            {/* Groups grid */}
-            <div className="groups-grid">
+            {/* Groups */}
+            <div className="geGrid">
                 {groups.length === 0 ? (
-                    <div className="empty-hint">No groups yet. Create one or join with an invite code.</div>
+                    <div className="geEmpty">No groups yet. Create one or join with an invite code.</div>
                 ) : (
                     groups.map((g) => (
-                        <button key={g.id} className="group-card" onClick={() => console.log("open group", g.id)}>
-                            <div className="card-left">
-                                <h3 className="group-title">{g.name}</h3>
-                                <p className="group-sub">{g.description}</p>
-                                <div className="group-meta">
+                        <button key={g.id} className="geCard" onClick={() => console.log("open group", g.id)}>
+                            <div className="geCardLeft">
+                                <h3 className="geCardTitle">{g.name}</h3>
+                                <p className="geCardSub">{g.description}</p>
+                                <div className="geCardMeta">
                                     <span>👥 {g.membersCount} members</span>
                                     <span>🧾 {g.expensesCount} expenses</span>
                                 </div>
-                                <div className="avatars">
+                                <div className="geAvatars">
                                     {(g.members || []).map((m) => (
-                                        <span key={m.id} className={`avatar ${m.color}`}>{m.initials}</span>
+                                        <span key={m.id} className={`geAvatar ${m.color || "blue"}`}>{m.initials}</span>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="card-right">
-                                <div className="total-spent">
-                                    <p>Total Spent</p>
-                                    <h2>{currency(g.totalSpent || 0)}</h2>
+                            <div className="geCardRight">
+                                <div>
+                                    <p className="geHint">Total Spent</p>
+                                    <h2 className="geAmount">{currency(g.totalSpent || 0)}</h2>
                                 </div>
-                                <div className="your-balance">
-                                    <p>Your Balance</p>
-                                    <span>{currency(g.balance || 0)}</span>
+                                <div>
+                                    <p className="geHint">Your Balance</p>
+                                    <span className="geBadge">{currency(g.balance || 0)}</span>
                                 </div>
                             </div>
                         </button>
@@ -201,7 +203,7 @@ const Dashboard = () => {
                 )}
             </div>
 
-            {/* Join modal */}
+            {/* Modals */}
             {modal === "join" && (
                 <Modal title="Join Group" onClose={() => setModal(null)}>
                     <JoinGroupModal
@@ -224,7 +226,6 @@ const Dashboard = () => {
                 </Modal>
             )}
 
-            {/* Create modal */}
             {modal === "create" && (
                 <Modal title="Create New Group" onClose={() => setModal(null)}>
                     <CreateGroupModal
@@ -248,7 +249,6 @@ const Dashboard = () => {
                                 balance: 0,
                                 members: [{ id: "me", initials, color: "green" }],
                             };
-
                             addGroup(newGroup);
                             setModal(null);
                         }}
