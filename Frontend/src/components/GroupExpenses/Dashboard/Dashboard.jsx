@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 import "./Dashboard.css";
 
 /* ---------- Local storage helpers ---------- */
@@ -147,6 +148,8 @@ const Dashboard = () => {
     const [modal, setModal] = useState(null); // null | "join" | "create"
     const [groups, setGroups] = useState(() => getStoredGroups());
 
+    const navigate = useNavigate(); 
+
     // persist whenever groups change
     useEffect(() => {
         setStoredGroups(groups);
@@ -171,7 +174,7 @@ const Dashboard = () => {
                     <div className="empty-hint">No groups yet. Create one or join with an invite code.</div>
                 ) : (
                     groups.map((g) => (
-                        <button key={g.id} className="group-card" onClick={() => console.log("open group", g.id)}>
+                        <button key={g.id} className="group-card" onClick={() => navigate(`details/${g.id}`)}>
                             <div className="card-left">
                                 <h3 className="group-title">{g.name}</h3>
                                 <p className="group-sub">{g.description}</p>

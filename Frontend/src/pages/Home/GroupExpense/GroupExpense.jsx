@@ -3,6 +3,7 @@ import Navbars from "../../../components/PersonalExpenses/Navbar/Navbars";
 import Dashboard from "../../../components/GroupExpenses/Dashboard/Dashboard";
 import ExpenseForm from "../../../components/PersonalExpenses/ExpenseForm/ExpenseForm";
 import GroupDetails from "../../../components/GroupExpenses/GroupDetails/GroupDetails";
+import { Routes, Route } from "react-router-dom";
 import "./GroupExpense.css";
 
 const GroupExpense = () => {
@@ -17,9 +18,10 @@ const GroupExpense = () => {
 
       {/* Page content below navbar */}
       <div className="group-expense-content">
-        {activeView === "dashboard" && <Dashboard />}
-        {activeView === "expenseForm" && <ExpenseForm />}
-        {activeView === "groupDetails" && <GroupDetails />}
+        <Routes>
+          <Route index element={<Dashboard />} />
+          <Route path="details/:groupId" element={<GroupDetails />} />
+        </Routes>
       </div>
     </div>
   );

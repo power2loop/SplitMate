@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 import "./Overview.css";
 import Navbars from '../../GE-Navbar/Navbar';
 import Analytics from '../Analystic/Analystic';
@@ -13,6 +14,7 @@ const randomCode = () => {
 
 const Overview = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const navigate = useNavigate();
 
   // Invite modal state
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -23,7 +25,7 @@ const Overview = () => {
   const memberBalances = [
     { id: 'Y',  name: 'You',         email: 'you@example.com',  balance: 8800, status: 'gets', color: '#4F46E5' },
     { id: 'JS', name: 'Jane Smith',  email: 'jane@example.com', balance: 2800, status: 'owes', color: '#10B981' },
-    { id: 'MJ', name: 'Mike Johnson',email: 'mike@example.com', balance: 5000, status: 'owes', color: '#EF4444' }
+    { id: 'MJ', name: 'Mike Johnson', email: 'mike@example.com', balance: 5000, status: 'owes', color: '#EF4444' }
   ];
   const totalExpenses = 18600;
   const totalMembers = 3;
@@ -66,11 +68,10 @@ const Overview = () => {
 
   return (
     <>
-      <Navbars/>
       <div className="goa-trip-container">
         <div className="header">
           <div className="header-left">
-            <button className="back-btn">←</button>
+            <button onClick={() => navigate('/home/groupexpense')} className="back-btn">←</button>
             <div className="title-section">
               <h1>Goa Trip 2024</h1>
               <p>Beach vacation with friends</p>

@@ -1,8 +1,9 @@
 import React from 'react'
+import Overview from './Overview/Overview'
 
 const GroupDetails = () => {
     return (
-        <div>GroupDetails</div>
+        <Overview/>
     )
 }
 
