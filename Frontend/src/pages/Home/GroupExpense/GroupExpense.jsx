@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Navbars from "../../../components/PersonalExpenses/Navbar/Navbars";
-import Dashboard from "../../../components/GroupExpenses/Dashboard/Dashboard";
-import ExpenseForm from "../../../components/PersonalExpenses/ExpenseForm/ExpenseForm";
-import GroupDetails from "../../../components/GroupExpenses/GroupDetails/GroupDetails";
 import { Routes, Route } from "react-router-dom";
+import Navbar from "../components/Navbar/Navbar";
+import Dashboard from "../GroupExpense/components/Dashboard/Dashboard";
+import GroupDetails from '../GroupExpense/components/GroupDetails/GroupDetails'
 import "./GroupExpense.css";
 
 const GroupExpense = () => {
@@ -13,7 +12,7 @@ const GroupExpense = () => {
     <div className="group-expense">
       {/* Sticky navbar at top */}
       <nav className="group-expense-nav">
-        <Navbars onNavigate={setActiveView} />
+        <Navbar onNavigate={setActiveView} />
       </nav>
 
       {/* Page content below navbar */}

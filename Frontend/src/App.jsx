@@ -10,7 +10,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import PersonalExpense from "./pages/Home/PersonalExpense/PersonalExpense";
 import "./index.css";
 import GroupExpense from "./pages/Home/GroupExpense/GroupExpense";
-import GroupDetails from "./components/GroupExpenses/GroupDetails/GroupDetails";
+import GroupDetails from "./pages/Home/GroupExpense/components/GroupDetails/GroupDetails";
 
 function App() {
   return (

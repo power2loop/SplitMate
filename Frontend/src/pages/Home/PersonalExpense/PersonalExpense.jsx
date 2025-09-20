@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import AIInsights from "../../../components/PersonalExpenses/Dashboard/AIInsights";
-import StatsGrid from "../../../components/PersonalExpenses/Dashboard/StatsGrid";
-import ExpenseForm from "../../../components/PersonalExpenses/ExpenseForm/ExpenseForm";
-import AnalyticsChart from "../../../components/PersonalExpenses/Analytics/AnalyticsChart";
-import TransactionList from "../../../components/PersonalExpenses/TransactionList/TransactionList";
-import Navbar from "../../../components/PersonalExpenses/Navbar/Navbars";
+import AIInsights from "./components/Dashboard/AIInsights";
+import StatsGrid from "./components/Dashboard/StatsGrid";
+import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
+import AnalyticsChart from "./components/Analytics/AnalyticsChart";
+import TransactionList from "./components/TransactionList/TransactionList";
 import "./PersonalExpense.css";
+import Navbar from "../components/Navbar/Navbar";
 
 
 
@@ -17,10 +17,12 @@ const PersonalExpense = () => {
         setExpenses(expenses.filter((e) => e.id !== id));
 
     return (
-        <div className="page-container">
-            <div className="navbars">
-                <Navbar expenses={expenses} />
+        <div className="personal-expense">
+            <div className="personal-expense-nav">
+                <Navbar expenses={expenses}/>
             </div>
+
+            <div className="personal-expense-content">
 
             {/* AI Insights Section */}
             <div className="ai-insights">
@@ -47,6 +49,8 @@ const PersonalExpense = () => {
             <div className="transaction-list-container">
                 <TransactionList expenses={expenses} onDeleteExpense={deleteExpense} />
             </div>
+            </div>
+
         </div>
     );
 };

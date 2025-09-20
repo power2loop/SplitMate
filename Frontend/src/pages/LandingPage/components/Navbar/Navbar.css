@@ -1,0 +1,120 @@
+.lp-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 10000;
+  transition: all var(--transition-normal);
+}
+
+.lp-nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.lp-nav-brand {
+  display: flex;
+  align-items: center;
+}
+
+.lp-brand-text-logo {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  gap: 4px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Default (desktop) menu */
+.lp-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.lp-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.lp-mobile-menu-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+  z-index: 1100;
+  /* make sure it’s above nav */
+  display: block;
+  /* force show by default */
+}
+
+.lp-mobile-menu-btn:hover {
+  background: var(--background-alt);
+}
+
+/* 🔹 Mobile Styles */
+@media (max-width: 768px) {
+  .lp-nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    flex-direction: column;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+
+    /* Hidden by default */
+    transform: translateY(-120%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+  }
+
+  /* Show menu when open */
+  .lp-nav-menu.nav-menu-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Actions go inside dropdown */
+  .lp-nav-actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    display: flex;
+    /* 👈 force visible on mobile */
+  }
+
+  .lp-nav-link {
+    padding: var(--spacing-xs) 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .lp-mobile-menu-btn {
+    display: block;
+    /* 👈 visible on mobile */
+  }
+}
+
+/* 🔹 Desktop hides hamburger */
+@media (min-width: 769px) {
+  .lp-mobile-menu-btn {
+    display: none;
+  }
+}

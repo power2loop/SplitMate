@@ -1,14 +1,41 @@
 /* General Page Container */
-.page-container {
-    padding: 2rem;
-    background-color: #f9fafb;
-    /* subtle light background */
+.personal-expense {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    font-family: "Inter", sans-serif;
-    /* modern clean font */
+    /* background: linear-gradient(135deg, #4e54c8, #8f94fb); */
+    color: #fff;
+    font-family: Arial, sans-serif;
+    width: 100%;
+}
+
+.personal-expense-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+
+.personal-expense-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Fade-in for view switches */
+.personal-expense-content>* {
+    animation: fadeIn .4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Sections */
@@ -27,7 +54,7 @@
 /* Grid Layout for Form + Chart */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
     margin-bottom: 2rem;
 }
