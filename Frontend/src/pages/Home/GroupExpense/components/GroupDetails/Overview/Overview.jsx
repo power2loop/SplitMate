@@ -1,42 +1,67 @@
+// Overview.jsx
 import { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
-import "./Overview.css";
-// import Navbars from '../../GE-Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
+import './Overview.css';
 import Analytics from '../Analystic/Analystic';
 import AllExpenses from '../Expense/AllExpense';
 
-const randomCode = () => {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let s = 'GOA';
-  for (let i = 0; i < 3; i++) s += chars[Math.floor(Math.random() * chars.length)];
-  return s;
-};
+// NOTE: keep these imports pointing to where your files actually live
+import AddExpenseModal from '../../modals/AddExpenseModal';
+import GroupSettingsModal from '../../modals/GroupSettingsModal';
+
+// Demo data and utils
+import { GOA_TRIP } from '../../../../../../data/goaTrip';
+import { generateInviteCode } from '../../../../../../lib/inviteCode';
 
 const Overview = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const navigate = useNavigate();
 
-  // Invite modal state
+  // Data
+  const {
+    title,
+    description,
+    defaultInviteCode,
+    totals,
+    members,
+    ownerId,
+    currentUserId: currentId
+  } = GOA_TRIP || {};
+  const totalExpenses = totals?.expenses ?? 0;
+  const totalMembers = totals?.members ?? (members?.length ?? 0);
+  const memberBalances = members ?? [];
+
+  // Ownership (use ONLY the persisted ownerId; no fallback to first member)
+  const currentUserId = currentId || 'U1';
+  const groupOwnerId = ownerId ?? null;
+  const isOwner = groupOwnerId != null && currentUserId === groupOwnerId;
+
+  // Invite modal
   const [inviteOpen, setInviteOpen] = useState(false);
-  const [inviteCode, setInviteCode] = useState('GOA24X');
+  const [inviteCode, setInviteCode] = useState(defaultInviteCode || 'GOA-123');
   const [copied, setCopied] = useState(false);
 
-  // Demo data
-  const memberBalances = [
-    { id: 'Y',  name: 'You',         email: 'you@example.com',  balance: 8800, status: 'gets', color: '#4F46E5' },
-    { id: 'JS', name: 'Jane Smith',  email: 'jane@example.com', balance: 2800, status: 'owes', color: '#10B981' },
-    { id: 'MJ', name: 'Mike Johnson', email: 'mike@example.com', balance: 5000, status: 'owes', color: '#EF4444' }
-  ];
-  const totalExpenses = 18600;
-  const totalMembers = 3;
+  // NEW: Modals state
+  const [addOpen, setAddOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
+  // Tabs
   const handleTabChange = (tab) => setActiveTab(tab);
-  const handleAddExpense = () => console.log('Add expense clicked');
 
-  // Invite modal handlers
+  // Buttons: log to confirm they fire
+  const handleAddExpense = () => {
+    console.log('[UI] Add Expense clicked');
+    setAddOpen(true);
+  };
+  const handleSettings = () => {
+    console.log('[UI] Settings clicked');
+    setSettingsOpen(true);
+  };
+
+  // Invite handlers
   const handleInvite = () => setInviteOpen(true);
   const closeInvite = () => { setInviteOpen(false); setCopied(false); };
-  const regenerate = () => setInviteCode(randomCode());
+  const regenerate = () => setInviteCode(generateInviteCode('GOA', 3));
   const copyCode = async () => {
     try {
       await navigator.clipboard.writeText(inviteCode);
@@ -53,18 +78,38 @@ const Overview = () => {
           text: `Join our Goa Trip with code: ${inviteCode}`,
           url: window.location.href
         });
-      } catch {}
+      } catch {/* cancelled */ }
     } else {
       copyCode();
     }
   };
 
-  // ESC to close modal
+  // ESC to close Invite
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') closeInvite(); };
     if (inviteOpen) document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [inviteOpen]);
+
+  // Add expense callback
+  const onAddExpense = (expense) => {
+    console.log('[DATA] New expense payload:', expense);
+    // TODO: persist to storage/backend and refresh list
+  };
+
+  // Settings actions
+  const onDeleteGroup = () => {
+    console.log('[DATA] Delete group confirmed');
+    navigate('/home/groupexpense');
+  };
+  const onLeaveGroup = () => {
+    if (isOwner) {
+      alert('Owner cannot leave; delete the group or transfer ownership first.');
+      return;
+    }
+    console.log('[DATA] Leave group confirmed');
+    navigate('/home/groupexpense');
+  };
 
   return (
     <>
@@ -73,31 +118,34 @@ const Overview = () => {
           <div className="header-left">
             <button onClick={() => navigate('/home/groupexpense')} className="back-btn">←</button>
             <div className="title-section">
-              <h1>Goa Trip 2024</h1>
-              <p>Beach vacation with friends</p>
+              <h1>{title}</h1>
+              <p>{description}</p>
             </div>
           </div>
           <div className="header-right">
             <button className="invite-btn" onClick={handleInvite}>👥 Invite</button>
-            <button className="settings-btn">⚙️ Settings</button>
+            <button className="settings-btn" onClick={handleSettings}>⚙️ Settings</button>
             <button className="add-expense-btn" onClick={handleAddExpense}>+ Add Expense</button>
           </div>
         </div>
 
-        <div className="navigation-tabs" id='overview'>
-          <a href='#overview'
+        <div className="navigation-tabs" id="overview">
+          <a
+            href="#overview"
             className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
             onClick={() => handleTabChange('overview')}
           >
             🏠 Overview
           </a>
-          <a href='#Analytics'
+          <a
+            href="#Analytics"
             className={`tab ${activeTab === 'analytics' ? 'active' : ''}`}
             onClick={() => handleTabChange('analytics')}
           >
             📊 Analytics
           </a>
-          <a href='#expenses'
+          <a
+            href="#expenses"
             className={`tab ${activeTab === 'expenses' ? 'active' : ''}`}
             onClick={() => handleTabChange('expenses')}
           >
@@ -110,7 +158,7 @@ const Overview = () => {
             <h3>Group Summary</h3>
             <div className="summary-item">
               <span>Total Expenses</span>
-              <span className="amount">₹{totalExpenses.toLocaleString()}</span>
+              <span className="amount">₹{Number(totalExpenses).toLocaleString()}</span>
             </div>
             <div className="summary-item">
               <span>Members</span>
@@ -135,7 +183,7 @@ const Overview = () => {
                     <div className="member-email">{member.email}</div>
                   </div>
                   <div className={`member-balance ${member.status}`}>
-                    {member.status === 'gets' ? 'Gets' : 'Owes'} ₹{member.balance.toLocaleString()}
+                    {member.status === 'gets' ? 'Gets' : 'Owes'} ₹{Number(member.balance).toLocaleString()}
                   </div>
                 </div>
               ))}
@@ -143,15 +191,12 @@ const Overview = () => {
           </div>
         </div>
 
-        {/* {activeTab === 'analytics' && <Analytics/>}
-        {activeTab === 'expenses' && <AllExpenses/>}
-        {activeTab === 'overview' && ({})} */}
-        <Analytics/>
-        <AllExpenses/>
+        {/* keep always visible for now */}
+        <Analytics />
+        <AllExpenses />
       </div>
 
-
-      {/* Inline Invite Modal */}
+      {/* Invite Modal */}
       {inviteOpen && (
         <div
           className="invite-backdrop"
@@ -177,6 +222,31 @@ const Overview = () => {
           </div>
         </div>
       )}
+
+      {/* Add Expense Modal */}
+      <AddExpenseModal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        members={memberBalances}
+        onAddExpense={onAddExpense}
+        /* extra compatibility prop if your modal expects onAdd */
+        onAdd={onAddExpense}
+      />
+
+      {/* Group Settings Modal */}
+      <GroupSettingsModal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        isOwner={isOwner}
+        groupMeta={{
+          name: title,
+          created: 'Jan 10, 2024',
+          membersCount: totalMembers,
+          totalExpenses,
+        }}
+        onDeleteGroup={onDeleteGroup}
+        onLeaveGroup={onLeaveGroup}
+      />
     </>
   );
 };
