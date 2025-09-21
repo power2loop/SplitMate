@@ -53,9 +53,13 @@
 
 /* Grid Layout for Form + Chart */
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+
+    /* grid-template-columns: 1fr 1fr; */
+    gap: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -92,6 +96,7 @@
 
 /* Analytics Chart */
 .analytics-chart-container {
+    width: 65%;
     height: 100%;
     display: flex;
     flex-direction: column;

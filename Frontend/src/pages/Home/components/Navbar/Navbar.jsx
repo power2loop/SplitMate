@@ -1,15 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import logo from "@/assets/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { MdGroupAdd } from "react-icons/md";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 
 import "./Navbar.css";
 
+
+
 const Navbars = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  let isLocation = true;
 
   const handleProfileClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -57,10 +62,21 @@ const Navbars = () => {
 
       {/* User Profile Dropdown */}
       <div className="navs-right" ref={dropdownRef}>
-        <button className="invite-btn">
-          👨‍👩‍👧‍👦 Group
-        </button>
-        <button className="settings-btn">🧑‍🦱 Personal</button>
+
+        {(location.pathname === "/home/personalexpense") && (
+          <button className="invite-btn" onClick={
+            () => { navigate('/home/groupexpense') }
+          }>
+            👨‍👩‍👧‍👦 Group
+          </button>
+        )}
+
+        {(location.pathname === "/home/groupexpense") && (
+          <button className="settings-btn" onClick={() => {
+            navigate('/home/personalexpense')
+          }}>🧑‍🦱 Personal</button>
+
+        )}
         <div
           className={`nav-right-user-profile ${isDropdownOpen ? "active" : ""}`}
           onClick={handleProfileClick}
