@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "./Dashboard.css";
 
 /* ---------- Local storage helpers ---------- */
@@ -71,11 +71,10 @@ function JoinGroupModal({ onCancel, onSubmit }) {
                 <span className="geFieldIcon">🔑</span>
                 <input
                     type="text"
-                    inputMode="numeric"
                     pattern="\d{6}"
                     placeholder="Enter 6-digit code"
                     value={code}
-                    onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    onChange={(e) => setCode(e.target.value.slice(0, 6))}
                     className="geInput"
                 />
             </div>
@@ -150,7 +149,7 @@ const Dashboard = () => {
     const [modal, setModal] = useState(null); // null | "join" | "create"
     const [groups, setGroups] = useState(() => getStoredGroups());
 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     // persist whenever groups change
     useEffect(() => {
@@ -175,53 +174,53 @@ const Dashboard = () => {
             </div>
 
             {/* Groups */}
-<div className="geGrid">
-  {groups.length === 0 ? (
-    <div className="geEmpty">
-      No groups yet. Create one or join with an invite code.
-    </div>
-  ) : (
-    groups.map((g) => (
-      <button
-        key={g.id}
-        className="geCard"
-        onClick={() => navigate(`details/${g.id}`)}
-      >
-        <div className="geCardLeft">
-          <h3 className="geCardTitle">{g.name}</h3>
-          <p className="geCardSub">{g.description}</p>
-          <div className="geCardMeta">
-            <span>👥 {g.membersCount} members</span>
-            <span>🧾 {g.expensesCount} expenses</span>
-          </div>
-          <div className="geAvatars">
-            {(g.members || []).map((m) => (
-              <span
-                key={m.id}
-                className={`geAvatar ${m.color || "blue"}`}
-              >
-                {m.initials}
-              </span>
-            ))}
-          </div>
-        </div>
+            <div className="geGrid">
+                {groups.length === 0 ? (
+                    <div className="geEmpty">
+                        No groups yet. Create one or join with an invite code.
+                    </div>
+                ) : (
+                    groups.map((g) => (
+                        <button
+                            key={g.id}
+                            className="geCard"
+                            onClick={() => navigate(`details/${g.id}`)}
+                        >
+                            <div className="geCardLeft">
+                                <h3 className="geCardTitle">{g.name}</h3>
+                                <p className="geCardSub">{g.description}</p>
+                                <div className="geCardMeta">
+                                    <span>👥 {g.membersCount} members</span>
+                                    <span>🧾 {g.expensesCount} expenses</span>
+                                </div>
+                                <div className="geAvatars">
+                                    {(g.members || []).map((m) => (
+                                        <span
+                                            key={m.id}
+                                            className={`geAvatar ${m.color || "blue"}`}
+                                        >
+                                            {m.initials}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
 
-        <div className="geCardRight">
-          <div>
-            <p className="geHint">Total Spent</p>
-            <h2 className="geAmount">{currency(g.totalSpent || 0)}</h2>
-          </div>
-          <div>
-            <p className="geHint">Your Balance</p>
-            <span className="geBadge">{currency(g.balance || 0)}</span>
-          </div>
-        </div>
-      </button>
-    ))
-  )}
-</div>
+                            <div className="geCardRight">
+                                <div>
+                                    <p className="geHint">Total Spent</p>
+                                    <h2 className="geAmount">{currency(g.totalSpent || 0)}</h2>
+                                </div>
+                                <div>
+                                    <p className="geHint">Your Balance</p>
+                                    <span className="geBadge">{currency(g.balance || 0)}</span>
+                                </div>
+                            </div>
+                        </button>
+                    ))
+                )}
+            </div>
 
-            
+
 
             {/* Modals */}
             {modal === "join" && (

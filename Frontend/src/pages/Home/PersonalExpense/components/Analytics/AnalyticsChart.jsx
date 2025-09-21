@@ -105,9 +105,9 @@ const AnalyticsChart = ({ expenses }) => {
     };
 
     return (
-        <div className="analytics-container">
-            <div className="analytics-header">
-                <h2 className="analytics-title">Spending Analytics</h2>
+        <div className="pe-analytics-container">
+            <div className="pe-analytics-header">
+                <h2 className="pe-analytics-title">Spending Analytics</h2>
                 <div className="chart-buttons">
                     {["category", "trend", "comparison"].map((t) => (
                         <button
