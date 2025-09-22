@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import logo from "../../../../assets/logo.png";
+import logo from "../../assets/logo.png";
 import "./Sidebar.css";
 
 export default function Sidebar() {

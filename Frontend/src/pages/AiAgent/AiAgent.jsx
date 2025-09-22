@@ -9,6 +9,7 @@ import {
 } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
+import Navbar from '../../components/Navbar/Navbar';
 
 const AiAgent = () => {
     const [message, setMessage] = useState("")
@@ -26,8 +27,10 @@ const AiAgent = () => {
     }
     
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-b from-white to-blue-50 grid place-items-center p-4"> 
-      <Card className="w-[1300px] max-w-md shadow-lg border border-blue-100">
+    <>
+    <Navbar/>
+    <div className="ai-container">
+      <Card className="chat-model">
         <CardHeader className="space-y-1">
           <CardTitle className="text-xl text-blue-700">AI Assistant</CardTitle>
           <CardDescription className="text-slate-600">
@@ -35,7 +38,7 @@ const AiAgent = () => {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="h-[360px] overflow-y-auto space-y-2 pr-2">
+        <CardContent className="">
           {conversation.map((msg, index) => (
             <div
               key={index}
@@ -65,6 +68,7 @@ const AiAgent = () => {
         </CardFooter>
       </Card>
     </div>
+    </>
   )
 }
 

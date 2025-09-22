@@ -6,12 +6,11 @@ import AuthForm from "./pages/AuthForm/AuthForm";
 import Home from "./pages/Home/Home";
 import AiAgent from "./pages/AiAgent/AiAgent";
 
-import GE from "./pages/Home/GroupExpense/GroupExpense";
 import Dashboard from "./components/Dashboard/Dashboard";
 import PersonalExpense from "./pages/Home/PersonalExpense/PersonalExpense";
-import "./index.css";
 import GroupExpense from "./pages/Home/GroupExpense/GroupExpense";
 import GroupDetails from "./pages/Home/GroupExpense/components/GroupDetails/GroupDetails";
+import "./index.css";
 
 function App() {
   return (

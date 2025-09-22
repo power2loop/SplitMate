@@ -5,7 +5,7 @@ import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
 import AnalyticsChart from "./components/Analytics/AnalyticsChart";
 import TransactionList from "./components/TransactionList/TransactionList";
 import "./PersonalExpense.css";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../../../components/Navbar/Navbar";
 
 
 
