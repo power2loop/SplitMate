@@ -3,24 +3,24 @@ import './Analystic.css';
 
 const Analytics = () => {
   const stats = [
-    { icon: '💰', label: 'Total Spent', value: 18600 },
-    { icon: '📘', label: 'Avg per Expense', value: 6200 },
-    { icon: '👥', label: 'Avg per Person', value: 6200 },
-    { icon: '🏨', label: 'Top Category', value: 15000, sub: 'Accommodation' },
-    { icon: '📅', label: 'Biggest Day', value: 15000, sub: 'Jan 15, 2024' },
-    { icon: '🧾', label: 'Total Expenses', raw: 3 },
+    { icon: '💰', label: 'Total Spent', value: 0 },
+    { icon: '📘', label: 'Avg per Expense', value: 0 },
+    { icon: '👥', label: 'Avg per Person', value: 0 },
+    { icon: '🏨', label: 'Top Category', value: 0, sub: 'Accommodation' },
+    { icon: '📅', label: 'Biggest Day', value: 0, sub: 'Jan 15, 2024' },
+    { icon: '🧾', label: 'Total Expenses', raw: 0 },
   ];
-
+0
   const categories = [
-    { name: 'Accommodation', amount: 15000, pct: 80.6, color: '#8B5CF6' },
-    { name: 'Food & Dining', amount: 2400, pct: 12.9, color: '#06B6D4' },
-    { name: 'Transportation', amount: 1200, pct: 6.5, color: '#10B981' },
+    { name: 'Accommodation', amount: 0, pct: 80.6, color: '#8B5CF6' },
+    { name: 'Food & Dining', amount: 0, pct: 12.9, color: '#06B6D4' },
+    { name: 'Transportation', amount: 0, pct: 6.5, color: '#10B981' },
   ];
 
   const payers = [
-    { id: 'Y', name: 'You', amount: 15000, pct: 80.6, color: '#F59E0B' },
-    { id: 'JS', name: 'Jane Smith', amount: 2400, pct: 12.9, color: '#22C55E' },
-    { id: 'MJ', name: 'Mike Johnson', amount: 1200, pct: 6.5, color: '#EF4444' },
+    { id: 'Y', name: 'You', amount: 0, pct: 80.6, color: '#F59E0B' },
+    { id: 'JS', name: 'Jane Smith', amount: 0, pct: 12.9, color: '#22C55E' },
+    { id: 'MJ', name: 'Mike Johnson', amount: 0, pct: 6.5, color: '#EF4444' },
   ];
 
   return (
@@ -56,7 +56,7 @@ const Analytics = () => {
                   <span className="legend-dot" style={{ backgroundColor: c.color }} />
                   <span className="legend-name">{c.name}</span>
                   <span className="legend-amount">₹{c.amount.toLocaleString()}</span>
-                  <span className="legend-pct">{c.pct}%</span>
+                  <span className="legend-pct">{0}%</span>
                 </div>
               ))}
             </div>
@@ -86,21 +86,21 @@ const Analytics = () => {
           <div className="timeline-bar">
             <div className="fill pink" style={{ width: '100%' }} />
           </div>
-          <span className="amt">₹15,000</span>
+          <span className="amt">₹0</span>
         </div>
         <div className="timeline-row">
           <span className="date">Jan 16</span>
           <div className="timeline-bar">
             <div className="fill teal" style={{ width: '35%' }} />
           </div>
-          <span className="amt">₹2,400</span>
+          <span className="amt">₹0</span>
         </div>
         <div className="timeline-row">
           <span className="date">Jan 17</span>
           <div className="timeline-bar">
             <div className="fill green" style={{ width: '20%' }} />
           </div>
-          <span className="amt">₹1,200</span>
+          <span className="amt">₹0</span>
         </div>
       </div>
     </div>

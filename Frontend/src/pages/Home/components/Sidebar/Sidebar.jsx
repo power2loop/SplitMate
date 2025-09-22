@@ -59,7 +59,7 @@ export default function Sidebar() {
     {
       id: "aiagent",
       label: "AI Agent",
-      path: "/home/",
+      path: "/aiagent",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
           <circle cx="12" cy="12" r="3" />
