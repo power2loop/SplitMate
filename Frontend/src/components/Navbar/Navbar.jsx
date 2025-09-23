@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import logo from "@/assets/logo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { MdGroupAdd } from "react-icons/md";
+import { BsRobot } from "react-icons/bs";
 import { RiLogoutBoxRFill } from "react-icons/ri";
+import { useStore } from '../../Context/StoreContext.jsx';
+
 
 import "./Navbar.css";
 
@@ -12,6 +14,8 @@ const Navbars = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const { user, setUser } = useStore();
+
 
   const location = useLocation();
   let isLocation = true;
@@ -22,16 +26,24 @@ const Navbars = () => {
 
   const handleGroupExpenseClick = () => {
     setIsDropdownOpen(false);
-    navigate("/home/groupExpense");
+    navigate("/groupExpense");
   };
 
-  const handleLogoutClick = () => {
-    setIsDropdownOpen(false);
-    // Add logout logic here
-    // localStorage.removeItem('user');
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      // Tell server to clear the httpOnly cookie
+      await fetch("/api/users/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (e) {
+      // even if the request fails, clear client state to be safe
+    } finally {
+      setUser(null);
+      // Adjust this route if your landing page path differs
+      navigate("/landingpage", { replace: true });
+    }
   };
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -63,17 +75,17 @@ const Navbars = () => {
       {/* User Profile Dropdown */}
       <div className="navs-right" ref={dropdownRef}>
 
-        {(location.pathname === "/home/personalexpense") && (
+        {(location.pathname === "/personalexpense") && (
           <button className="invite-btn" onClick={
-            () => { navigate('/home/groupexpense') }
+            () => { navigate('/groupexpense') }
           }>
             👨‍👩‍👧‍👦 Group
           </button>
         )}
 
-        {(location.pathname === "/home/groupexpense") && (
+        {(location.pathname === "/groupexpense") && (
           <button className="settings-btn" onClick={() => {
-            navigate('/home/personalexpense')
+            navigate('/personalexpense')
           }}>🧑‍🦱 Personal</button>
 
         )}
@@ -82,7 +94,7 @@ const Navbars = () => {
           onClick={handleProfileClick}
           title="User Profile"
         >
-          <span className="navs-right-user-initials">VK</span>
+          <span className="navs-right-user-initials">{user?.username?.[0] || 'G'}</span>
           <svg
             className={`profile-dropdown-arrow ${isDropdownOpen ? "open" : ""}`}
             width="12"
@@ -105,8 +117,8 @@ const Navbars = () => {
           <div className="profile-dropdown-menu-logo">
             <div className="dropdown-header-logo">
               <div className="user-info-logo">
-                <div className="user-avatar-small-logo">VK</div>
-                <span className="user-name-logo">Vik Kumar</span>
+                <div className="user-avatar-small-logo">{user?.username?.[0] || 'G'}</div>
+                <span className="user-name-logo">{user?.username || 'Guest'}</span>
               </div>
             </div>
 
@@ -117,12 +129,12 @@ const Navbars = () => {
                 className="dropdown-option-logo"
                 onClick={handleGroupExpenseClick}
               >
-                <MdGroupAdd /> <span>Group Expense</span>
+                <BsRobot /> <span>AI Agent</span>
               </button>
 
               <button
                 className="dropdown-option-logo"
-                onClick={handleLogoutClick}
+                onClick={handleLogout}
               >
                 <RiLogoutBoxRFill />
                 <span>Logout</span>

@@ -1,3 +1,4 @@
+// Frontend/src/pages/AuthForm/AuthForm.jsx
 import React, { useState } from "react";
 import "./AuthForm.css";
 import registerImg from "../../assets/register.svg";
@@ -7,10 +8,11 @@ import { MdOutlineAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { FaRegUser } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
-
+import { useStore } from "../../Context/StoreContext.jsx";
 
 const AuthForm = () => {
     const navigate = useNavigate();
+    const { setUser } = useStore();
     const [isSignUpMode, setIsSignUpMode] = useState(false);
 
     // Sign In form state
@@ -36,17 +38,18 @@ const AuthForm = () => {
             const res = await fetch("/api/users/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include", // needed if backend sets httpOnly cookie
+                credentials: "include", // ensure cookie is accepted and stored
                 body: JSON.stringify({ email: siEmail, password: siPassword }),
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data?.message || "Login failed");
 
-            // If backend returns token in body instead of cookie:
-            // if (data.token) localStorage.setItem('token', data.token);
+            if (data?.user) {
+                setUser(data.user); // hydrate global auth state
+            }
 
             setMsg({ type: "success", text: "Logged in successfully" });
-            navigate("/", { replace: true }); // redirect to homepage    
+            navigate("/", { replace: true });
         } catch (err) {
             setMsg({ type: "error", text: err.message });
         } finally {
@@ -62,7 +65,6 @@ const AuthForm = () => {
             const res = await fetch("/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                // credentials optional for register unless backend sets cookies on register as well
                 credentials: "include",
                 body: JSON.stringify({
                     username: suName,
@@ -74,11 +76,7 @@ const AuthForm = () => {
             if (!res.ok) throw new Error(data?.message || "Registration failed");
 
             setMsg({ type: "success", text: "Registered successfully, please sign in" });
-            navigate("/", { replace: true });
-
             setIsSignUpMode(false);
-            // Optionally clear sign up fields
-            // setSuName(''); setSuEmail(''); setSuPassword('');
         } catch (err) {
             setMsg({ type: "error", text: err.message });
         } finally {
@@ -118,7 +116,6 @@ const AuthForm = () => {
                         </div>
                         <button type="submit" id="SignIn" className="btnR solidR" disabled={loading}>
                             {loading ? "Signing in..." : "Sign in"}
-
                         </button>
                         <p className="socialTextR">Or Sign in with social platforms</p>
                         <div className="socialMediaR">

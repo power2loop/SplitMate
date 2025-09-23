@@ -1,11 +1,31 @@
+// Frontend/src/components/Sidebar/Sidebar.jsx
 import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import "./Sidebar.css";
+import { useStore } from '../../Context/StoreContext.jsx';
 
 export default function Sidebar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, setUser } = useStore();
+
+  const handleLogout = async () => {
+    try {
+      // Tell server to clear the httpOnly cookie
+      await fetch("/api/users/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (e) {
+      // even if the request fails, clear client state to be safe
+    } finally {
+      setUser(null);
+      // Adjust this route if your landing page path differs
+      navigate("/landingpage", { replace: true });
+    }
+  };
 
   const navItems = [
     {
@@ -38,7 +58,6 @@ export default function Sidebar() {
           <circle cx="12" cy="12" r="3" />
           <path d="M6 12h.01M18 12h.01" />
         </svg>
-
       ),
       children: [
         { id: "personal", label: "Personal Expense", path: "/personalexpense" },
@@ -58,7 +77,7 @@ export default function Sidebar() {
     {
       id: "logout",
       label: "Logout",
-      path: "/logout",
+      // No path -> render as button
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -106,7 +125,9 @@ export default function Sidebar() {
                 <button
                   className={`nav-item ${isActive ? "active" : ""}`}
                   onClick={() =>
-                    setOpenDropdown(openDropdown === item.id ? null : item.id)
+                    item.id === "logout"
+                      ? handleLogout()
+                      : setOpenDropdown(openDropdown === item.id ? null : item.id)
                   }
                 >
                   {item.icon}
@@ -137,10 +158,10 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="sidebar-footer">
         <div className="user-profile">
-          <div className="user-avatar">AG</div>
+          <div className="user-avatar">{user?.username?.[0] || 'G'}</div>
           <div className="user-info">
-            <p className="user-name">Aryan Gupta</p>
-            <p className="user-role">Developer</p>
+            <p className="user-name">{user?.username || 'Guest'}</p>
+            <p className="user-role">{user?.email || 'guest@email.com'}</p>
           </div>
         </div>
       </div>

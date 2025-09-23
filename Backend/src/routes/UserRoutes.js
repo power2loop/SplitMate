@@ -1,7 +1,7 @@
 // src/routes/UserRoutes.js
 import express from 'express';
 import { checkSchema, validationResult } from 'express-validator';
-import { registerUser, loginUser, getAllUsers } from '../controllers/UserController.js';
+import { registerUser, loginUser, getAllUsers, logoutUser } from '../controllers/UserController.js';
 
 const router = express.Router();
 
@@ -40,6 +40,6 @@ function runValidation(req, res, next) {
 router.post('/register', registerSchema, runValidation, registerUser);
 router.post('/login', loginSchema, runValidation, loginUser);
 router.post('/', getAllUsers);
-
+router.post('/logout', logoutUser);
 
 export default router;

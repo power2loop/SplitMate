@@ -15,16 +15,16 @@ const Navbar = () => {
 
           {/* Brand Logo */}
           <div className="lp-nav-brand">
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <h2 className="lp-brand-text-logo">
-                <img
-                  src={logo}
-                  alt="logo"
-                  style={{ width: '40px', height: '45px' }}
-                />
-                SplitMate
-              </h2>
-            </Link>
+            {/* <Link to="/" style={{ textDecoration: "none" }}> */}
+            <h2 className="lp-brand-text-logo">
+              <img
+                src={logo}
+                alt="logo"
+                style={{ width: '40px', height: '45px' }}
+              />
+              SplitMate
+            </h2>
+            {/* </Link> */}
           </div>
 
           {/* Navigation Links */}
@@ -61,7 +61,7 @@ const Navbar = () => {
 
         </div>
       </div>
-    </nav>
+    </nav >
   );
 };
 

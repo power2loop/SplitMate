@@ -1,20 +1,19 @@
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken';
+import User from '../models/UserModel.js';
 
-const authMiddleware = async (req, res, next) => {
-    const { token } = req.headers; // Fetch token from authorization header
-
-    if (!token) {
-        return res.json({ success: false, message: "Not Authorized Login Again" });
-    }
-
+export const requireAuth = async (req, res, next) => {
     try {
-        const token_decode = jwt.verify(token, process.env.JWT_SECRET);
-        req.body.userId = token_decode.id;
-        next();
-    } catch (error) {
-        console.error(error);
-        res.json({ success: false, message: "Error" });
-    }
-}
+        const token = req.cookies?.token; // read httpOnly cookie set by login [Set-Cookie] [web:15]
+        if (!token) return res.status(401).json({ success: false, message: 'Unauthorized' });
 
-export default authMiddleware;
+        const payload = jwt.verify(token, process.env.JWT_SECRET); // verify signature [JWT testing] [web:39]
+
+        const user = await User.findById(payload.id).select('_id username email');
+
+        if (!user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+        req.user = user;
+        next();
+    } catch (err) {
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+};
