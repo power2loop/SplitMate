@@ -6,8 +6,11 @@ import { FcGoogle } from "react-icons/fc";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { FaRegUser } from "react-icons/fa6";
+import { useNavigate } from 'react-router-dom';
+
 
 const AuthForm = () => {
+    const navigate = useNavigate();
     const [isSignUpMode, setIsSignUpMode] = useState(false);
 
     // Sign In form state
@@ -43,7 +46,7 @@ const AuthForm = () => {
             // if (data.token) localStorage.setItem('token', data.token);
 
             setMsg({ type: "success", text: "Logged in successfully" });
-            // navigate to dashboard...
+            navigate("/", { replace: true }); // redirect to homepage    
         } catch (err) {
             setMsg({ type: "error", text: err.message });
         } finally {
@@ -71,6 +74,8 @@ const AuthForm = () => {
             if (!res.ok) throw new Error(data?.message || "Registration failed");
 
             setMsg({ type: "success", text: "Registered successfully, please sign in" });
+            navigate("/", { replace: true });
+
             setIsSignUpMode(false);
             // Optionally clear sign up fields
             // setSuName(''); setSuEmail(''); setSuPassword('');
@@ -113,6 +118,7 @@ const AuthForm = () => {
                         </div>
                         <button type="submit" id="SignIn" className="btnR solidR" disabled={loading}>
                             {loading ? "Signing in..." : "Sign in"}
+
                         </button>
                         <p className="socialTextR">Or Sign in with social platforms</p>
                         <div className="socialMediaR">

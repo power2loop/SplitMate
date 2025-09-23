@@ -11,7 +11,7 @@ export default function Sidebar() {
     {
       id: "dashboard",
       label: "Dashboard",
-      path: "/home",
+      path: "/",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
           <rect x="3" y="3" width="7" height="7" />
@@ -41,22 +41,10 @@ export default function Sidebar() {
 
       ),
       children: [
-        { id: "personal", label: "Personal Expense", path: "/home/personalexpense" },
-        { id: "group", label: "Group Expense", path: "/home/groupexpense" },
+        { id: "personal", label: "Personal Expense", path: "/personalexpense" },
+        { id: "group", label: "Group Expense", path: "/groupexpense" },
       ],
-    },
-    {
-      id: "profile",
-      label: "Profile",
-      path: "/home/",
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      ),
-    },
-    {
+    }, {
       id: "aiagent",
       label: "AI Agent",
       path: "/aiagent",
@@ -64,6 +52,17 @@ export default function Sidebar() {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
           <circle cx="12" cy="12" r="3" />
           <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1" />
+        </svg>
+      ),
+    },
+    {
+      id: "logout",
+      label: "Logout",
+      path: "/logout",
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
         </svg>
       ),
     },

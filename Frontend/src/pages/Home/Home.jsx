@@ -4,14 +4,14 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Home.css";
 
 const Home = () => {
-    const location = useLocation();
-    const isHomeOnly = location.pathname === "/home";
+  const location = useLocation();
+  const isHomeOnly = location.pathname === "/";
 
-  
+
   return (
     <div className="Home-Container">
       {isHomeOnly && <Sidebar />}
-      
+
       <Outlet />
     </div>
   );

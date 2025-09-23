@@ -17,15 +17,15 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/LandingPage" element={<LandingPage />} />
 
-          <Route path="/home" element={<Home />}>
+          <Route path="/" element={<Home />}>
             <Route index element={<Dashboard />} />
             <Route path="groupexpense/*" element={<GroupExpense />} />
             <Route path="personalexpense" element={<PersonalExpense />} />
           </Route>
 
-          <Route path='aiagent' element={<AiAgent/>} />
+          <Route path='aiagent' element={<AiAgent />} />
           <Route path="/register" element={<AuthForm />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/groupdetails" element={<GroupDetails />} />

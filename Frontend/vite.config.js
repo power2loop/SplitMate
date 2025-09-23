@@ -15,6 +15,9 @@ export default defineConfig({
     },
   },
   server: {
+    port: 5317,            // dev server port
+    strictPort: true,      // exit if 5317 is in use
+    open: '/landingpage',  // open this path on start
     proxy: {
       // SPA calls like fetch('/api/users/register') will be proxied in dev
       '/api': {

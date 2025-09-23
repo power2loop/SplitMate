@@ -26,6 +26,7 @@ export const registerUser = async (req, res) => {
         const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
 
+
         return res.status(201).json({ success: true, message: "User registered successfully" });
     } catch (err) {
         // Handle unique index violation from DB
@@ -55,6 +56,7 @@ export const loginUser = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
+
         return res.status(200).json({ success: true, message: "Logged in" });
     } catch (err) {
         console.error(err);
