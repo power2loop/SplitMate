@@ -1,85 +1,172 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import "./AuthForm.css";
-import register from "../../assets/register.svg"
-import login from "../../assets/log.svg"
+import registerImg from "../../assets/register.svg";
+import loginImg from "../../assets/log.svg";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { FaRegUser } from "react-icons/fa6";
 
-
 const AuthForm = () => {
     const [isSignUpMode, setIsSignUpMode] = useState(false);
 
+    // Sign In form state
+    const [siEmail, setSiEmail] = useState("");
+    const [siPassword, setSiPassword] = useState("");
 
-    // No need for querySelector - use React state and event handlers instead
+    // Sign Up form state
+    const [suName, setSuName] = useState("");
+    const [suEmail, setSuEmail] = useState("");
+    const [suPassword, setSuPassword] = useState("");
+
+    // UX state
+    const [loading, setLoading] = useState(false);
+    const [msg, setMsg] = useState({ type: "", text: "" });
+
+    const clearMsg = () => setMsg({ type: "", text: "" });
+
+    const handleSignIn = async (e) => {
+        e.preventDefault();
+        clearMsg();
+        setLoading(true);
+        try {
+            const res = await fetch("/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include", // needed if backend sets httpOnly cookie
+                body: JSON.stringify({ email: siEmail, password: siPassword }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.message || "Login failed");
+
+            // If backend returns token in body instead of cookie:
+            // if (data.token) localStorage.setItem('token', data.token);
+
+            setMsg({ type: "success", text: "Logged in successfully" });
+            // navigate to dashboard...
+        } catch (err) {
+            setMsg({ type: "error", text: err.message });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        clearMsg();
+        setLoading(true);
+        try {
+            const res = await fetch("/api/users/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                // credentials optional for register unless backend sets cookies on register as well
+                credentials: "include",
+                body: JSON.stringify({
+                    username: suName,
+                    email: suEmail,
+                    password: suPassword,
+                }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.message || "Registration failed");
+
+            setMsg({ type: "success", text: "Registered successfully, please sign in" });
+            setIsSignUpMode(false);
+            // Optionally clear sign up fields
+            // setSuName(''); setSuEmail(''); setSuPassword('');
+        } catch (err) {
+            setMsg({ type: "error", text: err.message });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className={`containerR ${isSignUpMode ? "sign-up-mode" : ""}`}>
             <div className="formsContainerR">
                 <div className="signinSignupR">
                     {/* Sign In Form */}
-                    <form action="#" className="signInFormR">
+                    <form className="signInFormR" onSubmit={handleSignIn}>
                         <h2 className="titleR">Sign in</h2>
                         <div className="inputFieldR">
                             <MdOutlineAlternateEmail />
-                            <input type="email" id="SiEmail" placeholder="Email" />
+                            <input
+                                type="email"
+                                id="SiEmail"
+                                placeholder="Email"
+                                value={siEmail}
+                                onChange={(e) => setSiEmail(e.target.value)}
+                                required
+                            />
                         </div>
                         <div className="inputFieldR">
-                           <TbLockPassword />
-                            <input type="password" id="SiPassword" placeholder="Password" />
+                            <TbLockPassword />
+                            <input
+                                type="password"
+                                id="SiPassword"
+                                placeholder="Password"
+                                value={siPassword}
+                                onChange={(e) => setSiPassword(e.target.value)}
+                                required
+                                minLength={6}
+                            />
                         </div>
-                        <input type="button"
-                            id="SignIn"
-                            className="btnR solidR"
-                            value="Sign in"
-                        />
+                        <button type="submit" id="SignIn" className="btnR solidR" disabled={loading}>
+                            {loading ? "Signing in..." : "Sign in"}
+                        </button>
                         <p className="socialTextR">Or Sign in with social platforms</p>
                         <div className="socialMediaR">
-                            <a href="#" className="socialIconR">
+                            <a href="#" className="socialIconR" aria-label="Google sign in">
                                 <FcGoogle />
                             </a>
-                            {/* <a href="#" className="socialIconR">
-                                <TiVendorMicrosoft />
-                            </a>
-                            <a href="#" className="socialIconR">
-                                
-                            </a> */}
                         </div>
                     </form>
 
                     {/* Sign Up Form */}
-                    <form action="#" className="signUpFormR">
+                    <form className="signUpFormR" onSubmit={handleSignUp}>
                         <h2 className="titleR">Sign up</h2>
                         <div className="inputFieldR">
                             <FaRegUser />
-                            <input type="text" id="SuName" placeholder="Username" />
+                            <input
+                                type="text"
+                                id="SuName"
+                                placeholder="Username"
+                                value={suName}
+                                onChange={(e) => setSuName(e.target.value)}
+                                required
+                            />
                         </div>
                         <div className="inputFieldR">
                             <MdOutlineAlternateEmail />
-                            <input type="email" id="SuEmail" placeholder="Email" />
+                            <input
+                                type="email"
+                                id="SuEmail"
+                                placeholder="Email"
+                                value={suEmail}
+                                onChange={(e) => setSuEmail(e.target.value)}
+                                required
+                            />
                         </div>
                         <div className="inputFieldR">
                             <TbLockPassword />
-                            <input type="password" id="SuPassword" placeholder="Password" />
+                            <input
+                                type="password"
+                                id="SuPassword"
+                                placeholder="Password"
+                                value={suPassword}
+                                onChange={(e) => setSuPassword(e.target.value)}
+                                required
+                                minLength={6}
+                            />
                         </div>
-                        <input
-                            type="button"
-                            id="SignUp"
-                            className="btnR"
-                            value="Sign up"
-                        />
+                        <button type="submit" id="SignUp" className="btnR" disabled={loading}>
+                            {loading ? "Signing up..." : "Sign up"}
+                        </button>
                         <p className="socialTextR">Or Sign up with social platforms</p>
-                        <div className="socialMediaR" style={{marginBottom: '25px'}}>
-                            <a href="#" className="socialIconR">
+                        <div className="socialMediaR" style={{ marginBottom: "25px" }}>
+                            <a href="#" className="socialIconR" aria-label="Google sign up">
                                 <FcGoogle />
                             </a>
-                            {/* <a href="#" className="socialIconR">
-                                <TiVendorMicrosoft />
-                            </a>
-                            <a href="#" className="socialIconR">
-                                
-                            </a> */}
                         </div>
                     </form>
                 </div>
@@ -91,36 +178,52 @@ const AuthForm = () => {
                     <div className="contentR">
                         <h3>New here ?</h3>
                         <p>
-                            Split, Settle, Smile! Join the vibrant community at SplitMate.
-                            Sign up today and start tracking and sharing expenses with ease!
+                            Split, Settle, Smile! Join the vibrant community at SplitMate and track and share expenses with ease.
                         </p>
                         <button
+                            type="button"
                             className="btnR transparentR"
                             onClick={() => setIsSignUpMode(true)}
                         >
                             Sign up
                         </button>
                     </div>
-                    <img src={login} className="imageR" alt="login" />
+                    <img src={loginImg} className="imageR" alt="login" />
                 </div>
 
                 <div className="panelR rightPanelR">
                     <div className="contentR">
                         <h3>One of us ?</h3>
                         <p>
-                            Already one of us? Welcome back to SplitMate!
-                            Sign in to keep tracking, sharing, and settling expenses with your crew.
+                            Already on SplitMate? Sign in to keep tracking, sharing, and settling expenses with your crew.
                         </p>
                         <button
+                            type="button"
                             className="btnR transparentR"
                             onClick={() => setIsSignUpMode(false)}
                         >
                             Sign in
                         </button>
                     </div>
-                    <img src={register} className="imageR" alt="register" />
+                    <img src={registerImg} className="imageR" alt="register" />
                 </div>
             </div>
+
+            {/* Global message area */}
+            {msg.text && (
+                <div
+                    style={{
+                        maxWidth: 480,
+                        margin: "16px auto",
+                        color: msg.type === "error" ? "crimson" : "seagreen",
+                        textAlign: "center",
+                    }}
+                    role="status"
+                    aria-live="polite"
+                >
+                    {msg.text}
+                </div>
+            )}
         </div>
     );
 };
