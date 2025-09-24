@@ -2,6 +2,7 @@
 import crypto from "crypto";
 import Group from "../models/GroupModel.js";
 import User from "../models/UserModel.js";
+import { group } from "console";
 
 // POST /api/groups
 export const createGroup = async (req, res) => {
@@ -13,6 +14,7 @@ export const createGroup = async (req, res) => {
       name,
       description,
       inviteCode,
+      createdBy: req.user._id,
       members: [req.user._id],
     });
 
@@ -56,3 +58,85 @@ export const getGroupDetails = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+// GET /api/groups  -> all groups for logged-in user
+export const getAllGroup = async (req, res) => {
+  try {
+    const groups = await Group.find({ members: req.user._id })// user is in members array
+      .select('name description inviteCode members expenses createdAt updatedAt') // projection
+      .populate('members', 'username email');    // optional for UI
+
+    return res.json(groups);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+// DELETE /api/groups/:id
+export const DeleteGroup = async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id);
+    if (!group) return res.status(404).json({ message: "Group not found" });
+
+    // authorize owner
+    if (!group.createdBy.equals(req.user._id)) {
+      return res.status(403).json({ message: "Only creator can delete" });
+    }
+
+    // remove group ref from all users who have it
+    await User.updateMany(
+      { groups: group._id },
+      { $pull: { groups: group._id } }          // remove from users' groups[]
+    ); // uses updateMany with $pull [web:212][web:218]
+
+    // optionally: also delete related expenses if required
+    // await Expense.deleteMany({ _id: { $in: group.expenses } });
+
+    await group.deleteOne();                     // delete the group doc [web:206][web:214]
+    return res.json({ message: "Group deleted" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+
+// POST /api/groups/:id/leave
+export const LeaveGroup = async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id);
+    if (!group) return res.status(404).json({ message: "Group not found" });
+
+    // prevent creator from leaving without deleting or transferring ownership
+    if (group.createdBy.equals(req.user._id)) {
+      return res.status(400).json({ message: "Creator cannot leave; delete the group instead" });
+    }
+
+    // ensure member exists
+    const isMember = group.members.some(m => m.equals(req.user._id));
+    if (!isMember) return res.status(400).json({ message: "Not a member" });
+
+    // pull member from group and group from user
+    await Group.updateOne(
+      { _id: group._id },
+      { $pull: { members: req.user._id } }      // remove member from group.members
+    ); // $pull on array of ObjectIds [web:218]
+
+    await User.updateOne(
+      { _id: req.user._id },
+      { $pull: { groups: group._id } }          // remove group from user.groups
+    ); // keeps references consistent [web:218]
+
+    // delete group if it has no members left
+    const updated = await Group.findById(group._id).select('members');
+    if (updated && updated.members.length === 0) {
+      await Group.deleteOne({ _id: group._id }); // cleanup empty group [web:206]
+    }
+
+    return res.json({ message: "Left group" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+
