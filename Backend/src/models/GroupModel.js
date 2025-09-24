@@ -1,11 +1,16 @@
+// models/GroupModel.js
 import mongoose from "mongoose";
+const { Schema, Types } = mongoose;
 
-const groupSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
-  inviteCode: { type: String, unique: true },        // generated code to join group
-  members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  expenses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Expense" }],
-}, { timestamps: true });
+const groupSchema = new Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    description: { type: String, trim: true, default: "" }, // optional
+    inviteCode: { type: String, unique: true, index: true },
+    members: [{ type: Types.ObjectId, ref: "User" }],
+    expenses: [{ type: Types.ObjectId, ref: "Expense" }],
+  },
+  { timestamps: true }
+);
 
-const Group = mongoose.model("Group", groupSchema);
-export default Group;
+export default mongoose.model("Group", groupSchema);

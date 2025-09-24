@@ -1,5 +1,6 @@
+// middlewares/GroupMiddleware.js
 import jwt from "jsonwebtoken";
-import User from "../models/GroupModel.js";
+import User from "../models/UserModel.js"; // <-- fix
 
 export const protect = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ export const protect = async (req, res, next) => {
     const user = await User.findById(decoded.id);
     if (!user) return res.status(401).json({ message: "User not found" });
 
-    req.user = user; // attach to request
+    req.user = user;
     next();
   } catch (err) {
     res.status(401).json({ message: "Unauthorized" });
