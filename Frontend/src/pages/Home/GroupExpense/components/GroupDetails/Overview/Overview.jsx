@@ -100,7 +100,7 @@ const Overview = () => {
   // Settings actions
   const onDeleteGroup = () => {
     console.log('[DATA] Delete group confirmed');
-    navigate('/home/groupexpense');
+    navigate('/groupexpense');
   };
   const onLeaveGroup = () => {
     if (isOwner) {
@@ -108,7 +108,7 @@ const Overview = () => {
       return;
     }
     console.log('[DATA] Leave group confirmed');
-    navigate('/home/groupexpense');
+    navigate('/groupexpense');
   };
 
   return (
@@ -116,7 +116,7 @@ const Overview = () => {
       <div className="goa-trip-container">
         <div className="header">
           <div className="header-left">
-            <button onClick={() => navigate('/home/groupexpense')} className="back-btn">←</button>
+            <button onClick={() => navigate('/groupexpense')} className="back-btn">←</button>
             <div className="title-section">
               <h1>{title}</h1>
               <p>{description}</p>
