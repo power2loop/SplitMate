@@ -94,7 +94,7 @@ const Navbars = () => {
           onClick={handleProfileClick}
           title="User Profile"
         >
-          <span className="navs-right-user-initials">{user?.username?.[0] || 'G'}</span>
+          <img className="navs-right-user-initials" src={`https://robohash.org/${user?.username}.png`}/>
           <svg
             className={`profile-dropdown-arrow ${isDropdownOpen ? "open" : ""}`}
             width="12"
@@ -117,7 +117,7 @@ const Navbars = () => {
           <div className="profile-dropdown-menu-logo">
             <div className="dropdown-header-logo">
               <div className="user-info-logo">
-                <div className="user-avatar-small-logo">{user?.username?.[0] || 'G'}</div>
+                <img className="user-avatar-small-logo" src={`https://robohash.org/${user?.username}.png`}/>
                 <span className="user-name-logo">{user?.username || 'Guest'}</span>
               </div>
             </div>

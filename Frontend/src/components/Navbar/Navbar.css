@@ -113,9 +113,8 @@
 
 /* Right Side - User Initials */
 .navs-right-user-initials {
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
+    height: 48px;
+    width: 48px;
     position: relative;
     z-index: 2;
 }
@@ -142,7 +141,8 @@
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    width: 200px;
+    margin-right: 10px;
+    width: 180px;
     /* Reduced from 280px to 200px */
     background: #ffffff;
     border-radius: 12px;
@@ -180,20 +180,22 @@
 }
 
 .user-avatar-small-logo {
-    width: 28px;
+    width: 30px;
     /* Reduced from 32px to 28px */
-    height: 28px;
+    height: 30px;
     /* Reduced from 32px to 28px */
     border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    /* background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); */
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 11px;
     /* Reduced from 12px to 11px */
+    border: 1px solid rgba(182, 182, 182, 0.512);
     font-weight: 600;
     flex-shrink: 0;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .user-name-logo {

@@ -158,10 +158,10 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="sidebar-footer">
         <div className="user-profile">
-          <div className="user-avatar">{user?.username?.[0] || 'G'}</div>
+          <img className="user-avatar" src={`https://robohash.org/${user?.username}.png`}/>
           <div className="user-info">
             <p className="user-name">{user?.username || 'Guest'}</p>
-            <p className="user-role">{user?.email || 'guest@email.com'}</p>
+            <p className="user-role">{user?.email || 'guest@gmail.com'}</p>
           </div>
         </div>
       </div>
