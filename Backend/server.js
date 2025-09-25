@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
     origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
-    credentials: true, // allow cookies/auth headers
+    withCredentials: true // allow cookies/auth headers
 }));
 
 app.get('/', (_req, res) => res.send('API is running...'));

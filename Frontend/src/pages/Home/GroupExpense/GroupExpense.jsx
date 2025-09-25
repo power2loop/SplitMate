@@ -6,13 +6,13 @@ import GroupDetails from '../GroupExpense/components/GroupDetails/GroupDetails'
 import "./GroupExpense.css";
 
 const GroupExpense = () => {
-  const [activeView, setActiveView] = useState("dashboard");
+  // const [activeView, setActiveView] = useState("dashboard");
 
   return (
     <div className="group-expense">
       {/* Sticky navbar at top */}
       <nav className="group-expense-nav">
-        <Navbar onNavigate={setActiveView} />
+        <Navbar />
       </nav>
 
       {/* Page content below navbar */}
