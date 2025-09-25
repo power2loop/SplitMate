@@ -46,9 +46,11 @@ const AuthForm = () => {
 
             if (data?.user) {
                 setUser(data.user); // hydrate global auth state
+                localStorage.setItem('splitmateUser', JSON.stringify(data.user));
             }
 
             setMsg({ type: "success", text: "Logged in successfully" });
+            
             navigate("/", { replace: true });
         } catch (err) {
             setMsg({ type: "error", text: err.message });
@@ -74,6 +76,12 @@ const AuthForm = () => {
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data?.message || "Registration failed");
+
+            // after successful signup (if you want auto-login)
+            if (data?.user) {
+            setUser(data.user);
+            localStorage.setItem('splitmateUser', JSON.stringify(data.user));
+            }
 
             setMsg({ type: "success", text: "Registered successfully, please sign in" });
             setIsSignUpMode(false);

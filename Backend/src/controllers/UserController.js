@@ -23,7 +23,7 @@ export const registerUser = async (req, res) => {
         const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
 
-        return res.status(201).json({ success: true, message: "User registered successfully" });
+        return res.status(201).json({ success: true, message: "User registered successfully", token});
     } catch (err) {
         if (err?.code === 11000) {
             return res.status(409).json({ success: false, message: "Email already registered" });
@@ -56,6 +56,7 @@ export const loginUser = async (req, res) => {
             success: true,
             message: "Logged in",
             user: { id: user._id, username: user.username, email: user.email },
+            token
         });
     } catch (err) {
         console.error(err);

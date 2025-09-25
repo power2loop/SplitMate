@@ -70,15 +70,31 @@ export const getGroupDetails = async (req, res) => {
 // GET /api/groups  -> all groups for logged-in user
 export const getAllGroup = async (req, res) => {
   try {
-    const groups = await Group.find({ members: req.user._id })// user is in members array
-      .select('name description inviteCode members expenses createdAt updatedAt') // projection
-      .populate('members', 'username email');    // optional for UI
+    const groups = await Group.find({ members: req.user._id })
+      .populate('members', 'username email')
+      .populate('expenses'); // if you need expense amounts
 
-    return res.json(groups);
+    const formatted = groups.map(g => ({
+      id: g._id.toString(),
+      name: g.name,
+      description: g.description,
+      members: g.members.map(m => ({
+        id: m._id.toString(),
+        username: m.username,
+        email: m.email,
+        initials: m.username?.slice(0, 2).toUpperCase()
+      })),
+      expensesCount: g.expenses?.length || 0,
+      totalSpent: g.expenses?.reduce((sum, e) => sum + (e.amount || 0), 0),
+      balance: 0 // or compute a real per-user balance if you have logic
+    }));
+
+    res.json(formatted);
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
+
 
 // DELETE /api/groups/:id
 export const DeleteGroup = async (req, res) => {
