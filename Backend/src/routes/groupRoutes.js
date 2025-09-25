@@ -5,11 +5,10 @@ import { protect } from "../middlewares/GroupMiddleware.js";
 
 const router = express.Router();
 
-// list before param route
-router.get("/", protect, getAllGroup);               // GET /api/groups
-router.post("/", protect, createGroup);              // POST /api/groups
-router.post("/join/:code", protect, joinGroup);      // POST /api/groups/join/:code
-router.get("/:id", protect, getGroupDetails);        // GET /api/groups/:id
+router.get("/", protect, getAllGroup);
+router.post("/", protect, createGroup);
+router.post("/join/:code", protect, joinGroup);
+router.get("/:id", getGroupDetails);
 router.post("/:id/leave", protect, LeaveGroup);
 router.delete("/:id", protect, DeleteGroup);
 

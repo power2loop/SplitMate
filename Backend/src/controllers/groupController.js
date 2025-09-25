@@ -3,6 +3,7 @@ import crypto from "crypto";
 import Group from "../models/GroupModel.js";
 import User from "../models/UserModel.js";
 import { group } from "console";
+import expenses from "../models/Expense.js";
 
 // POST /api/groups
 export const createGroup = async (req, res) => {
@@ -11,15 +12,21 @@ export const createGroup = async (req, res) => {
     const inviteCode = crypto.randomBytes(6).toString("hex");
 
     const group = await Group.create({
+
       name,
       description,
       inviteCode,
       createdBy: req.user._id,
       members: [req.user._id],
+
     });
 
     await User.findByIdAndUpdate(req.user._id, { $push: { groups: group._id } });
-    res.status(201).json(group);
+    res.status(201).json({
+      groupId: group._id,
+      group,
+    });
+
   } catch (err) {
     // If inviteCode collides, MongoDB throws duplicate key (E11000)
     res.status(500).json({ error: err.message });

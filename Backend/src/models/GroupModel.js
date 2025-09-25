@@ -7,7 +7,7 @@ const groupSchema = new Schema(
     name: { type: String, required: true, trim: true },
     description: { type: String, trim: true, default: "" }, // optional
     inviteCode: { type: String, unique: true, index: true },
-    createdBy: { type: Types.ObjectId, ref: "User", required: true }, // NEW
+    createdBy: { type: Types.ObjectId, ref: "User", required: true },
     members: [{ type: Types.ObjectId, ref: "User" }],
     expenses: [{ type: Types.ObjectId, ref: "Expense" }],
   },
