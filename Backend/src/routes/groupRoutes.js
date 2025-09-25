@@ -1,11 +1,11 @@
 // routes/groups.js
 import express from "express";
-import { createGroup, joinGroup, getGroupDetails, getAllGroup, LeaveGroup, DeleteGroup } from "../controllers/GroupController.js";
+import { createGroup, joinGroup, getGroupDetails, getAllGroup, getMyGroups, LeaveGroup, DeleteGroup } from "../controllers/GroupController.js";
 import { protect } from "../middlewares/GroupMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", protect, getAllGroup);
+router.get("/", protect, getMyGroups);
 router.post("/", protect, createGroup);
 router.post("/join/:code", protect, joinGroup);
 router.get("/:id", getGroupDetails);

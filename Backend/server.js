@@ -9,13 +9,19 @@ import { connectDB } from './src/config/db.js';
 
 const app = express();
 connectDB();
+const ORIGIN = "http://localhost:5317";
+
+
+
+app.use(cors({
+    origin: ORIGIN,                 // exact origin, not "*"
+    credentials: true,              // adds Access-Control-Allow-Credentials: true
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+})); // handles preflight for these routes too
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5317',
-    withCredentials: true // allow cookies/auth headers
-}));
 
 app.get('/', (_req, res) => res.send('API is running...'));
 

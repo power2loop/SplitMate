@@ -1,19 +1,29 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/UserModel.js';
+import jwt from "jsonwebtoken";
+import User from "../models/UserModel.js";
 
 export const requireAuth = async (req, res, next) => {
     try {
-        const token = req.cookies?.token; // read httpOnly cookie set by login [Set-Cookie] [web:15]
-        if (!token) return res.status(401).json({ success: false, message: 'Unauthorized' });
+        const cookieToken = req.cookies?.token;
+        const header = req.get("Authorization");
+        const headerToken = header?.startsWith("Bearer ") ? header.slice(7) : null;
+        const token = cookieToken || headerToken;
+        console.log(token);
 
-        const payload = jwt.verify(token, process.env.JWT_SECRET); // verify signature [JWT testing] [web:39]
+        if (!token) {
+            return res.status(401).json({ success: false, message: "No token provided" });
+        }
 
-        const user = await User.findById(payload.id).select('_id username email');
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(payload.id).select("_id username email");
 
-        if (!user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
         req.user = user;
         next();
     } catch (err) {
-        return res.status(401).json({ success: false, message: 'Unauthorized' });
+        console.error("Auth error:", err.message);
+        return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 };

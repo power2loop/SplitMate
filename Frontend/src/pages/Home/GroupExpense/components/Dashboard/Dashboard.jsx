@@ -137,9 +137,25 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   // Fetch groups on mount
+  // src/pages/Dashboard.jsx (excerpt)
   useEffect(() => {
-    api("/groups")
-      .then(setGroups)
+    api("/groups")                // returns an array
+      .then((rows) => {
+        const shaped = rows.map(g => ({
+          id: g.id || g._id,
+          name: g.name,
+          description: g.description,
+          members: (g.members || []).map(m => ({
+            id: m.id || m._id,
+            initials: (m.username || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase(),
+            color: "blue"
+          })),
+          expensesCount: g.expensesCount || 0,
+          totalSpent: g.totalSpent || 0,
+          balance: g.balance || 0
+        }));
+        setGroups(shaped);
+      })
       .catch(err => console.error("Failed to fetch groups", err));
   }, []);
 

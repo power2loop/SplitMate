@@ -1,11 +1,11 @@
 // src/services/api.js
 import axios from "axios";
 
-const API_BASE =  "http://localhost:5000/api";
-
+const API_BASE = import.meta.env.DEV ? '/api' : (import.meta.env.VITE_API_BASE ?? 'https://localhost:5000/api');
 export async function api(path, options = {}) {
   try {
     const token = (typeof localStorage !== "undefined") ? localStorage.getItem("token") : null;
+
     const res = await axios({
       url: `${API_BASE}${path}`,
       method: options.method || "GET",

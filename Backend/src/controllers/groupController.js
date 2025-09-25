@@ -66,6 +66,14 @@ export const getGroupDetails = async (req, res) => {
   }
 };
 
+export const getMyGroups = async (req, res) => {
+  const userId = req.user._id;
+  const groups = await Group.find({ members: userId })
+    .select("name description type expensesCount totalSpent members")
+    .populate({ path: "members", select: "username", options: { limit: 8 } }); // preview
+  return res.status(200).json(groups);
+};
+
 
 // GET /api/groups  -> all groups for logged-in user
 export const getAllGroup = async (req, res) => {

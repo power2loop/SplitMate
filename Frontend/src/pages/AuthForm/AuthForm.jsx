@@ -48,9 +48,12 @@ const AuthForm = () => {
                 setUser(data.user); // hydrate global auth state
                 localStorage.setItem('splitmateUser', JSON.stringify(data.user));
             }
+            if (data?.token) {
+                localStorage.setItem('token', data.token); // <-- add this
+            }
 
             setMsg({ type: "success", text: "Logged in successfully" });
-            
+
             navigate("/", { replace: true });
         } catch (err) {
             setMsg({ type: "error", text: err.message });
@@ -79,8 +82,8 @@ const AuthForm = () => {
 
             // after successful signup (if you want auto-login)
             if (data?.user) {
-            setUser(data.user);
-            localStorage.setItem('splitmateUser', JSON.stringify(data.user));
+                setUser(data.user);
+                localStorage.setItem('splitmateUser', JSON.stringify(data.user));
             }
 
             setMsg({ type: "success", text: "Registered successfully, please sign in" });
