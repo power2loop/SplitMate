@@ -1,16 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../../../services/api";
 import "./Dashboard.css";
-
-/* ---------- Helpers ---------- */
-const currency = (n) =>
-  new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(n);
 
 /* ---------- Modal primitive ---------- */
 function Modal({ title, children, onClose }) {
   const dialogRef = useRef(null);
-
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
@@ -42,14 +37,17 @@ function Modal({ title, children, onClose }) {
 /* ---------- Join Group Modal ---------- */
 function JoinGroupModal({ onCancel, onSubmit }) {
   const [code, setCode] = useState("");
-  const disabled = code.trim().length !== 6;
-
+  const onChange = (e) => {
+    const hexOnly = e.target.value.replace(/[^0-9a-f]/gi, "").slice(0, 12);
+    setCode(hexOnly);
+  };
+  const isValid = /^[0-9a-f]{12}$/i.test(code); // exactly 12 hex
   return (
     <form
       className="geForm"
       onSubmit={(e) => {
         e.preventDefault();
-        if (!disabled) onSubmit(code.trim());
+        if (isValid) onSubmit(code);
       }}
     >
       <label className="geFieldLabel">Invite Code</label>
@@ -57,17 +55,20 @@ function JoinGroupModal({ onCancel, onSubmit }) {
         <span className="geFieldIcon">🔑</span>
         <input
           type="text"
-          pattern="\d{6}"
-          placeholder="Enter 6-digit code"
+          inputMode="text"
+          autoComplete="one-time-code"
+          pattern="[0-9a-fA-F]{12}"
+          title="12-character hex code"
           value={code}
-          onChange={(e) => setCode(e.target.value.slice(0, 6))}
+          onChange={onChange}
           className="geInput"
+          placeholder="e.g., a1b2c3d4e5f6"
         />
       </div>
 
       <div className="geModalActions">
         <button type="button" className="geBtn geBtnGhost geBtnWide" onClick={onCancel}>Cancel</button>
-        <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={disabled}>↪ Join Group</button>
+        <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={!isValid}>↪ Join Group</button>
       </div>
     </form>
   );
@@ -130,60 +131,73 @@ function CreateGroupModal({ onCancel, onSubmit }) {
   );
 }
 
+/* ---------- Data shapers ---------- */
+const shapeMember = (m) => ({
+  id: (m?.id ?? m?._id ?? m?.userId ?? m?.email ?? m?.username ?? Math.random().toString(36)).toString(),
+  initials: (m?.username || "?").split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase(),
+  color: m?.color || "blue",
+});
+
+const shapeGroup = (g) => ({
+  id: (g?.id ?? g?._id ?? g?.inviteCode)?.toString(),
+  name: g?.name || "",
+  description: g?.description || "",
+  members: Array.isArray(g?.members) ? g.members.map(shapeMember) : [],
+  expensesCount: g?.expensesCount ?? 0,
+  totalSpent: g?.totalSpent ?? 0,
+  balance: g?.balance ?? 0,
+});
+
 /* ---------- Main Dashboard ---------- */
 const Dashboard = () => {
   const [groups, setGroups] = useState([]);
   const [modal, setModal] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch groups on mount
-  // src/pages/Dashboard.jsx (excerpt)
+  // StrictMode guard to avoid double fetch in dev
+  const fetchedRef = useRef(false);
+
   useEffect(() => {
-    api("/groups")                // returns an array
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    api("/groups")
       .then((rows) => {
-        const shaped = rows.map(g => ({
-          id: g.id || g._id,
-          name: g.name,
-          description: g.description,
-          members: (g.members || []).map(m => ({
-            id: m.id || m._id,
-            initials: (m.username || "?").split(" ").map(s => s[0]).join("").slice(0, 2).toUpperCase(),
-            color: "blue"
-          })),
-          expensesCount: g.expensesCount || 0,
-          totalSpent: g.totalSpent || 0,
-          balance: g.balance || 0
-        }));
-        setGroups(shaped);
+        // normalize + dedupe by id
+        const shaped = rows.map(shapeGroup);
+        const byId = new Map(shaped.map((g) => [g.id, g]));
+        setGroups(Array.from(byId.values()));
       })
-      .catch(err => console.error("Failed to fetch groups", err));
+      .catch((err) => console.error("Failed to fetch groups", err));
   }, []);
 
-  const handleCreate = async (payload) => {
-    try {
-      const data = await api("/groups", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-      setGroups(prev => [data.group, ...prev]);
-      setModal(null);
-    } catch (e) {
-      alert(e.message);
-    }
-  };
+  const upsertGroup = useCallback((incoming) => {
+    setGroups((prev) => {
+      const map = new Map(prev.map((g) => [g.id, g]));
+      map.set(incoming.id, incoming);
+      return Array.from(map.values());
+    });
+  }, []);
 
-  const handleJoin = async (inviteCode) => {
+  const handleCreate = useCallback(async (payload) => {
     try {
-      const g = await api(`/groups/join/${inviteCode}`, { method: "POST" });
-      setGroups(prev => {
-        if (prev.find(group => group.id === g.id)) return prev; // avoid duplicates
-        return [g, ...prev];
-      });
+      const data = await api("/groups", { method: "POST", body: JSON.stringify(payload) });
+      upsertGroup(shapeGroup(data.group));
       setModal(null);
     } catch (e) {
       alert(e.message);
     }
-  };
+  }, [upsertGroup]);
+
+  const handleJoin = useCallback(async (inviteCode) => {
+    try {
+      const raw = await api(`/groups/join/${inviteCode}`, { method: "POST" });
+      upsertGroup(shapeGroup(raw));
+      setModal(null);
+    } catch (e) {
+      alert(e.message);
+    }
+  }, [upsertGroup]);
 
   return (
     <div className="geRoot">
@@ -202,16 +216,10 @@ const Dashboard = () => {
       {/* Groups */}
       <div className="geGrid">
         {groups.length === 0 ? (
-          <div className="geEmpty">
-            No groups yet. Create one or join with an invite code.
-          </div>
+          <div className="geEmpty">No groups yet. Create one or join with an invite code.</div>
         ) : (
-          groups.map(g => (
-            <button
-              key={g.id}
-              className="geCard"
-              onClick={() => navigate(`details/${g.id}`)}
-            >
+          groups.map((g) => (
+            <button key={g.id} className="geCard" onClick={() => navigate(`details/${g.id}`)}>
               <div className="geCardLeft">
                 <h3 className="geCardTitle">{g.name}</h3>
                 <p className="geCardSub">{g.description}</p>
@@ -220,10 +228,8 @@ const Dashboard = () => {
                   <span>🧾 {g.expensesCount || 0} expenses</span>
                 </div>
                 <div className="geAvatars">
-                  {(g.members || []).map(m => (
-                    <span key={m.id} className={`geAvatar ${m.color || "blue"}`}>
-                      {m.initials}
-                    </span>
+                  {(g.members || []).map((m) => (
+                    <span key={m.id} className={`geAvatar ${m.color || "blue"}`}>{m.initials}</span>
                   ))}
                 </div>
               </div>
@@ -231,11 +237,11 @@ const Dashboard = () => {
               <div className="geCardRight">
                 <div>
                   <p className="geHint">Total Spent</p>
-                  <h2 className="geAmount">{currency(g.totalSpent || 0)}</h2>
+                  <h2 className="geAmount">{g.totalSpent ?? 0}</h2>
                 </div>
                 <div>
                   <p className="geHint">Your Balance</p>
-                  <span className="geBadge">{currency(g.balance || 0)}</span>
+                  <span className="geBadge">{g.balance ?? 0}</span>
                 </div>
               </div>
             </button>

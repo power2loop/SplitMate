@@ -11,7 +11,7 @@ import GroupSettingsModal from '../../modals/GroupSettingsModal';
 
 // Demo data and utils
 import { GOA_TRIP } from '../../../../../../data/goaTrip';
-import { generateInviteCode } from '../../../../../../lib/inviteCode';
+// import { generateInviteCode } from '../../../../../../lib/inviteCode';
 
 const Overview = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -61,7 +61,7 @@ const Overview = () => {
   // Invite handlers
   const handleInvite = () => setInviteOpen(true);
   const closeInvite = () => { setInviteOpen(false); setCopied(false); };
-  const regenerate = () => setInviteCode(generateInviteCode('GOA', 3));
+  // const regenerate = () => setInviteCode(generateInviteCode('GOA', 3));
   const copyCode = async () => {
     try {
       await navigator.clipboard.writeText(inviteCode);
