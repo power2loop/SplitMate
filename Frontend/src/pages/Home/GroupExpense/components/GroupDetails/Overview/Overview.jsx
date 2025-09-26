@@ -43,7 +43,9 @@ const Overview = () => {
       }
     }
     if (id) load();
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, [id]);
 
   // Derived UI fields with fallbacks
@@ -75,7 +77,10 @@ const Overview = () => {
 
   // Invite modal
   const handleInvite = () => setInviteOpen(true);
-  const closeInvite = () => { setInviteOpen(false); setCopied(false); };
+  const closeInvite = () => {
+    setInviteOpen(false);
+    setCopied(false);
+  };
   const copyCode = async () => {
     try {
       await navigator.clipboard.writeText(inviteCode || "");
@@ -92,7 +97,7 @@ const Overview = () => {
           text: `Join group with code: ${inviteCode}`,
           url: window.location.href,
         });
-      } catch { }
+      } catch {}
     } else {
       copyCode();
     }
@@ -116,7 +121,9 @@ const Overview = () => {
 
   const onLeaveGroup = async () => {
     if (isOwner) {
-      alert("Owner cannot leave; delete the group or transfer ownership first.");
+      alert(
+        "Owner cannot leave; delete the group or transfer ownership first."
+      );
       return;
     }
     try {
@@ -128,13 +135,25 @@ const Overview = () => {
   };
 
   if (loading) {
-    return <div className="goa-trip-container"><div className="loading">Loading group…</div></div>; // [web:259][web:261]
+    return (
+      <div className="goa-trip-container">
+        <div className="loading">Loading group…</div>
+      </div>
+    ); // [web:259][web:261]
   }
   if (err) {
-    return <div className="goa-trip-container"><div className="error">{err}</div></div>; // [web:259][web:261]
+    return (
+      <div className="goa-trip-container">
+        <div className="error">{err}</div>
+      </div>
+    ); // [web:259][web:261]
   }
   if (!group) {
-    return <div className="goa-trip-container"><div className="error">Group not found</div></div>; // [web:259][web:261]
+    return (
+      <div className="goa-trip-container">
+        <div className="error">Group not found</div>
+      </div>
+    ); // [web:259][web:261]
   }
 
   return (
@@ -142,16 +161,33 @@ const Overview = () => {
       <div className="goa-trip-container">
         <div className="header">
           <div className="header-left">
-            <button onClick={() => navigate("/groupexpense")} className="back-btn">←</button>
+            <button
+              onClick={() => navigate("/groupexpense")}
+              className="back-btn"
+            >
+              ←
+            </button>
             <div className="title-section">
               <h1>{title}</h1>
               <p>{description}</p>
             </div>
           </div>
           <div className="header-right">
-            <button className="invite-btn" onClick={handleInvite}>👥 Invite</button>
-            <button className="settings-btn" onClick={() => setSettingsOpen(true)}>⚙️ Settings</button>
-            <button className="add-expense-btn" onClick={() => setAddOpen(true)}>+ Add Expense</button>
+            <button className="invite-btn" onClick={handleInvite}>
+              👥 Invite
+            </button>
+            <button
+              className="settings-btn"
+              onClick={() => setSettingsOpen(true)}
+            >
+              ⚙️ Settings
+            </button>
+            <button
+              className="add-expense-btn"
+              onClick={() => setAddOpen(true)}
+            >
+              + Add Expense
+            </button>
           </div>
         </div>
 
@@ -179,68 +215,104 @@ const Overview = () => {
           </a>
         </div>
 
-        <div className="content-grid">
-          <div className="group-summary-card">
-            <h3>Group Summary</h3>
-            <div className="summary-item">
-              <span>Total Expenses</span>
-              <span className="amount">₹{Number(totalExpenses).toLocaleString()}</span>
-            </div>
-            <div className="summary-item">
-              <span>Members</span>
-              <span className="count">{totalMembers}</span>
-            </div>
-            <div className="summary-item">
-              <span>Invite Code</span>
-              <span className="invite-code">{inviteCode || "—"}</span>
-            </div>
-          </div>
-
-          <div className="member-balances-card">
-            <h3>Member Balances</h3>
-            <div className="members-list">
-              {(members || []).map((m) => (
-                <div key={(m._id || m.id || m.email || m.username)?.toString()} className="member-item">
-                  <div className="member-avatar" style={{ backgroundColor: m.color || "#4aa" }}>
-                    {(m.username || m.email || "?").slice(0, 2).toUpperCase()}
-                  </div>
-                  <div className="member-info">
-                    <div className="member-name">{m.username || m.name || "Member"}</div>
-                    <div className="member-email">{m.email || ""}</div>
-                  </div>
-                  {/* If per-member balances exist, render them here */}
+        <div className="tab-content">
+          {activeTab === "overview" && (
+            <div className="content-grid">
+              <div className="group-summary-card">
+                <h3>Group Details</h3>
+                <div className="summary-item">
+                  <span>Total Expenses</span>
+                  <span className="amount">
+                    ₹{Number(totalExpenses).toLocaleString()}
+                  </span>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                <div className="summary-item">
+                  <span>Members</span>
+                  <span className="count">{totalMembers}</span>
+                </div>
+                <div className="summary-item">
+                  <span>Invite Code</span>
+                  <span className="invite-code">{inviteCode || "—"}</span>
+                </div>
+              </div>
 
-        <Analytics />
-        <AllExpenses />
+              <div className="member-balances-card">
+                <h3>Member Lists</h3>
+                <div className="members-list">
+                  {(members || []).map((m) => (
+                    <div
+                      key={(m._id || m.id || m.email || m.username)?.toString()}
+                      className="member-item"
+                    >
+                      <div
+                        className="member-avatar"
+                        style={{ backgroundColor: m.color || "#4aa" }}
+                      >
+                        {(m.username || m.email || "?")
+                          .slice(0, 2)
+                          .toUpperCase()}
+                      </div>
+                      <div className="member-info">
+                        <div className="member-name">
+                          {m.username || m.name || "Member"}
+                        </div>
+                        <div className="member-email">{m.email || ""}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "analytics" && <Analytics group={group} />}
+
+          {activeTab === "expenses" && (
+            <AllExpenses expenses={expenses || []} />
+          )}
+        </div>
       </div>
 
       {/* Invite Modal */}
       {inviteOpen && (
         <div
           className="invite-backdrop"
-          onClick={(e) => { if (e.target === e.currentTarget) closeInvite(); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeInvite();
+          }}
         >
-          <div className="invite-dialog" role="dialog" aria-modal="true" aria-labelledby="invite-title">
+          <div
+            className="invite-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="invite-title"
+          >
             <div className="invite-header">
               <h3 id="invite-title">Invite Members</h3>
-              <button className="close-btn" onClick={closeInvite} aria-label="Close">×</button>
+              <button
+                className="close-btn"
+                onClick={closeInvite}
+                aria-label="Close"
+              >
+                ×
+              </button>
             </div>
 
-            <p className="invite-sub">Share this invite code with your friends:</p>
+            <p className="invite-sub">
+              Share this invite code with your friends:
+            </p>
 
             <div className="code-box">
               <span className="code-text">{inviteCode || "—"}</span>
-              <button className="regen-btn" disabled title="Invite code is generated on the server">↻</button>
             </div>
 
             <div className="actions">
-              <button className="copy-btn" onClick={copyCode}>{copied ? "Copied!" : "Copy Invite Code"}</button>
-              <button className="share-btn" onClick={shareCode}>Share</button>
+              <button className="copy-btn" onClick={copyCode}>
+                {copied ? "Copied!" : "Copy Invite Code"}
+              </button>
+              <button className="share-btn" onClick={shareCode}>
+                Share
+              </button>
             </div>
           </div>
         </div>
@@ -262,7 +334,9 @@ const Overview = () => {
         isOwner={isOwner}
         groupMeta={{
           name: group?.name || "",
-          created: group?.createdAt ? new Date(group.createdAt).toLocaleDateString() : "",
+          created: group?.createdAt
+            ? new Date(group.createdAt).toLocaleDateString()
+            : "",
           membersCount: group?.members?.length || 0,
           totalExpenses: totals.expenses,
           createdByUsername: group?.createdBy?.username || "—", // populated field
