@@ -5,6 +5,7 @@ import Analytics from "../Analystic/Analystic";
 import AllExpenses from "../Expense/AllExpense";
 import AddExpenseModal from "../../modals/AddExpenseModal";
 import GroupSettingsModal from "../../modals/GroupSettingsModal";
+import Loader from '../../Loader/Loader.jsx'
 import { api } from "../../../../../../services/api.js";
 
 const Overview = () => {
@@ -26,27 +27,36 @@ const Overview = () => {
   const id = routeGroupId; // required for API calls
 
   // Fetch group details
-  useEffect(() => {
-    let alive = true;
-    async function load() {
-      try {
-        setLoading(true);
-        const data = await api(`/groups/${id}`);
+useEffect(() => {
+  let alive = true;
+
+  async function load() {
+    try {
+      setLoading(true);  // start loader
+      const data = await api(`/groups/${id}`);
+      if (!alive) return;
+
+      // simulate 2-second loading delay
+      setTimeout(() => {
         if (!alive) return;
-        setGroup(data);
+        setGroup(data);    // set data after 2 sec
         setErr("");
-      } catch (e) {
-        if (!alive) return;
-        setErr(e.message || "Failed to load group");
-      } finally {
-        if (alive) setLoading(false);
-      }
+        setLoading(false); // stop loader
+      }, 2000);
+    } catch (e) {
+      if (!alive) return;
+      setErr(e.message || "Failed to load group");
+      setLoading(false);
     }
-    if (id) load();
-    return () => {
-      alive = false;
-    };
-  }, [id]);
+  }
+
+  if (id) load();
+
+  return () => {
+    alive = false;
+  };
+}, [id]);
+
 
   // Derived UI fields with fallbacks
   const {
@@ -134,27 +144,29 @@ const Overview = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="goa-trip-container">
-        <div className="loading">Loading group…</div>
-      </div>
-    ); // [web:259][web:261]
-  }
-  if (err) {
-    return (
-      <div className="goa-trip-container">
-        <div className="error">{err}</div>
-      </div>
-    ); // [web:259][web:261]
-  }
-  if (!group) {
-    return (
-      <div className="goa-trip-container">
-        <div className="error">Group not found</div>
-      </div>
-    ); // [web:259][web:261]
-  }
+if (loading) {
+  return (
+    <div className="goa-trip-container">
+      <Loader />  {/* loader shows immediately */}
+    </div>
+  );
+}
+
+if (!loading && err) {
+  return (
+    <div className="goa-trip-container">
+      <div className="error">{err}</div>
+    </div>
+  );
+}
+
+if (!loading && !group) {
+  return (
+    <div className="goa-trip-container">
+      <div className="error">Group not found</div>
+    </div>
+  );
+}
 
   return (
     <>
