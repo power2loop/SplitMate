@@ -58,6 +58,7 @@ export const getGroupDetails = async (req, res) => {
   try {
     const group = await Group.findById(req.params.id)
       .populate("members", "username email")
+      .populate("createdBy", "username")
       .populate("expenses");
     if (!group) return res.status(404).json({ message: "Group not found" });
     res.json(group);
@@ -69,8 +70,9 @@ export const getGroupDetails = async (req, res) => {
 export const getMyGroups = async (req, res) => {
   const userId = req.user._id;
   const groups = await Group.find({ members: userId })
-    .select("name description type expensesCount totalSpent members")
-    .populate({ path: "members", select: "username", options: { limit: 8 } }); // preview
+    .select("name description type expensesCount totalSpent members createdBy")
+    .populate({ path: "members", select: "username", options: { limit: 8 } }) // preview
+    .populate({ path: "createdBy", select: "username" });
   return res.status(200).json(groups);
 };
 

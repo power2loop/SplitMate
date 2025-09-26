@@ -1,13 +1,12 @@
 // components/modals/GroupSettingsModal.jsx
 import { useEffect } from 'react';
-import './GroupSettingsModal.css'
-
+import './GroupSettingsModal.css';
 
 export default function GroupSettingsModal({
     open,
     onClose,
     isOwner,
-    groupMeta, // { name, created, membersCount, totalExpenses }
+    groupMeta, // { name, created, membersCount, totalExpenses, createdByUsername }
     onDeleteGroup,
     onLeaveGroup,
 }) {
@@ -39,10 +38,11 @@ export default function GroupSettingsModal({
                 <div className="modal-body">
                     <div className="info-card">
                         <h4>Group Information</h4>
-                        <div className="row"><span>Name:</span><span>{groupMeta.name}</span></div>
-                        <div className="row"><span>Created:</span><span>{groupMeta.created}</span></div>
-                        <div className="row"><span>Members:</span><span>{groupMeta.membersCount}</span></div>
-                        <div className="row"><span>Total Expenses:</span><span>{groupMeta.totalExpenses}</span></div>
+                        <div className="row"><span>Name:</span><span>{groupMeta?.name || ''}</span></div>
+                        <div className="row"><span>Members:</span><span>{groupMeta?.membersCount ?? 0}</span></div>
+                        <div className="row"><span>Total Expenses:</span><span>{groupMeta?.totalExpenses ?? 0}</span></div>
+                        <div className="row"><span>Created:</span><span>{groupMeta?.created || ''}</span></div>
+                        <div className="row"><span>Created By:</span><span>{groupMeta?.createdByUsername || '—'}</span></div>
                     </div>
                 </div>
 

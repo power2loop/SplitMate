@@ -1,122 +1,148 @@
-// Overview.jsx
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Overview.css';
-import Analytics from '../Analystic/Analystic';
-import AllExpenses from '../Expense/AllExpense';
-
-// NOTE: keep these imports pointing to where your files actually live
-import AddExpenseModal from '../../modals/AddExpenseModal';
-import GroupSettingsModal from '../../modals/GroupSettingsModal';
-
-// Demo data and utils
-import { GOA_TRIP } from '../../../../../../data/goaTrip';
-// import { generateInviteCode } from '../../../../../../lib/inviteCode';
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import "./Overview.css";
+import Analytics from "../Analystic/Analystic";
+import AllExpenses from "../Expense/AllExpense";
+import AddExpenseModal from "../../modals/AddExpenseModal";
+import GroupSettingsModal from "../../modals/GroupSettingsModal";
+import { api } from "../../../../../../services/api.js";
 
 const Overview = () => {
-  const [activeTab, setActiveTab] = useState('overview');
   const navigate = useNavigate();
+  const { groupId: routeGroupId } = useParams();
 
-  // Data
-  const {
-    title,
-    description,
-    defaultInviteCode,
-    totals,
-    members,
-    ownerId,
-    currentUserId: currentId
-  } = GOA_TRIP || {};
-  const totalExpenses = totals?.expenses ?? 0;
-  const totalMembers = totals?.members ?? (members?.length ?? 0);
-  const memberBalances = members ?? [];
+  // Core state loaded from API
+  const [group, setGroup] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
 
-  // Ownership (use ONLY the persisted ownerId; no fallback to first member)
-  const currentUserId = currentId || 'U1';
-  const groupOwnerId = ownerId ?? null;
-  const isOwner = groupOwnerId != null && currentUserId === groupOwnerId;
-
-  // Invite modal
+  // UI state
+  const [activeTab, setActiveTab] = useState("overview");
   const [inviteOpen, setInviteOpen] = useState(false);
-  const [inviteCode, setInviteCode] = useState(defaultInviteCode || 'GOA-123');
-  const [copied, setCopied] = useState(false);
-
-  // NEW: Modals state
   const [addOpen, setAddOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  // Tabs
-  const handleTabChange = (tab) => setActiveTab(tab);
+  const id = routeGroupId; // required for API calls
 
-  // Buttons: log to confirm they fire
-  const handleAddExpense = () => {
-    console.log('[UI] Add Expense clicked');
-    setAddOpen(true);
-  };
-  const handleSettings = () => {
-    console.log('[UI] Settings clicked');
-    setSettingsOpen(true);
-  };
+  // Fetch group details
+  useEffect(() => {
+    let alive = true;
+    async function load() {
+      try {
+        setLoading(true);
+        const data = await api(`/groups/${id}`);
+        if (!alive) return;
+        setGroup(data);
+        setErr("");
+      } catch (e) {
+        if (!alive) return;
+        setErr(e.message || "Failed to load group");
+      } finally {
+        if (alive) setLoading(false);
+      }
+    }
+    if (id) load();
+    return () => { alive = false; };
+  }, [id]);
 
-  // Invite handlers
+  // Derived UI fields with fallbacks
+  const {
+    name: title = "",
+    description = "",
+    inviteCode = "",
+    members = [],
+    expenses = [],
+    createdBy,
+    _id: groupId,
+  } = group || {};
+
+  const totals = useMemo(() => {
+    const totalExpenses = Array.isArray(expenses)
+      ? expenses.reduce((s, e) => s + (Number(e?.amount) || 0), 0)
+      : 0;
+    return { expenses: totalExpenses, members: members?.length || 0 };
+  }, [expenses, members]);
+
+  const totalExpenses = totals.expenses;
+  const totalMembers = totals.members;
+
+  // Determine ownership (requires current user id from auth-protected API or context)
+  // If backend returns req.user in a /me endpoint, prefer that; placeholder below expects creator id on group
+  const currentUserId = group?.currentUserId || ""; // set from auth store if available
+  const ownerId = createdBy?._id?.toString?.() || createdBy?.toString?.() || "";
+  const isOwner = ownerId && currentUserId && ownerId === currentUserId;
+
+  // Invite modal
   const handleInvite = () => setInviteOpen(true);
   const closeInvite = () => { setInviteOpen(false); setCopied(false); };
-  // const regenerate = () => setInviteCode(generateInviteCode('GOA', 3));
   const copyCode = async () => {
     try {
-      await navigator.clipboard.writeText(inviteCode);
+      await navigator.clipboard.writeText(inviteCode || "");
       setCopied(true);
-    } catch (e) {
-      console.error('Copy failed', e);
+    } catch {
+      setCopied(false);
     }
   };
   const shareCode = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Group Invite',
-          text: `Join our Goa Trip with code: ${inviteCode}`,
-          url: window.location.href
+          title: "Group Invite",
+          text: `Join group with code: ${inviteCode}`,
+          url: window.location.href,
         });
-      } catch {/* cancelled */ }
+      } catch { }
     } else {
       copyCode();
     }
   };
 
-  // ESC to close Invite
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') closeInvite(); };
-    if (inviteOpen) document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [inviteOpen]);
-
-  // Add expense callback
-  const onAddExpense = (expense) => {
-    console.log('[DATA] New expense payload:', expense);
-    // TODO: persist to storage/backend and refresh list
+  // Actions
+  const onAddExpense = async (payload) => {
+    // hit backend: POST /api/expenses with groupId
+    // await api(`/expenses`, { method: "POST", body: JSON.stringify({ ...payload, groupId }) });
+    // refresh group details
   };
 
-  // Settings actions
-  const onDeleteGroup = () => {
-    console.log('[DATA] Delete group confirmed');
-    navigate('/groupexpense');
+  const onDeleteGroup = async () => {
+    try {
+      await api(`/groups/${groupId}`, { method: "DELETE" });
+      navigate("/groupexpense", { replace: true });
+    } catch (e) {
+      alert(e.message);
+    }
   };
-  const onLeaveGroup = () => {
+
+  const onLeaveGroup = async () => {
     if (isOwner) {
-      alert('Owner cannot leave; delete the group or transfer ownership first.');
+      alert("Owner cannot leave; delete the group or transfer ownership first.");
       return;
     }
-    console.log('[DATA] Leave group confirmed');
-    navigate('/groupexpense');
+    try {
+      await api(`/groups/${groupId}/leave`, { method: "POST" });
+      navigate("/groupexpense", { replace: true });
+    } catch (e) {
+      alert(e.message);
+    }
   };
+
+  if (loading) {
+    return <div className="goa-trip-container"><div className="loading">Loading group…</div></div>; // [web:259][web:261]
+  }
+  if (err) {
+    return <div className="goa-trip-container"><div className="error">{err}</div></div>; // [web:259][web:261]
+  }
+  if (!group) {
+    return <div className="goa-trip-container"><div className="error">Group not found</div></div>; // [web:259][web:261]
+  }
 
   return (
     <>
       <div className="goa-trip-container">
         <div className="header">
           <div className="header-left">
-            <button onClick={() => navigate('/groupexpense')} className="back-btn">←</button>
+            <button onClick={() => navigate("/groupexpense")} className="back-btn">←</button>
             <div className="title-section">
               <h1>{title}</h1>
               <p>{description}</p>
@@ -124,30 +150,30 @@ const Overview = () => {
           </div>
           <div className="header-right">
             <button className="invite-btn" onClick={handleInvite}>👥 Invite</button>
-            <button className="settings-btn" onClick={handleSettings}>⚙️ Settings</button>
-            <button className="add-expense-btn" onClick={handleAddExpense}>+ Add Expense</button>
+            <button className="settings-btn" onClick={() => setSettingsOpen(true)}>⚙️ Settings</button>
+            <button className="add-expense-btn" onClick={() => setAddOpen(true)}>+ Add Expense</button>
           </div>
         </div>
 
         <div className="navigation-tabs" id="overview">
           <a
             href="#overview"
-            className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => handleTabChange('overview')}
+            className={`tab ${activeTab === "overview" ? "active" : ""}`}
+            onClick={() => setActiveTab("overview")}
           >
             🏠 Overview
           </a>
           <a
             href="#Analytics"
-            className={`tab ${activeTab === 'analytics' ? 'active' : ''}`}
-            onClick={() => handleTabChange('analytics')}
+            className={`tab ${activeTab === "analytics" ? "active" : ""}`}
+            onClick={() => setActiveTab("analytics")}
           >
             📊 Analytics
           </a>
           <a
             href="#expenses"
-            className={`tab ${activeTab === 'expenses' ? 'active' : ''}`}
-            onClick={() => handleTabChange('expenses')}
+            className={`tab ${activeTab === "expenses" ? "active" : ""}`}
+            onClick={() => setActiveTab("expenses")}
           >
             💰 Expenses
           </a>
@@ -166,32 +192,29 @@ const Overview = () => {
             </div>
             <div className="summary-item">
               <span>Invite Code</span>
-              <span className="invite-code">{inviteCode}</span>
+              <span className="invite-code">{inviteCode || "—"}</span>
             </div>
           </div>
 
           <div className="member-balances-card">
             <h3>Member Balances</h3>
             <div className="members-list">
-              {memberBalances.map((member) => (
-                <div key={member.id} className="member-item">
-                  <div className="member-avatar" style={{ backgroundColor: member.color }}>
-                    {member.id}
+              {(members || []).map((m) => (
+                <div key={(m._id || m.id || m.email || m.username)?.toString()} className="member-item">
+                  <div className="member-avatar" style={{ backgroundColor: m.color || "#4aa" }}>
+                    {(m.username || m.email || "?").slice(0, 2).toUpperCase()}
                   </div>
                   <div className="member-info">
-                    <div className="member-name">{member.name}</div>
-                    <div className="member-email">{member.email}</div>
+                    <div className="member-name">{m.username || m.name || "Member"}</div>
+                    <div className="member-email">{m.email || ""}</div>
                   </div>
-                  <div className={`member-balance ${member.status}`}>
-                    {member.status === 'gets' ? 'Gets' : 'Owes'} ₹{Number(member.balance).toLocaleString()}
-                  </div>
+                  {/* If per-member balances exist, render them here */}
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* keep always visible for now */}
         <Analytics />
         <AllExpenses />
       </div>
@@ -211,12 +234,12 @@ const Overview = () => {
             <p className="invite-sub">Share this invite code with your friends:</p>
 
             <div className="code-box">
-              <span className="code-text">{inviteCode}</span>
-              <button className="regen-btn" onClick={regenerate} title="Regenerate">↻</button>
+              <span className="code-text">{inviteCode || "—"}</span>
+              <button className="regen-btn" disabled title="Invite code is generated on the server">↻</button>
             </div>
 
             <div className="actions">
-              <button className="copy-btn" onClick={copyCode}>{copied ? 'Copied!' : 'Copy Invite Code'}</button>
+              <button className="copy-btn" onClick={copyCode}>{copied ? "Copied!" : "Copy Invite Code"}</button>
               <button className="share-btn" onClick={shareCode}>Share</button>
             </div>
           </div>
@@ -227,9 +250,8 @@ const Overview = () => {
       <AddExpenseModal
         open={addOpen}
         onClose={() => setAddOpen(false)}
-        members={memberBalances}
+        members={members || []}
         onAddExpense={onAddExpense}
-        /* extra compatibility prop if your modal expects onAdd */
         onAdd={onAddExpense}
       />
 
@@ -239,10 +261,11 @@ const Overview = () => {
         onClose={() => setSettingsOpen(false)}
         isOwner={isOwner}
         groupMeta={{
-          name: title,
-          created: 'Jan 10, 2024',
-          membersCount: totalMembers,
-          totalExpenses,
+          name: group?.name || "",
+          created: group?.createdAt ? new Date(group.createdAt).toLocaleDateString() : "",
+          membersCount: group?.members?.length || 0,
+          totalExpenses: totals.expenses,
+          createdByUsername: group?.createdBy?.username || "—", // populated field
         }}
         onDeleteGroup={onDeleteGroup}
         onLeaveGroup={onLeaveGroup}
