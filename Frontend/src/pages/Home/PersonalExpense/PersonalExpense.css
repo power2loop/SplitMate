@@ -1,25 +1,44 @@
-/* General Page Container */
 .personal-expense {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* background: linear-gradient(135deg, #4e54c8, #8f94fb); */
-    color: #fff;
-    font-family: Arial, sans-serif;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* full viewport height */
+  /* background: linear-gradient(135deg, #4e54c8, #8f94fb); */
+  width: 100%;
 }
 
 .personal-expense-nav {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(8px);
+  flex-shrink: 0; /* navbar stays fixed */
+  z-index: 10;
 }
 
 .personal-expense-content {
-    flex: 1;
-    padding: 20px;
+  flex: 1;
+  overflow-y: auto; /* scrollable content */
+  scrollbar-width: thin;             /* Firefox */
+  scrollbar-color: #1976d2 #e3f2fd;  /* thumb | track */
+  padding-right: 8px;                /* optional: avoid content touching scrollbar */
 }
+
+/* Chrome, Edge, Safari */
+.personal-expense-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.personal-expense-content::-webkit-scrollbar-track {
+  background: #e3f2fd;
+  border-radius: 4px;
+}
+
+.personal-expense-content::-webkit-scrollbar-thumb {
+  background-color: #1976d2;
+  border-radius: 4px;
+  border: 2px solid #e3f2fd;
+}
+
+.personal-expense-content::-webkit-scrollbar-thumb:hover {
+  background-color: #1565c0;
+}
+
 
 /* Fade-in for view switches */
 .personal-expense-content>* {
@@ -47,15 +66,23 @@
 .transaction-list-container {
     background-color: #ffffff;
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin: 20px;
+}
+
+.ai-insights{
+    width: 97%
+}
+
+.stats-grid{
+    width: 97%;
 }
 
 /* Grid Layout for Form + Chart */
 .dashboard-grid {
     display: flex;
     flex-direction: row;
-    width: 100%;
 
 
     /* grid-template-columns: 1fr 1fr; */

@@ -269,7 +269,7 @@ body,
 .geModalBackdrop {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.45);
+    background: rgba(146, 166, 216, 0.247);
     z-index: 1000;
 }
 
@@ -286,7 +286,7 @@ body,
     width: min(520px, 92vw);
     background: #fff;
     border-radius: 14px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     color: #0f172a;
     animation: geFadeIn .18s ease;
     overflow: hidden;
@@ -328,7 +328,6 @@ body,
 }
 
 /* Form fields */
-.geForm {}
 
 .geFieldLabel {
     display: block;

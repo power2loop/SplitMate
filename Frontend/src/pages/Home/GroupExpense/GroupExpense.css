@@ -1,46 +1,41 @@
-/* Page wrapper with vertical flow and gradient */
 .group-expense {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* background: linear-gradient(135deg, #4e54c8, #8f94fb); */
-    color: #fff;
-    font-family: Arial, sans-serif;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* full viewport height */
+  width: 100%;
 }
 
-/* Sticky navbar area */
 .group-expense-nav {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(8px);
+  flex-shrink: 0; /* navbar stays fixed */
+  z-index: 10;
 }
 
-/* Content area grows under navbar */
 .group-expense-content {
-    flex: 1;
-    padding: 20px;
+  flex: 1;
+  overflow-y: auto; /* scrollable content */
+  scrollbar-width: thin;             /* Firefox */
+  scrollbar-color: #1976d2 #e3f2fd;  /* thumb | track */
+
+  /* Optional padding to avoid content touching scrollbar */
+  padding-right: 8px;
 }
 
-/* Fade-in for view switches */
-.group-expense-content>* {
-    animation: fadeIn .4s ease-in-out;
+/* Chrome, Edge, Safari */
+.group-expense-content::-webkit-scrollbar {
+  width: 8px;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.group-expense-content::-webkit-scrollbar-track {
+  background: #e3f2fd;
+  border-radius: 4px;
 }
 
-/* Ensure inner dashboards are transparent so the page gradient shows */
-.dashboard {
-    background: transparent;
+.group-expense-content::-webkit-scrollbar-thumb {
+  background-color: #1976d2;
+  border-radius: 4px;
+  border: 2px solid #e3f2fd;
+}
+
+.group-expense-content::-webkit-scrollbar-thumb:hover {
+  background-color: #1565c0;
 }
