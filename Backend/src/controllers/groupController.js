@@ -105,7 +105,6 @@ export const getAllGroup = async (req, res) => {
   }
 };
 
-
 // DELETE /api/groups/:id
 export const DeleteGroup = async (req, res) => {
   try {

@@ -7,10 +7,12 @@ import AddExpenseModal from "../../modals/AddExpenseModal";
 import GroupSettingsModal from "../../modals/GroupSettingsModal";
 import Loader from '../../Loader/Loader.jsx'
 import { api } from "../../../../../../services/api.js";
+import { useStore } from "@/Context/StoreContext"; // adjust path
 
 const Overview = () => {
   const navigate = useNavigate();
   const { groupId: routeGroupId } = useParams();
+  const { user } = useStore() || {}; // user: { id, username, email, ... }
 
   // Core state loaded from API
   const [group, setGroup] = useState(null);

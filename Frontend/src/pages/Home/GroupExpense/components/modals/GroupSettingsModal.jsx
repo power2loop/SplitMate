@@ -47,11 +47,11 @@ export default function GroupSettingsModal({
                 </div>
 
                 <div className="modal-footer">
-                    {isOwner ? (
+                    
                         <button className="danger" onClick={onDeleteGroup}>Delete Group</button>
-                    ) : (
+                    
                         <button className="danger" onClick={onLeaveGroup}>Leave Group</button>
-                    )}
+                  
                 </div>
             </div>
         </div>
