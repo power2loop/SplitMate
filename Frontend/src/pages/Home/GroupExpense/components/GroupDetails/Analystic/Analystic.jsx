@@ -3,14 +3,14 @@ import './Analystic.css';
 
 const Analytics = () => {
   const stats = [
-    { icon: '💰', label: 'Total Spent', value: 0 },
+    { icon: '💰', label: 'My Expenses', value: 0 },
     { icon: '📘', label: 'Avg per Expense', value: 0 },
     { icon: '👥', label: 'Avg per Person', value: 0 },
     { icon: '🏨', label: 'Top Category', value: 0, sub: 'Accommodation' },
     { icon: '📅', label: 'Biggest Day', value: 0, sub: 'Jan 15, 2024' },
     { icon: '🧾', label: 'Total Expenses', raw: 0 },
   ];
-0
+  0
   const categories = [
     { name: 'Accommodation', amount: 0, pct: 80.6, color: '#8B5CF6' },
     { name: 'Food & Dining', amount: 0, pct: 12.9, color: '#06B6D4' },
