@@ -1,3 +1,31 @@
+/* Scrollable content area below a fixed navbar */
+.lp-main {
+  height: 100vh;                 /* fill the screen */
+  overflow-y: auto;              /* enable vertical scroll */
+  padding-top: var(--navbar-h);  /* space for the navbar height */
+  
+  /* Custom scrollbar (same style you already use) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--background-alt);
+}
+
+.lp-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lp-main::-webkit-scrollbar-track {
+  background: var(--background-alt);
+}
+
+.lp-main::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+.lp-main::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
 
 /* Component Css */
 

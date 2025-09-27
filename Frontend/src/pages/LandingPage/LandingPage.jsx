@@ -4,18 +4,20 @@ import Features from './components/Features/Features';
 import Footer from './components/Footer/Footer';
 import Hero from './components/Hero/Hero';
 import Navbar from './components/Navbar/Navbar';
-import './LandingPage.css'
+import './LandingPage.css';
 
 const LandingPage = () => {
   return (
     <>
       <Navbar />
-      <Hero />
-      <Features />
-      <CTA />
-      <Footer />
+      <div className="lp-main">
+        <Hero />
+        <Features />
+        <CTA />
+        <Footer />
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;

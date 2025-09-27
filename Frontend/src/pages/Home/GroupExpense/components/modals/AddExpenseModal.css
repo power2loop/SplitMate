@@ -22,9 +22,7 @@
     border-radius: 24px;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     overflow: hidden;
     color: #1a202c;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Inter", sans-serif;
@@ -115,7 +113,6 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px 32px;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.15);
     background: linear-gradient(135deg, #4061f7 0%, #8a98f9 100%);
     background-size: 200% 200%;
     color: white;
@@ -233,20 +230,6 @@
     position: relative;
 }
 
-.field>label::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #667eea, #6a3a9a);
-    transition: width 0.3s ease;
-}
-
-.field:focus-within>label::after {
-    width: 100%;
-}
 
 /* Enhanced Input Styles */
 .field input,
@@ -275,10 +258,6 @@
 
 .field input:focus,
 .field select:focus {
-    border-color: #667eea;
-    box-shadow:
-        0 0 0 4px rgba(102, 126, 234, 0.1),
-        0 4px 12px rgba(102, 126, 234, 0.15);
     transform: translateY(-2px);
 }
 
@@ -314,11 +293,11 @@
 .input-with-suffix span {
     font-size: 1rem;
     color: #6b7280;
+    margin-right: 50px;
     font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.input-with-prefix input,
 .input-with-suffix input {
     border: none;
     outline: none;
@@ -400,8 +379,8 @@
 }
 
 .split-tile.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: #5a67d8;
+    background: linear-gradient(135deg, #103cff 0%, #6cb6ff 100%);
+    border-color: #0458ff;
     color: white;
     transform: translateY(-3px);
     box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
@@ -536,7 +515,6 @@
     font-weight: 600;
 }
 
-.input-with-prefix.small,
 .input-with-suffix.small {
     display: flex;
     align-items: center;
@@ -549,21 +527,18 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.input-with-prefix.small:focus-within,
 .input-with-suffix.small:focus-within {
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     transform: scale(1.02);
 }
 
-.input-with-prefix.small span,
 .input-with-suffix.small span {
     font-size: 0.9rem;
     color: #6b7280;
     font-weight: 600;
 }
 
-.input-with-prefix.small input,
 .input-with-suffix.small input {
     border: none;
     outline: none;
@@ -688,7 +663,7 @@
 }
 
 .btn.primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #103cff 0%, #6cb6ff 100%);
     color: white;
     box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
     border: none;

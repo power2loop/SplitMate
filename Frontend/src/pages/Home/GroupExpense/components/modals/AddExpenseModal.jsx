@@ -171,9 +171,9 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                             </div>
 
                             <div className="field">
-                                <label>Amount</label>
-                                <div className="input-with-prefix">
-                                    <span>Rs</span>
+                                <label>Amount <span>(Rs)</span></label> 
+                                <div className="input-with-prefix-amount">
+                                    
                                     <input
                                         type="number"
                                         min="0"
@@ -182,6 +182,7 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
                                     />
+                                    
                                 </div>
                             </div>
                         </div>
