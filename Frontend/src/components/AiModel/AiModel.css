@@ -1,0 +1,4 @@
+/* AiModel.css or a global stylesheet */
+.spline-canvas canvas {
+  max-height: none !important;
+}
