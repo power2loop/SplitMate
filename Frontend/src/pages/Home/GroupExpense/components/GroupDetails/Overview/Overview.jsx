@@ -1,3 +1,4 @@
+// src/pages/.../GroupExpense/components/GroupDetails/Overview/Overview.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Overview.css";
@@ -5,14 +6,14 @@ import Analytics from "../Analystic/Analystic";
 import AllExpenses from "../Expense/AllExpense";
 import AddExpenseModal from "../../modals/AddExpenseModal";
 import GroupSettingsModal from "../../modals/GroupSettingsModal";
-import Loader from '../../Loader/Loader.jsx'
+import Loader from "../../Loader/Loader.jsx";
 import { api } from "../../../../../../services/api.js";
-import { useStore } from "@/Context/StoreContext"; // adjust path
+import { useStore } from "@/Context/StoreContext";
 
 const Overview = () => {
   const navigate = useNavigate();
-  const { groupId: routeGroupId } = useParams();
-  const { user } = useStore() || {}; // user: { id, username, email, ... }
+  const { groupId: routeGroupId } = useParams(); // e.g., /details/:groupId [web:49]
+  const { user } = useStore() || {}; // user from context if available [web:62]
 
   // Core state loaded from API
   const [group, setGroup] = useState(null);
@@ -26,7 +27,10 @@ const Overview = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const id = routeGroupId; // required for API calls
+  // For optimistic update of AllExpenses without refetch
+  const [lastCreated, setLastCreated] = useState(null);
+
+  const id = routeGroupId; // ObjectId or invite code [web:49]
 
   // Fetch group details
   useEffect(() => {
@@ -34,16 +38,16 @@ const Overview = () => {
 
     async function load() {
       try {
-        setLoading(true);  // start loader
+        setLoading(true);
         const data = await api(`/groups/${id}`);
         if (!alive) return;
 
-        // simulate 2-second loading delay
+        // optional simulated delay
         setTimeout(() => {
           if (!alive) return;
-          setGroup(data);    // set data after 2 sec
+          setGroup(data);
           setErr("");
-          setLoading(false); // stop loader
+          setLoading(false);
         }, 1000);
       } catch (e) {
         if (!alive) return;
@@ -57,8 +61,7 @@ const Overview = () => {
     return () => {
       alive = false;
     };
-  }, [id]);
-
+  }, [id]); // refetch when param changes [web:49]
 
   // Derived UI fields with fallbacks
   const {
@@ -68,7 +71,7 @@ const Overview = () => {
     members = [],
     expenses = [],
     createdBy,
-    _id: groupId,
+    _id: groupDocId,
   } = group || {};
 
   const totals = useMemo(() => {
@@ -76,18 +79,17 @@ const Overview = () => {
       ? expenses.reduce((s, e) => s + (Number(e?.amount) || 0), 0)
       : 0;
     return { expenses: totalExpenses, members: members?.length || 0 };
-  }, [expenses, members]);
+  }, [expenses, members]); // memoize derived totals [web:80]
 
   const totalExpenses = totals.expenses;
   const totalMembers = totals.members;
 
-  // Determine ownership (requires current user id from auth-protected API or context)
-  // If backend returns req.user in a /me endpoint, prefer that; placeholder below expects creator id on group
-  const currentUserId = group?.currentUserId || ""; // set from auth store if available
+  // Ownership checks (adjust per auth implementation)
+  const currentUserId = group?.currentUserId || user?.id || user?._id || "";
   const ownerId = createdBy?._id?.toString?.() || createdBy?.toString?.() || "";
   const isOwner = ownerId && currentUserId && ownerId === currentUserId;
 
-  // Invite modal
+  // Invite modal handlers
   const handleInvite = () => setInviteOpen(true);
   const closeInvite = () => {
     setInviteOpen(false);
@@ -115,16 +117,30 @@ const Overview = () => {
     }
   };
 
-  // Actions
-  const onAddExpense = async (payload) => {
-    // hit backend: POST /api/expenses with groupId
-    // await api(`/expenses`, { method: "POST", body: JSON.stringify({ ...payload, groupId }) });
-    // refresh group details
+  // Add expense callback: receives server-created expense from AddExpenseModal
+  const onAddExpense = (serverExpense) => {
+    // Ensure a new array instance so React re-renders immediately (immutable update) [web:80]
+    setGroup((prev) => {
+      if (!prev) return prev;
+      const nextExpenses = Array.isArray(prev.expenses)
+        ? [serverExpense, ...prev.expenses]
+        : [serverExpense];
+      return { ...prev, expenses: nextExpenses };
+    });
+
+    // Pass to AllExpenses so it can prepend without a refetch [web:80]
+    setLastCreated(serverExpense);
+
+    // Optional: show the list immediately
+    setActiveTab("expenses");
+
+    // Close modal
+    setAddOpen(false);
   };
 
   const onDeleteGroup = async () => {
     try {
-      await api(`/groups/${groupId}`, { method: "DELETE" });
+      await api(`/groups/${groupDocId}`, { method: "DELETE" });
       navigate("/groupexpense", { replace: true });
     } catch (e) {
       alert(e.message);
@@ -133,13 +149,11 @@ const Overview = () => {
 
   const onLeaveGroup = async () => {
     if (isOwner) {
-      alert(
-        "Owner cannot leave; delete the group or transfer ownership first."
-      );
+      alert("Owner cannot leave; delete the group or transfer ownership first.");
       return;
     }
     try {
-      await api(`/groups/${groupId}/leave`, { method: "POST" });
+      await api(`/groups/${groupDocId}/leave`, { method: "POST" });
       navigate("/groupexpense", { replace: true });
     } catch (e) {
       alert(e.message);
@@ -149,7 +163,7 @@ const Overview = () => {
   if (loading) {
     return (
       <div className="goa-trip-container">
-        <Loader />  {/* loader shows immediately */}
+        <Loader />
       </div>
     );
   }
@@ -175,10 +189,7 @@ const Overview = () => {
       <div className="goa-trip-container">
         <div className="header">
           <div className="header-left">
-            <button
-              onClick={() => navigate("/groupexpense")}
-              className="back-btn"
-            >
+            <button onClick={() => navigate("/groupexpense")} className="back-btn">
               ←
             </button>
             <div className="title-section">
@@ -190,16 +201,10 @@ const Overview = () => {
             <button className="invite-btn" onClick={handleInvite}>
               👥 Invite
             </button>
-            <button
-              className="settings-btn"
-              onClick={() => setSettingsOpen(true)}
-            >
+            <button className="settings-btn" onClick={() => setSettingsOpen(true)}>
               ⚙️ Settings
             </button>
-            <button
-              className="add-expense-btn"
-              onClick={() => setAddOpen(true)}
-            >
+            <button className="add-expense-btn" onClick={() => setAddOpen(true)}>
               + Add Expense
             </button>
           </div>
@@ -236,9 +241,7 @@ const Overview = () => {
                 <h3>Group Details</h3>
                 <div className="summary-item">
                   <span>Total Expenses</span>
-                  <span className="amount">
-                    ₹{Number(totalExpenses).toLocaleString()}
-                  </span>
+                  <span className="amount">₹{Number(totalExpenses).toLocaleString()}</span>
                 </div>
                 <div className="summary-item">
                   <span>Members</span>
@@ -262,14 +265,10 @@ const Overview = () => {
                         className="member-avatar"
                         style={{ backgroundColor: m.color || "#4aa" }}
                       >
-                        {(m.username || m.email || "?")
-                          .slice(0, 2)
-                          .toUpperCase()}
+                        {(m.username || m.email || "?").slice(0, 2).toUpperCase()}
                       </div>
                       <div className="member-info">
-                        <div className="member-name">
-                          {m.username || m.name || "Member"}
-                        </div>
+                        <div className="member-name">{m.username || m.name || "Member"}</div>
                         <div className="member-email">{m.email || ""}</div>
                       </div>
                     </div>
@@ -282,7 +281,11 @@ const Overview = () => {
           {activeTab === "analytics" && <Analytics group={group} />}
 
           {activeTab === "expenses" && (
-            <AllExpenses expenses={expenses || []} />
+            <AllExpenses
+              groupId={id}
+              members={members || []}
+              lastCreated={lastCreated}
+            />
           )}
         </div>
       </div>
@@ -295,26 +298,15 @@ const Overview = () => {
             if (e.target === e.currentTarget) closeInvite();
           }}
         >
-          <div
-            className="invite-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="invite-title"
-          >
+          <div className="invite-dialog" role="dialog" aria-modal="true" aria-labelledby="invite-title">
             <div className="invite-header">
               <h3 id="invite-title">Invite Members</h3>
-              <button
-                className="close-btn"
-                onClick={closeInvite}
-                aria-label="Close"
-              >
+              <button className="close-btn" onClick={closeInvite} aria-label="Close">
                 ×
               </button>
             </div>
 
-            <p className="invite-sub">
-              Share this invite code with your friends:
-            </p>
+            <p className="invite-sub">Share this invite code with your friends:</p>
 
             <div className="code-box">
               <span className="code-text">{inviteCode || "—"}</span>
@@ -337,7 +329,8 @@ const Overview = () => {
         open={addOpen}
         onClose={() => setAddOpen(false)}
         members={members || []}
-        onAddExpense={onAddExpense}
+        groupId={id}
+        mode="group"
         onAdd={onAddExpense}
       />
 
@@ -348,12 +341,10 @@ const Overview = () => {
         isOwner={isOwner}
         groupMeta={{
           name: group?.name || "",
-          created: group?.createdAt
-            ? new Date(group.createdAt).toLocaleDateString()
-            : "",
+          created: group?.createdAt ? new Date(group.createdAt).toLocaleDateString() : "",
           membersCount: group?.members?.length || 0,
           totalExpenses: totals.expenses,
-          createdByUsername: group?.createdBy?.username || "—", // populated field
+          createdByUsername: group?.createdBy?.username || "—",
         }}
         onDeleteGroup={onDeleteGroup}
         onLeaveGroup={onLeaveGroup}

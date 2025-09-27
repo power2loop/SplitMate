@@ -1,10 +1,19 @@
+// src/components/AddExpenseModal.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
+import { api } from "../../../../../services/api.js"; // adjust path if needed
 import "./AddExpenseModal.css";
 
-export default function AddExpenseModal({ open, onClose, members = [], onAdd }) {
+export default function AddExpenseModal({
+    open,
+    onClose,
+    members = [],
+    onAdd,
+    groupId,         // pass ObjectId or inviteCode
+    mode = "group",  // "group" | "personal"
+}) {
     const dialogRef = useRef(null);
 
-    // Normalize members to {id, name} no matter how backend shapes them
+    // Normalize members to {id, name}
     const normMembers = useMemo(
         () =>
             (members || []).map((m) => ({
@@ -20,7 +29,7 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
     const [payerId, setPayerId] = useState("");
     const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
 
-    // compute a safe default payer whenever members change
+    // default payer
     const defaultPayer = useMemo(() => {
         const you = normMembers.find((m) => m.name === "You")?.id;
         return you ?? normMembers[0]?.id ?? "";
@@ -28,26 +37,33 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
 
     // split state
     const [method, setMethod] = useState("equal"); // equal | custom | percent
-    const emptyMap = useMemo(
-        () => Object.fromEntries(normMembers.map((m) => [m.id, 0])),
-        [normMembers]
-    );
+    const emptyMap = useMemo(() => Object.fromEntries(normMembers.map((m) => [m.id, 0])), [normMembers]);
     const [customAmounts, setCustomAmounts] = useState(emptyMap);
     const [percents, setPercents] = useState(emptyMap);
 
-    // open/close lifecycle
-    useEffect(() => {
-        if (!open) return;
-        document.body.style.overflow = "hidden";
+    // Reset all controlled inputs to initial values
+    const resetForm = () => {
+        setTitle("");
+        setAmount("");
         setMethod("equal");
         setCustomAmounts(Object.fromEntries(normMembers.map((m) => [m.id, 0])));
         setPercents(Object.fromEntries(normMembers.map((m) => [m.id, 0])));
-        setPayerId((prev) => (normMembers.some((m) => m.id === prev) ? prev : defaultPayer));
+        setPayerId(defaultPayer || "");
         setDate(new Date().toISOString().split("T")[0]);
+    };
+
+    // open lifecycle
+    useEffect(() => {
+        if (!open) return;
+        document.body.style.overflow = "hidden";
+
+        // Start fresh every time the modal opens
+        resetForm();
 
         const first = dialogRef.current?.querySelector("input,select,button");
         first?.focus();
-        const onKey = (e) => { if (e.key === "Escape") onClose?.(); };
+
+        const onKey = (e) => { if (e.key === "Escape") { resetForm(); onClose?.(); } };
         document.addEventListener("keydown", onKey);
         return () => {
             document.body.style.overflow = "";
@@ -55,7 +71,7 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
         };
     }, [open, normMembers, defaultPayer, onClose]);
 
-    // keep payer valid when members update later
+    // keep payer valid as members change
     useEffect(() => {
         if (!normMembers.some((m) => m.id === payerId)) {
             setPayerId(defaultPayer);
@@ -84,27 +100,25 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
         amtNum > 0 &&
         payerId &&
         (method === "equal" ||
-            (method === "custom" &&
-                Math.round(customSum * 100) === Math.round(amtNum * 100)) ||
+            (method === "custom" && Math.round(customSum * 100) === Math.round(amtNum * 100)) ||
             (method === "percent" && Math.round(percentSum) === 100));
 
     const handleBackdrop = (e) => {
-        if (e.target === e.currentTarget) onClose?.();
+        if (e.target === e.currentTarget) {
+            resetForm();
+            onClose?.();
+        }
     };
 
-    const setCustom = (id, v) =>
-        setCustomAmounts((prev) => ({ ...prev, [id]: Number(v) || 0 }));
-
+    const setCustom = (id, v) => setCustomAmounts((prev) => ({ ...prev, [id]: Number(v) || 0 }));
     const setPercent = (id, v) =>
-        setPercents((prev) => ({
-            ...prev,
-            [id]: Math.max(0, Math.min(100, Number(v) || 0)),
-        }));
+        setPercents((prev) => ({ ...prev, [id]: Math.max(0, Math.min(100, Number(v) || 0)) }));
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isValid) return;
 
+        // build allocations for backend
         let allocations = {};
         if (method === "equal") {
             allocations = Object.fromEntries(normMembers.map((m) => [m.id, equalEach]));
@@ -114,9 +128,7 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                 allocations[normMembers[0].id] = Math.round((allocations[normMembers[0].id] + diff) * 100) / 100;
             }
         } else if (method === "custom") {
-            allocations = Object.fromEntries(
-                normMembers.map((m) => [m.id, Number(customAmounts[m.id] || 0)])
-            );
+            allocations = Object.fromEntries(normMembers.map((m) => [m.id, Number(customAmounts[m.id] || 0)]));
         } else {
             allocations = Object.fromEntries(
                 normMembers.map((m) => {
@@ -132,19 +144,25 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
             }
         }
 
-        const payload = {
-            id: crypto.randomUUID?.() ?? String(Date.now()),
-            title: title.trim(),
-            amount: amtNum,
-            paidBy: payerId,
-            splitMethod: method,
-            allocations,
-            date,
-            createdAt: new Date().toISOString(),
-        };
+        // backend payloads
+        const base = { title: title.trim(), amount: amtNum, date, paidBy: payerId };
+        const groupPayload = { ...base, splitMethod: method, allocations };
+        const personalPayload = { ...base, currency: "INR", category: "General" };
 
-        onAdd?.(payload);
-        onClose?.();
+        try {
+            const created =
+                mode === "group"
+                    ? await api(`/expenses/group/${encodeURIComponent(groupId)}`, { method: "POST", body: groupPayload })
+                    : await api(`/expenses/personal`, { method: "POST", body: personalPayload });
+
+            onAdd?.(created);
+
+            // Reset the form to initial values and close
+            resetForm();
+            onClose?.();
+        } catch (err) {
+            alert(err.message || "Failed to save expense");
+        }
     };
 
     if (!open) return null;
@@ -154,7 +172,12 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
             <div ref={dialogRef} className="expense-dialog" role="dialog" aria-modal="true">
                 <div className="expense-header">
                     <h3>Add Group Expense</h3>
-                    <button className="expense-close" onClick={onClose}>×</button>
+                    <button
+                        className="expense-close"
+                        onClick={() => { resetForm(); onClose?.(); }}
+                    >
+                        ×
+                    </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="expense-form">
@@ -173,7 +196,6 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                             <div className="field">
                                 <label>Amount <span>(Rs)</span></label>
                                 <div className="input-with-prefix-amount">
-
                                     <input
                                         type="number"
                                         min="0"
@@ -182,7 +204,6 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
                                     />
-
                                 </div>
                             </div>
                         </div>
@@ -207,33 +228,20 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                             </div>
                         </div>
 
-                        {/* Split Method UI remains the same */}
                         <div className="field">
                             <label>Split Method</label>
                             <div className="split-methods">
-                                <button
-                                    type="button"
-                                    className={`split-tile ${method === "equal" ? "active" : ""}`}
-                                    onClick={() => setMethod("equal")}
-                                >
+                                <button type="button" className={`split-tile ${method === "equal" ? "active" : ""}`} onClick={() => setMethod("equal")}>
                                     <div className="icon">=</div>
                                     <div><div className="tile-sub">Split equally</div></div>
                                 </button>
 
-                                <button
-                                    type="button"
-                                    className={`split-tile ${method === "custom" ? "active" : ""}`}
-                                    onClick={() => setMethod("custom")}
-                                >
+                                <button type="button" className={`split-tile ${method === "custom" ? "active" : ""}`} onClick={() => setMethod("custom")}>
                                     <div className="icon">✎</div>
                                     <div><div className="tile-sub">Custom amounts</div></div>
                                 </button>
 
-                                <button
-                                    type="button"
-                                    className={`split-tile ${method === "percent" ? "active" : ""}`}
-                                    onClick={() => setMethod("percent")}
-                                >
+                                <button type="button" className={`split-tile ${method === "percent" ? "active" : ""}`} onClick={() => setMethod("percent")}>
                                     <div className="icon">%</div>
                                     <div><div className="tile-sub">By percentage</div></div>
                                 </button>
@@ -241,9 +249,7 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                         </div>
 
                         {method === "equal" && (
-                            <div className="equal-info">
-                                Each pays Rs {isNaN(equalEach) ? "0.00" : equalEach.toFixed(2)}
-                            </div>
+                            <div className="equal-info">Each pays Rs {isNaN(equalEach) ? "0.00" : equalEach.toFixed(2)}</div>
                         )}
 
                         {method === "custom" && (
@@ -295,8 +301,16 @@ export default function AddExpenseModal({ open, onClose, members = [], onAdd }) 
                     </div>
 
                     <div className="expense-footer">
-                        <button type="button" className="btn cancel" onClick={onClose}>Cancel</button>
-                        <button type="submit" className="btn primary" disabled={!isValid}>Add Expense</button>
+                        <button
+                            type="button"
+                            className="btn cancel"
+                            onClick={() => { resetForm(); onClose?.(); }}
+                        >
+                            Cancel
+                        </button>
+                        <button type="submit" className="btn primary" disabled={!isValid}>
+                            Add Expense
+                        </button>
                     </div>
                 </form>
             </div>
