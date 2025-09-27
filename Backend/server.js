@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import UserRoutes from './src/routes/UserRoutes.js';
 import GroupRoutes from './src/routes/GroupRoutes.js';
 import { connectDB } from './src/config/db.js';
+import expenseRoutes from "./src/routes/expenseRoutes.js";
+
 
 const app = express();
 connectDB();
@@ -27,6 +29,7 @@ app.get('/', (_req, res) => res.send('API is running...'));
 
 app.use('/api/users', UserRoutes);
 app.use('/api/groups', GroupRoutes);
+app.use("/api/expenses", expenseRoutes)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);

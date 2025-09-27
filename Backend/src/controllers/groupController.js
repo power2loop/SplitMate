@@ -2,8 +2,8 @@
 import crypto from "crypto";
 import Group from "../models/GroupModel.js";
 import User from "../models/UserModel.js";
-import { group } from "console";
-import expenses from "../models/Expense.js";
+// import { group } from "console";
+// import expenses from "../models/ExpenseModel.js";
 
 // POST /api/groups
 export const createGroup = async (req, res) => {
