@@ -278,7 +278,7 @@ const Overview = () => {
             </div>
           )}
 
-          {activeTab === "analytics" && <Analytics group={group} />}
+          {activeTab === "analytics" && <Analytics groupId={id} />}
 
           {activeTab === "expenses" && (
             <AllExpenses
