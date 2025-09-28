@@ -14,7 +14,10 @@ const Analytics = ({ groupId }) => {
   const [payers, setPayers] = useState([]);
   const [timelineData, setTimelineData] = useState([]);
   const [heatmapData, setHeatmapData] = useState([]);
-  const [settlements, setSettlements] = useState([]);
+  const [settlements, setSettlements] = useState([]); // server suggestions kept for reference
+
+  // Optional UX: disable one row button during post
+  const [postingId, setPostingId] = useState(null);
 
   async function fetchAnalytics() {
     const data = await api(`/groups/${encodeURIComponent(groupId)}/analytics`);
@@ -22,7 +25,7 @@ const Analytics = ({ groupId }) => {
     setPayers(data.payers || []);
     setTimelineData(data.timelineData || []);
     setHeatmapData(data.heatmapData || []);
-    setSettlements(data.settlements || []);
+    setSettlements(data.settlements || []); // not rendered below, but retained if needed
   }
 
   useEffect(() => {
@@ -41,11 +44,13 @@ const Analytics = ({ groupId }) => {
       }
     })();
     return () => { alive = false; };
-  }, [groupId]);
+  }, [groupId]); // memoized dependencies are separate from this effect [web:390]
 
   // Record settlement and refetch
   async function settle(s) {
     try {
+      const key = `${s.fromId}-${s.toId}-${s.amount}`;
+      setPostingId(key);
       await api(`/groups/${encodeURIComponent(groupId)}/settlements`, {
         method: "POST",
         body: { fromId: s.fromId, toId: s.toId, amount: s.amount, note: "Settle via Analytics" },
@@ -53,8 +58,61 @@ const Analytics = ({ groupId }) => {
       await fetchAnalytics();
     } catch (e) {
       setErr(e.message || "Failed to settle");
+    } finally {
+      setPostingId(null);
     }
   }
+
+  // Real-time equal-share settlement suggestions derived from contributions
+  const calculateRealTimeSettlements = useMemo(() => {
+    if (!Array.isArray(payers) || payers.length === 0) return [];
+
+    const totalAmount = payers.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+    const perPersonShare = totalAmount / payers.length;
+
+    const balances = payers.map(p => ({
+      ...p,
+      balance: (Number(p.amount) || 0) - perPersonShare, // +ve = is owed, -ve = owes
+      share: perPersonShare
+    }));
+
+    const debtors = balances
+      .filter(b => b.balance < -0.01)
+      .map(b => ({ ...b, owes: Math.abs(b.balance) }));
+    const creditors = balances
+      .filter(b => b.balance > 0.01)
+      .map(b => ({ ...b, owed: b.balance }));
+
+    // optional: settle largest amounts first for stable output
+    debtors.sort((a, b) => b.owes - a.owes);
+    creditors.sort((a, b) => b.owed - a.owed);
+
+    const settlementsOut = [];
+    let i = 0, j = 0;
+    while (i < debtors.length && j < creditors.length) {
+      const debtor = debtors[i];
+      const creditor = creditors[j];
+      const settlementAmount = Math.min(debtor.owes, creditor.owed);
+
+      settlementsOut.push({
+        fromId: debtor.id,
+        from: debtor.name,
+        toId: creditor.id,
+        to: creditor.name,
+        amount: Math.round(settlementAmount),
+        name: `${debtor.name} → ${creditor.name}`,
+        isRealTime: true
+      });
+
+      debtor.owes -= settlementAmount;
+      creditor.owed -= settlementAmount;
+
+      if (debtor.owes <= 0.01) i++;
+      if (creditor.owed <= 0.01) j++;
+    }
+
+    return settlementsOut;
+  }, [payers]); // recompute only when payers data changes [web:390][web:387]
 
   const insightMessage = useMemo(() => {
     if (!payers.length || !timelineData.length) return "No insights available.";
@@ -66,7 +124,7 @@ const Analytics = ({ groupId }) => {
     if (peak && peak.amount > 0) return `Daily spend peaked on ${peak.date} with ₹${peak.amount}.`;
     if (totalGroupSpent > 10000) return `Total group spend ₹${totalGroupSpent}. Consider a budget this month.`;
     return "No insights available.";
-  }, [payers, timelineData]);
+  }, [payers, timelineData]); // derived text [web:387]
 
   if (loading) return <div className="analytics-container">Loading…</div>;
   if (err) return <div className="analytics-container error">{err}</div>;
@@ -89,7 +147,7 @@ const Analytics = ({ groupId }) => {
         ))}
       </div>
 
-      {/* Who Paid What + Settlement Row */}
+      {/* Who Paid What + Settlement */}
       <div className="row two-cards">
         {/* Who Paid What */}
         <div className="card left-card">
@@ -113,23 +171,61 @@ const Analytics = ({ groupId }) => {
           ))}
         </div>
 
-        {/* Settlement */}
+        {/* Settlement - Real-time equal-share suggestions */}
         <div className="card right-card">
           <h3>
             ⚠ Settlement Required{" "}
-            <span className="sub-text">₹{settlements.reduce((sum, s) => sum + (s.amount || 0), 0)} total</span>
+            <span className="sub-text">
+              ₹{calculateRealTimeSettlements.reduce((sum, s) => sum + (s.amount || 0), 0)} total
+            </span>
           </h3>
-          {settlements.length === 0 && <div className="muted">No pending settlements.</div>}
-          {settlements.map((s, i) => (
-            <div key={i} className="settle-row">
-              <div className="settle-from">{s.from}</div>
-              <span className="arrow">→</span>
-              <div className="settle-to">{s.to}</div>
-              <div className="settle-text">{s.name}</div>
-              <div className="settle-amount">₹{s.amount}</div>
-              <button className="settle-btn" onClick={() => settle(s)}>Settle</button>
-            </div>
-          ))}
+
+          {calculateRealTimeSettlements.length === 0 && (
+            <div className="muted">All settled up! 🎉</div>
+          )}
+
+          {calculateRealTimeSettlements.map((s, i) => {
+            const key = `${s.fromId}-${s.toId}-${s.amount}`;
+            const disabled = postingId === key;
+            return (
+              <div key={i} className="settle-row">
+                <div className="settle-from">{s.from}</div>
+                <span className="arrow">→</span>
+                <div className="settle-to">{s.to}</div>
+                <div className="settle-text">Owes ₹{s.amount}</div>
+                <div className="settle-amount">₹{s.amount}</div>
+                <button
+                  className="settle-btn"
+                  onClick={() => settle(s)}
+                  disabled={disabled}
+                  title={`${s.from} owes ${s.to} ₹${s.amount}`}
+                >
+                  {disabled ? "Settling…" : "Settle"}
+                </button>
+              </div>
+            );
+          })}
+
+          {/* Balance Breakdown */}
+          <div className="balance-breakdown">
+            <h4>Balance Breakdown:</h4>
+            {payers.map(p => {
+              const totalAmount = payers.reduce((sum, payer) => sum + (Number(payer.amount) || 0), 0);
+              const perPersonShare = totalAmount / payers.length;
+              const balance = (Number(p.amount) || 0) - perPersonShare;
+              return (
+                <div key={p.id} className="balance-item">
+                  <span className="balance-name">{p.name}</span>
+                  <span className={`balance-amount ${balance >= 0 ? 'positive' : 'negative'}`}>
+                    {balance >= 0 ? '+' : ''}₹{Math.round(balance)}
+                  </span>
+                  <span className="balance-status">
+                    {balance > 0 ? 'is owed' : balance < 0 ? 'owes' : 'settled'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 

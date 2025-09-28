@@ -73,23 +73,15 @@
 .row.two-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  /* equal tracks, no overflow */
   gap: 20px;
   align-items: stretch;
-  /* make items fill their grid area vertically */
+  /* equal card heights */
 }
 
 .row.two-cards .card {
   height: 100%;
   display: flex;
-  /* optional: keep internal layout consistent */
   flex-direction: column;
-  /* optional: stack content inside */
-}
-
-.left-card,
-.right-card {
-  flex: 1;
 }
 
 /* Payers */
@@ -186,10 +178,67 @@
   padding: 4px 10px;
   cursor: pointer;
   font-size: 13px;
+  transition: background-color 0.15s ease-in-out, opacity 0.15s;
 }
 
 .settle-btn:hover {
   background: #2563eb;
+}
+
+/* Disabled state for settling action */
+.settle-btn:disabled,
+.settle-btn[disabled] {
+  background: #93c5fd;
+  color: #f8fafc;
+  cursor: not-allowed;
+  opacity: 0.8;
+  box-shadow: none;
+}
+
+/* accessible disabled cues [web:422] */
+
+/* Balance Breakdown (real-time equal-share) */
+.balance-breakdown {
+  margin-top: 12px;
+  border-top: 1px dashed #e5e7eb;
+  padding-top: 12px;
+}
+
+.balance-breakdown h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.balance-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.balance-name {
+  font-weight: 500;
+}
+
+.balance-amount {
+  font-weight: 700;
+}
+
+.balance-amount.positive {
+  color: #16a34a;
+  /* green */
+}
+
+.balance-amount.negative {
+  color: #dc2626;
+  /* red */
+}
+
+.balance-status {
+  font-size: 12px;
+  color: #6b7280;
 }
 
 /* Pie + Heatmap Side by Side */
@@ -252,11 +301,14 @@
 }
 
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .row.two-cards {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    /* stack cards on tablets */
   }
+}
 
+@media (max-width: 900px) {
   .split-heatmap {
     grid-template-columns: 1fr;
   }
