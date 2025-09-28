@@ -25,7 +25,7 @@ function colorScaleBlue(amount, max) {
 
 function round2(n) { return Math.round((Number(n) || 0) * 100) / 100; }
 
-/* NEW: robust getter for a user's share whether allocations is a Mongoose Map or plain object,
+/* robust getter for a user's share whether allocations is a Mongoose Map or plain object,
    and whether keys are ObjectId or strings */
 function getAllocationShare(allocations, userIdStr) {
     if (!allocations || !userIdStr) return 0;
@@ -83,14 +83,17 @@ function buildGroupLedger({ expenses, settlements, members }) {
             const paidBy = e.paidBy?.toString?.() || e.paidBy || "";
             const title = e.title || "";
             const dateDisp = formatLongDay(e.date || e.createdAt);
-            const allocations = e.allocations || {};
 
             const total = Number(e.amount) || 0;
             if (paidBy) net.set(paidBy, round2((net.get(paidBy) || 0) + total));
 
-            for (const [consumerId, share] of Object.entries(allocations)) {
-                const sAmt = round2(Number(share) || 0);
+            // Map-safe allocation subtraction over members
+            for (const m of members) {
+                const consumerId = m._id?.toString?.() || m.id?.toString?.() || "";
+                if (!consumerId) continue;
+                const sAmt = round2(getAllocationShare(e.allocations || {}, consumerId));
                 if (!(sAmt > 0)) continue;
+
                 net.set(consumerId, round2((net.get(consumerId) || 0) - sAmt));
 
                 ledger.push({
@@ -140,7 +143,7 @@ function buildGroupLedger({ expenses, settlements, members }) {
     return { ledger, nets };
 }
 
-// Greedy debt simplification for outstanding suggestions (unchanged)
+// Greedy debt simplification for outstanding suggestions
 function computeSettlements(expenses, members, recordedSettlements = []) {
     const idToName = new Map(
         members.map((m) => [m._id?.toString?.() || m.id?.toString?.() || "", m.username || m.name || m.email || "Member"])
@@ -152,24 +155,29 @@ function computeSettlements(expenses, members, recordedSettlements = []) {
         if (id) net.set(id, 0);
     }
 
-    for (const e of expenses) {
+    // Add payer amounts
+    for (const e of expenses || []) {
         const paidBy = e.paidBy?.toString?.() || e.paidBy || "";
         const amount = Number(e.amount) || 0;
-        if (paidBy) net.set(paidBy, (net.get(paidBy) || 0) + amount);
-        const allocations = e.allocations || {};
-        for (const [memberId, share] of Object.entries(allocations)) {
-            const v = Number(share) || 0;
-            net.set(memberId, (net.get(memberId) || 0) - v);
+        if (paidBy) net.set(paidBy, round2((net.get(paidBy) || 0) + amount));
+
+        // Subtract each member's allocation share (Map-safe)
+        for (const m of members) {
+            const memberId = m._id?.toString?.() || m.id?.toString?.() || "";
+            if (!memberId) continue;
+            const v = round2(getAllocationShare(e.allocations || {}, memberId));
+            if (v > 0) net.set(memberId, round2((net.get(memberId) || 0) - v));
         }
     }
 
-    for (const s of recordedSettlements) {
+    // Apply recorded settlements
+    for (const s of recordedSettlements || []) {
         const fromId = s.from?.toString?.() || s.from || "";
         const toId = s.to?.toString?.() || s.to || "";
-        const amt = Number(s.amount) || 0;
+        const amt = round2(Number(s.amount) || 0);
         if (!fromId || !toId || !(amt > 0)) continue;
-        net.set(fromId, (net.get(fromId) || 0) + amt);
-        net.set(toId, (net.get(toId) || 0) - amt);
+        net.set(fromId, round2((net.get(fromId) || 0) + amt));
+        net.set(toId, round2((net.get(toId) || 0) - amt));
     }
 
     const creditors = [], debtors = [];
@@ -191,10 +199,13 @@ function computeSettlements(expenses, members, recordedSettlements = []) {
             transfers.push({
                 fromId: take.id,
                 toId: give.id,
+                fromName: idToName.get(take.id) || "Member",
+                toName: idToName.get(give.id) || "Member",
+                amount: amt,
+                // optional short labels if the UI wants initials
                 from: (take.id || "").slice(0, 2).toUpperCase(),
                 to: (give.id || "").slice(0, 2).toUpperCase(),
                 name: `${idToName.get(take.id) || "Member"} owes ${idToName.get(give.id) || "Member"}`,
-                amount: amt,
             });
             give.amount = round2(give.amount - amt);
             take.amount = round2(take.amount - amt);
@@ -248,14 +259,12 @@ export function buildGroupAnalytics({ group, expenses, members, currentUserId, s
     const heatmapData = timelineData.map((d) => ({ day: d.date, amount: d.amount, color: colorScaleBlue(d.amount, maxDay) }));
     const biggest = timelineData.reduce((a, b) => (b.amount > a.amount ? b : a), timelineData[0] || { date: "", amount: 0 });
 
-    // FIXED: sum allocated shares for current user (supports Map/Object and ObjectId keys)
+    // Sum allocated shares for current user (supports Map/Object and ObjectId keys)
     const myShare = currentUserId
         ? round2(
-            (expenses || []).reduce((s, e) => s + getAllocationShare(e.allocations, currentUserId), 0)
+            (expenses || []).reduce((s, e) => s + getAllocationShare(e.allocations || {}, currentUserId), 0)
         )
         : 0;
-
-
 
     const stats = [
         { icon: "💰", label: "My Expenses", value: myShare },
@@ -265,7 +274,14 @@ export function buildGroupAnalytics({ group, expenses, members, currentUserId, s
         { icon: "🧾", label: "Total Expenses", value: totalAmount },
     ];
 
+    // Greedy net-based settlement suggestions
     const suggested = computeSettlements(expenses || [], members || [], settlements || []);
 
-    return { stats, payers, timelineData, heatmapData, settlements: suggested, ledger, nets };
+    // Minimal member list for FE balance breakdown
+    const membersMin = (members || []).map(m => ({
+        id: m._id?.toString?.() || m.id?.toString?.() || "",
+        name: m.username || m.name || m.email || "Member",
+    }));
+
+    return { stats, payers, timelineData, heatmapData, settlements: suggested, ledger, nets, membersMin };
 }
