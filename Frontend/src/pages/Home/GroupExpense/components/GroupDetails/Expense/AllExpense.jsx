@@ -1,7 +1,9 @@
 // src/components/AllExpenses.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import "./AllExpense.css";
-import { api } from "../../../../../../services/api.js"; // adjust path if needed
+import { api } from "../../../../../../services/api.js";
+import { MdDeleteForever } from "react-icons/md";
+
 
 const Expense = ({
   id,
@@ -29,7 +31,9 @@ const Expense = ({
       </div>
       <div className="right">
         <div className="amt">Rs{amount}</div>
-        <button className="delete-btn" onClick={() => onDelete?.(id)}>❌</button>
+        <button className="delete-btn" onClick={() => onDelete?.(id)}><MdDeleteForever />
+
+        </button>
       </div>
     </div>
   );
