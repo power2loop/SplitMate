@@ -6,6 +6,7 @@ import {
   PieChart, Pie, Cell, Legend
 } from "recharts";
 import { api } from "../../../../../../services/api.js";
+import Loader from "../../../../../../components/Loader/Loader.jsx"
 
 const Analytics = ({ groupId }) => {
   const [loading, setLoading] = useState(true);
@@ -45,7 +46,7 @@ const Analytics = ({ groupId }) => {
         if (!alive) return;
         setErr(e.message || "Failed to load analytics");
       } finally {
-        if (alive) setLoading(false);
+        if (alive) setTimeout(() => setLoading(false), 500);
       }
     })();
     return () => { alive = false; };
@@ -80,7 +81,7 @@ const Analytics = ({ groupId }) => {
     return "No insights available.";
   }, [payers, timelineData]); // derived text
 
-  if (loading) return <div className="analytics-container">Loading…</div>;
+  if (loading) return <div className="analytics-container"><Loader/></div>;
   if (err) return <div className="analytics-container error">{err}</div>;
 
   const suggestions = settlements?.length ? settlements : [];

@@ -5,7 +5,6 @@ import './GroupSettingsModal.css';
 export default function GroupSettingsModal({
     open,
     onClose,
-    isOwner,
     groupMeta, // { name, created, membersCount, totalExpenses, createdByUsername }
     onDeleteGroup,
     onLeaveGroup,

@@ -12,6 +12,7 @@ import GroupExpense from "./pages/Home/GroupExpense/GroupExpense";
 import GroupDetails from "./pages/Home/GroupExpense/components/GroupDetails/GroupDetails";
 import AiModel from "./components/AiModel/AiModel";
 import "./index.css";
+import L from "./components/Loader/Loader";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/*" element={<NotFound />} />
           <Route path="/groupdetails" element={<GroupDetails />} />
           <Route path="/aimodel" element={<AiModel />} />
+          <Route path="/l" element={<L/>} />
         </Routes>
       </Router>
     </>

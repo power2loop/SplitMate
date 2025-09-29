@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./AllExpense.css";
 import { api } from "../../../../../../services/api.js";
 import { MdDeleteForever } from "react-icons/md";
-
+import Loader from "../../../../../../components/Loader/Loader.jsx";
 
 const Expense = ({
   id,
@@ -30,7 +30,7 @@ const Expense = ({
         </div>
       </div>
       <div className="right">
-        <div className="amt">Rs{amount}</div>
+        <div className="amt">₹{amount}</div>
         <button className="delete-btn" onClick={() => onDelete?.(id)}><MdDeleteForever />
 
         </button>
@@ -90,7 +90,7 @@ const AllExpenses = ({ groupId, members = [], lastCreated = null }) => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 500);
     }
   }
 
@@ -123,7 +123,7 @@ const AllExpenses = ({ groupId, members = [], lastCreated = null }) => {
 
   return (
     <div className="expense-demo-page">
-      {loading ? <div>Loading…</div> : <ExpenseList items={items} onDelete={handleDelete} />}
+      {loading ? <div><Loader/></div> : <ExpenseList items={items} onDelete={handleDelete} />}
     </div>
   );
 };

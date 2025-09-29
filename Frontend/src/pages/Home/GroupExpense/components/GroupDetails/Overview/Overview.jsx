@@ -1,14 +1,14 @@
 // src/pages/.../GroupExpense/components/GroupDetails/Overview/Overview.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "./Overview.css";
 import Analytics from "../Analystic/Analystic";
 import AllExpenses from "../Expense/AllExpense";
 import AddExpenseModal from "../../modals/AddExpenseModal";
 import GroupSettingsModal from "../../modals/GroupSettingsModal";
-import Loader from "../../Loader/Loader.jsx";
+import Loader from "../../../../../../components/Loader/Loader.jsx"
 import { api } from "../../../../../../services/api.js";
 import { useStore } from "@/Context/StoreContext";
+import "./Overview.css";
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -247,9 +247,16 @@ const Overview = () => {
                   <span>Members</span>
                   <span className="count">{totalMembers}</span>
                 </div>
-                <div className="summary-item">
+                {/* <div className="summary-item">
                   <span>Invite Code</span>
                   <span className="invite-code">{inviteCode || "—"}</span>
+                </div> */}
+                <div className="summary-item">
+                  <span>Created By</span>
+                  <span className="detail">{createdBy?.username}</span>
+                </div><div className="summary-item">
+                  <span>Date of Creation</span>
+                  <span className="detail">{new Date(group.createdAt).toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric",})}</span>
                 </div>
               </div>
 
