@@ -5,12 +5,10 @@
   border-radius: 14px;
   padding: 14px;
   backdrop-filter: blur(16px);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   height: 350px;
   overflow-y: auto;
   scrollbar-width: thin;
-
 }
 
 .header {
@@ -59,6 +57,16 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  position: relative;
+  /* anchor for dropdown */
+}
+
+/* Title row holds name + toggle button */
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
 .title {
@@ -75,11 +83,9 @@
 }
 
 .right {
-  /* text-align: right; */
   display: flex;
   gap: 5px;
   align-items: center;
-
 }
 
 .amt {
@@ -99,10 +105,60 @@
   color: rgba(225, 63, 63, 0.793);
   padding: 2px;
   transition: all 0.3s ease-in-out;
-
 }
 
 .delete-btn:hover {
   transform: translateY(-5px);
   color: #e60408;
+}
+
+/* Disclosure toggle placed next to title */
+.split-toggle-btn {
+  border: 0;
+  background: transparent;
+  padding: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #555;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.split-toggle-btn:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.6);
+  outline-offset: 2px;
+}
+
+.split-toggle-btn .rotated {
+  transform: rotate(180deg);
+  transition: transform 120ms ease;
+}
+
+/* Dropdown panel anchored under the title row */
+.split-dropdown {
+  position: absolute;
+  top: 30px;
+  /* just under title row */
+  left: 0;
+  min-width: 260px;
+  max-width: 520px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  z-index: 10;
+  color: #333;
+  font-size: 0.92rem;
+  backdrop-filter: blur(6px);
+}
+
+.split-line {
+  white-space: normal;
 }
