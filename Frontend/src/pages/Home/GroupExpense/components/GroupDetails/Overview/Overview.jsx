@@ -9,6 +9,18 @@ import Loader from "../../../../../../components/Loader/Loader.jsx"
 import { api } from "../../../../../../services/api.js";
 import { useStore } from "@/Context/StoreContext";
 import "./Overview.css";
+import { IoHome } from "react-icons/io5";
+import { IoBarChart } from "react-icons/io5";
+import { FaMoneyBillAlt } from "react-icons/fa";
+import { IoSettings } from "react-icons/io5";
+import { IoMdAddCircle } from "react-icons/io";
+import { BsFillPersonPlusFill } from "react-icons/bs";
+import { FaArrowLeft } from "react-icons/fa";
+
+
+
+
+
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -189,8 +201,9 @@ const Overview = () => {
       <div className="goa-trip-container">
         <div className="header">
           <div className="header-left">
-            <button onClick={() => navigate("/groupexpense")} className="back-btn">
-              ←
+            <button onClick={() => navigate("/groupexpense")} className="back-btn" style={{ gap: "20px", fontSize: "30px" }}>
+              <FaArrowLeft />
+
             </button>
             <div className="title-section">
               <h1>{title}</h1>
@@ -198,14 +211,17 @@ const Overview = () => {
             </div>
           </div>
           <div className="header-right">
-            <button className="invite-btn" onClick={handleInvite}>
-              👥 Invite
+            <button className="invite-btn" style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }} onClick={handleInvite}>
+              <BsFillPersonPlusFill />
+              Invite
             </button>
-            <button className="settings-btn" onClick={() => setSettingsOpen(true)}>
-              ⚙️ Settings
+            <button className="settings-btn" style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }} onClick={() => setSettingsOpen(true)}>
+              <IoSettings />
+              Settings
             </button>
-            <button className="add-expense-btn" onClick={() => setAddOpen(true)}>
-              + Add Expense
+            <button className="add-expense-btn" style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }} onClick={() => setAddOpen(true)}>
+              <IoMdAddCircle />
+              Add Expense
             </button>
           </div>
         </div>
@@ -213,24 +229,27 @@ const Overview = () => {
         <div className="navigation-tabs" id="overview">
           <a
             href="#overview"
-            className={`tab ${activeTab === "overview" ? "active" : ""}`}
+            className={`tab ${activeTab === "overview" ? "active" : ""}`} style={{ gap: "5px" }}
             onClick={() => setActiveTab("overview")}
           >
-            🏠 Overview
+            <IoHome />
+            Overview
           </a>
           <a
             href="#Analytics"
-            className={`tab ${activeTab === "analytics" ? "active" : ""}`}
+            className={`tab ${activeTab === "analytics" ? "active" : ""}`} style={{ gap: "5px" }}
             onClick={() => setActiveTab("analytics")}
           >
-            📊 Analytics
+            <IoBarChart />
+            Analytics
           </a>
           <a
             href="#expenses"
-            className={`tab ${activeTab === "expenses" ? "active" : ""}`}
+            className={`tab ${activeTab === "expenses" ? "active" : ""}`} style={{ gap: "5px" }}
             onClick={() => setActiveTab("expenses")}
           >
-            💰 Expenses
+            <FaMoneyBillAlt />
+            Expenses
           </a>
         </div>
 
@@ -256,7 +275,7 @@ const Overview = () => {
                   <span className="detail">{createdBy?.username}</span>
                 </div><div className="summary-item">
                   <span>Date of Creation</span>
-                  <span className="detail">{new Date(group.createdAt).toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric",})}</span>
+                  <span className="detail">{new Date(group.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", })}</span>
                 </div>
               </div>
 

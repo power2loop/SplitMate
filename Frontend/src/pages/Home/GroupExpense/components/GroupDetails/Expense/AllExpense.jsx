@@ -48,8 +48,6 @@ const ExpenseList = ({ items = [], onDelete }) => (
   </div>
 );
 
-// Accept lastCreated and use it to prepend the newest item optimistically
-// Props: groupId (ObjectId or invite code), members [{id,name}] optional, lastCreated server doc
 const AllExpenses = ({ groupId, members = [], lastCreated = null }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +121,7 @@ const AllExpenses = ({ groupId, members = [], lastCreated = null }) => {
 
   return (
     <div className="expense-demo-page">
-      {loading ? <div><Loader/></div> : <ExpenseList items={items} onDelete={handleDelete} />}
+      {loading ? <div><Loader /></div> : <ExpenseList items={items} onDelete={handleDelete} />}
     </div>
   );
 };

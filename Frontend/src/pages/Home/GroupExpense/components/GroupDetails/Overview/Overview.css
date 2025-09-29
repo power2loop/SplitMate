@@ -6,7 +6,7 @@
   padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     sans-serif;
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 .header {
@@ -37,6 +37,7 @@
 .back-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
+  color: rgba(213, 95, 95, 0.717);
 }
 
 .title-section h1 {
@@ -68,7 +69,7 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
@@ -95,7 +96,7 @@
   color: #000;
   border-radius: 12px;
   backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
@@ -124,11 +125,11 @@
 }
 
 .content-grid {
-margin: 0px 10px;
+  margin: 0px 10px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  place-items: center;       
-  justify-items: stretch;    
+  place-items: center;
+  justify-items: stretch;
   width: 100%;
 }
 
@@ -146,6 +147,7 @@ margin: 0px 10px;
   min-height: 250px;
   max-height: 80%;
 }
+
 /* Member scrollbar */
 .member-balances-card .members-list {
   flex: 1;
@@ -153,28 +155,35 @@ margin: 0px 10px;
   padding-right: 4px;
 
   /* For Firefox */
-  scrollbar-width: thin;              /* thinner track */
-  scrollbar-color: #1976d2 #e3f2fd;   /* thumb color | track color */
+  scrollbar-width: thin;
+  /* thinner track */
+  scrollbar-color: #1976d2 #e3f2fd;
+  /* thumb color | track color */
 }
 
 /* For Chrome, Edge, Safari */
 .member-balances-card .members-list::-webkit-scrollbar {
-  width: 8px;                         /* scrollbar width */
+  width: 8px;
+  /* scrollbar width */
 }
 
 .member-balances-card .members-list::-webkit-scrollbar-track {
-  background: #e3f2fd;                 /* light blue track */
+  background: #e3f2fd;
+  /* light blue track */
   border-radius: 4px;
 }
 
 .member-balances-card .members-list::-webkit-scrollbar-thumb {
-  background-color: #1976d2;           /* professional blue thumb */
+  background-color: #1976d2;
+  /* professional blue thumb */
   border-radius: 4px;
-  border: 2px solid #e3f2fd;           /* adds a small gap effect */
+  border: 2px solid #e3f2fd;
+  /* adds a small gap effect */
 }
 
 .member-balances-card .members-list::-webkit-scrollbar-thumb:hover {
-  background-color: #1565c0;           /* slightly darker on hover */
+  background-color: #1565c0;
+  /* slightly darker on hover */
 }
 
 
@@ -210,7 +219,7 @@ margin: 0px 10px;
   font-weight: 600;
 }
 
-.detail{
+.detail {
   font-size: 15px;
   font-weight: 500;
 }
@@ -330,6 +339,7 @@ margin: 0px 10px;
     margin-left: auto;
   }
 }
+
 /* Invite modal */
 .invite-backdrop {
   position: fixed;
@@ -342,14 +352,17 @@ margin: 0px 10px;
 
 .invite-dialog {
   width: 400px;
-  background: rgba(255, 255, 255, 0.92);      /* solid white with slight transparency */
-  border: 1px solid #cfe3ff;                  /* soft blue border */
+  background: rgba(255, 255, 255, 0.92);
+  /* solid white with slight transparency */
+  border: 1px solid #cfe3ff;
+  /* soft blue border */
   border-radius: 14px;
   backdrop-filter: blur(18px);
   padding: 20px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); */
-  color: #0d47a1;                        /* deep professional blue text */
+  color: #0d47a1;
+  /* deep professional blue text */
 }
 
 /* Header */
@@ -363,7 +376,8 @@ margin: 0px 10px;
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  color: #1565c0;                             /* headline blue */
+  color: #1565c0;
+  /* headline blue */
 }
 
 .close-btn {
@@ -376,6 +390,7 @@ margin: 0px 10px;
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .close-btn:hover {
   background: rgba(21, 101, 192, 0.1);
 }
@@ -394,7 +409,8 @@ margin: 0px 10px;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 8px;
-  background: #e3f2fd;                         /* light blue background */
+  background: #e3f2fd;
+  /* light blue background */
   border-radius: 10px;
   padding: 12px;
 }
@@ -402,7 +418,8 @@ margin: 0px 10px;
 .code-text {
   font-weight: 900;
   letter-spacing: 2px;
-  color: #1565c0;                               /* strong blue for code */
+  color: #1565c0;
+  /* strong blue for code */
   text-align: center;
 }
 
@@ -429,6 +446,7 @@ margin: 0px 10px;
   background: #1976d2;
   color: #fff;
 }
+
 .copy-btn:hover {
   background: #1565c0;
 }
@@ -439,6 +457,7 @@ margin: 0px 10px;
   color: #1565c0;
   border: 1px solid #bbdefb;
 }
+
 .share-btn:hover {
   background: #d0e6fa;
 }
