@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import "./WalletCard.css";
 
 const WalletCard = () => {
@@ -7,7 +8,7 @@ const WalletCard = () => {
     totalSpentChange: 18.2,
     youOwe: 19440,
     youOweChange: -5.7,
-    lastUpdated: new Date()
+    lastUpdated: new Date(),
   });
 
   const [settleStatus, setSettleStatus] = useState(null); // null | "settling" | "done"
@@ -18,7 +19,7 @@ const WalletCard = () => {
       totalSpentChange: +(Math.random() * 40 - 20).toFixed(1),
       youOwe: Math.floor(Math.random() * 10000) + 500,
       youOweChange: +(Math.random() * 20 - 10).toFixed(1),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     });
   };
 
@@ -60,14 +61,18 @@ const WalletCard = () => {
         <div className="ec-metric-card">
           <div className="ec-metric-label">Total Spent</div>
           <div className="ec-metric-value">{formatCurrency(walletData.totalSpent)}</div>
-          <div className={`ec-metric-change ${walletData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"}`}>
+          <div
+            className={`ec-metric-change ${walletData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"}`}
+          >
             {formatPercentage(walletData.totalSpentChange)}
           </div>
         </div>
         <div className="ec-metric-card">
           <div className="ec-metric-label">You Owe</div>
           <div className="ec-metric-value">{formatCurrency(walletData.youOwe)}</div>
-          <div className={`ec-metric-change ${walletData.youOweChange >= 0 ? "ec-increase" : "ec-decrease"}`}>
+          <div
+            className={`ec-metric-change ${walletData.youOweChange >= 0 ? "ec-increase" : "ec-decrease"}`}
+          >
             {formatPercentage(walletData.youOweChange)}
           </div>
         </div>
@@ -90,7 +95,9 @@ const WalletCard = () => {
       </div>
 
       {settleStatus && (
-        <div className={`ec-settle-popup ${settleStatus === "settling" ? "ec-settling" : "ec-done"}`}>
+        <div
+          className={`ec-settle-popup ${settleStatus === "settling" ? "ec-settling" : "ec-done"}`}
+        >
           {settleStatus === "settling" ? "Settling..." : "Done!"}
         </div>
       )}

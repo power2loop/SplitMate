@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+
 import Navbar from "../../../components/Navbar/Navbar";
 import Dashboard from "../GroupExpense/components/Dashboard/Dashboard";
-import GroupDetails from '../GroupExpense/components/GroupDetails/GroupDetails'
+import GroupDetails from "../GroupExpense/components/GroupDetails/GroupDetails";
+
 import "./GroupExpense.css";
 
 const GroupExpense = () => {

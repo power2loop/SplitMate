@@ -1,5 +1,5 @@
 import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
-import React from 'react'
+import React from "react";
 
 const video = () => {
   return (
@@ -12,7 +12,7 @@ const video = () => {
         thumbnailAlt="Hero Video"
       />
     </div>
-  )
-}
+  );
+};
 
-export default video
+export default video;

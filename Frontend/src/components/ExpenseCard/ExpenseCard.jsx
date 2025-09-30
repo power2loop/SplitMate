@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import "./ExpenseCard.css";
 
 const ExpenseCard = () => {
@@ -7,7 +8,7 @@ const ExpenseCard = () => {
     totalSpentChange: 18.2,
     youOwe: 2340,
     youOweChange: -5.7,
-    lastUpdated: new Date()
+    lastUpdated: new Date(),
   });
 
   const updateExpenseData = () => {
@@ -16,7 +17,7 @@ const ExpenseCard = () => {
       totalSpentChange: +(Math.random() * 40 - 20).toFixed(1),
       youOwe: Math.floor(Math.random() * 10000) + 500,
       youOweChange: +(Math.random() * 20 - 10).toFixed(1),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     });
   };
 
@@ -52,14 +53,18 @@ const ExpenseCard = () => {
         <div className="ec-metric-card">
           <div className="ec-metric-label">Total Spent</div>
           <div className="ec-metric-value">{formatCurrency(expenseData.totalSpent)}</div>
-          <div className={`ec-metric-change ${expenseData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"}`}>
+          <div
+            className={`ec-metric-change ${expenseData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"}`}
+          >
             {formatPercent(expenseData.totalSpentChange)}
           </div>
         </div>
         <div className="ec-metric-card">
           <div className="ec-metric-label">You Owe</div>
           <div className="ec-metric-value">{formatCurrency(expenseData.youOwe)}</div>
-          <div className={`ec-metric-change ${expenseData.youOweChange >= 0 ? "ec-increase" : "ec-decrease"}`}>
+          <div
+            className={`ec-metric-change ${expenseData.youOweChange >= 0 ? "ec-increase" : "ec-decrease"}`}
+          >
             {formatPercent(expenseData.youOweChange)}
           </div>
         </div>

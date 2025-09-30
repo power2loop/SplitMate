@@ -1,26 +1,21 @@
 // src/pages/.../GroupExpense/components/GroupDetails/Overview/Overview.jsx
+import { useStore } from "@/Context/StoreContext";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Analytics from "../Analystic/Analystic";
-import AllExpenses from "../Expense/AllExpense";
+
+import Loader from "../../../../../../components/Loader/Loader.jsx";
+import { api } from "../../../../../../services/api.js";
 import AddExpenseModal from "../../modals/AddExpenseModal";
 import GroupSettingsModal from "../../modals/GroupSettingsModal";
-import Loader from "../../../../../../components/Loader/Loader.jsx"
-import { api } from "../../../../../../services/api.js";
-import { useStore } from "@/Context/StoreContext";
+import Analytics from "../Analystic/Analystic";
+import AllExpenses from "../Expense/AllExpense";
+
 import "./Overview.css";
-import { IoHome } from "react-icons/io5";
-import { IoBarChart } from "react-icons/io5";
-import { FaMoneyBillAlt } from "react-icons/fa";
-import { IoSettings } from "react-icons/io5";
-import { IoMdAddCircle } from "react-icons/io";
+
 import { BsFillPersonPlusFill } from "react-icons/bs";
-import { FaArrowLeft } from "react-icons/fa";
-
-
-
-
-
+import { FaArrowLeft, FaMoneyBillAlt } from "react-icons/fa";
+import { IoMdAddCircle } from "react-icons/io";
+import { IoBarChart, IoHome, IoSettings } from "react-icons/io5";
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -123,7 +118,7 @@ const Overview = () => {
           text: `Join group with code: ${inviteCode}`,
           url: window.location.href,
         });
-      } catch { }
+      } catch {}
     } else {
       copyCode();
     }
@@ -201,9 +196,12 @@ const Overview = () => {
       <div className="goa-trip-container">
         <div className="header">
           <div className="header-left">
-            <button onClick={() => navigate("/groupexpense")} className="back-btn" style={{ gap: "20px", fontSize: "30px" }}>
+            <button
+              onClick={() => navigate("/groupexpense")}
+              className="back-btn"
+              style={{ gap: "20px", fontSize: "30px" }}
+            >
               <FaArrowLeft />
-
             </button>
             <div className="title-section">
               <h1>{title}</h1>
@@ -211,15 +209,27 @@ const Overview = () => {
             </div>
           </div>
           <div className="header-right">
-            <button className="invite-btn" style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }} onClick={handleInvite}>
+            <button
+              className="invite-btn"
+              style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
+              onClick={handleInvite}
+            >
               <BsFillPersonPlusFill />
               Invite
             </button>
-            <button className="settings-btn" style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }} onClick={() => setSettingsOpen(true)}>
+            <button
+              className="settings-btn"
+              style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
+              onClick={() => setSettingsOpen(true)}
+            >
               <IoSettings />
               Settings
             </button>
-            <button className="add-expense-btn" style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }} onClick={() => setAddOpen(true)}>
+            <button
+              className="add-expense-btn"
+              style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
+              onClick={() => setAddOpen(true)}
+            >
               <IoMdAddCircle />
               Add Expense
             </button>
@@ -229,7 +239,8 @@ const Overview = () => {
         <div className="navigation-tabs" id="overview">
           <a
             href="#overview"
-            className={`tab ${activeTab === "overview" ? "active" : ""}`} style={{ gap: "5px" }}
+            className={`tab ${activeTab === "overview" ? "active" : ""}`}
+            style={{ gap: "5px" }}
             onClick={() => setActiveTab("overview")}
           >
             <IoHome />
@@ -237,7 +248,8 @@ const Overview = () => {
           </a>
           <a
             href="#Analytics"
-            className={`tab ${activeTab === "analytics" ? "active" : ""}`} style={{ gap: "5px" }}
+            className={`tab ${activeTab === "analytics" ? "active" : ""}`}
+            style={{ gap: "5px" }}
             onClick={() => setActiveTab("analytics")}
           >
             <IoBarChart />
@@ -245,7 +257,8 @@ const Overview = () => {
           </a>
           <a
             href="#expenses"
-            className={`tab ${activeTab === "expenses" ? "active" : ""}`} style={{ gap: "5px" }}
+            className={`tab ${activeTab === "expenses" ? "active" : ""}`}
+            style={{ gap: "5px" }}
             onClick={() => setActiveTab("expenses")}
           >
             <FaMoneyBillAlt />
@@ -273,9 +286,16 @@ const Overview = () => {
                 <div className="summary-item">
                   <span>Created By</span>
                   <span className="detail">{createdBy?.username}</span>
-                </div><div className="summary-item">
+                </div>
+                <div className="summary-item">
                   <span>Date of Creation</span>
-                  <span className="detail">{new Date(group.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", })}</span>
+                  <span className="detail">
+                    {new Date(group.createdAt).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
               </div>
 
@@ -287,10 +307,7 @@ const Overview = () => {
                       key={(m._id || m.id || m.email || m.username)?.toString()}
                       className="member-item"
                     >
-                      <div
-                        className="member-avatar"
-                        style={{ backgroundColor: m.color || "#4aa" }}
-                      >
+                      <div className="member-avatar" style={{ backgroundColor: m.color || "#4aa" }}>
                         {(m.username || m.email || "?").slice(0, 2).toUpperCase()}
                       </div>
                       <div className="member-info">
@@ -307,11 +324,7 @@ const Overview = () => {
           {activeTab === "analytics" && <Analytics groupId={id} />}
 
           {activeTab === "expenses" && (
-            <AllExpenses
-              groupId={id}
-              members={members || []}
-              lastCreated={lastCreated}
-            />
+            <AllExpenses groupId={id} members={members || []} lastCreated={lastCreated} />
           )}
         </div>
       </div>
@@ -324,7 +337,12 @@ const Overview = () => {
             if (e.target === e.currentTarget) closeInvite();
           }}
         >
-          <div className="invite-dialog" role="dialog" aria-modal="true" aria-labelledby="invite-title">
+          <div
+            className="invite-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="invite-title"
+          >
             <div className="invite-header">
               <h3 id="invite-title">Invite Members</h3>
               <button className="close-btn" onClick={closeInvite} aria-label="Close">

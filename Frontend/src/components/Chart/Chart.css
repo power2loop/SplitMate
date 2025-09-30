@@ -1,5 +1,5 @@
 /* Date Selector Styles */
-.chart-wrapper{
+.chart-wrapper {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .date-selector-text {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .date-selector-chevron {
@@ -78,7 +78,7 @@
   font-size: 16px;
   font-weight: 600;
   color: #111827;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .date-selector-content {
@@ -97,7 +97,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #374151;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .date-selector-select {
@@ -110,7 +110,7 @@
   background: #ffffff;
   cursor: pointer;
   transition: border-color 0.2s ease;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .date-selector-select:focus {
@@ -136,7 +136,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .date-selector-cancel {
@@ -168,7 +168,7 @@
     left: -20px;
     min-width: auto;
   }
-  
+
   .date-selector-content {
     flex-direction: column;
     gap: 12px;

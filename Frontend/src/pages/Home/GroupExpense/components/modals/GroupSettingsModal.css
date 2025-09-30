@@ -105,7 +105,7 @@
   border: 1px solid #d2e4ff;
   border-radius: 12px;
   padding: 16px 18px;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.10);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
   animation: infoSlideIn 0.5s ease;
 }
 
@@ -158,7 +158,9 @@
     0 10px 24px rgba(198, 40, 40, 0.45),
     0 2px 6px rgba(198, 40, 40, 0.35);
   font-weight: 700;
-  transition: transform .08s ease, filter .2s ease;
+  transition:
+    transform 0.08s ease,
+    filter 0.2s ease;
 }
 
 .danger:hover {
@@ -228,7 +230,6 @@
 }
 
 @keyframes gradientShift {
-
   0%,
   100% {
     background-position: 0% 50%;

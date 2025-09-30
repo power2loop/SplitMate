@@ -1,21 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
 import logo from "@/assets/logo.png";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { BsRobot } from "react-icons/bs";
 import { RiLogoutBoxRFill } from "react-icons/ri";
-import { useStore } from '../../Context/StoreContext.jsx';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import { useStore } from "../../Context/StoreContext.jsx";
 
 import "./Navbar.css";
-
-
 
 const Navbars = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { user, setUser } = useStore();
-
 
   const location = useLocation();
   let isLocation = true;
@@ -62,11 +59,7 @@ const Navbars = () => {
       <div className="nav-brand-left">
         <Link to="/" style={{ textDecoration: "none" }}>
           <h2 className="brand-text-logo-left">
-            <img
-              src={logo}
-              alt="SplitMate Logo"
-              style={{ width: "40px", height: "45px" }}
-            />
+            <img src={logo} alt="SplitMate Logo" style={{ width: "40px", height: "45px" }} />
             SplitMate
           </h2>
         </Link>
@@ -74,27 +67,36 @@ const Navbars = () => {
 
       {/* User Profile Dropdown */}
       <div className="navs-right" ref={dropdownRef}>
-
-        {(location.pathname === "/personalexpense") && (
-          <button className="invite-btn" onClick={
-            () => { navigate('/groupexpense') }
-          }>
+        {location.pathname === "/personalexpense" && (
+          <button
+            className="invite-btn"
+            onClick={() => {
+              navigate("/groupexpense");
+            }}
+          >
             👨‍👩‍👧‍👦 Group
           </button>
         )}
 
-        {(location.pathname === "/groupexpense") && (
-          <button className="settings-btn" onClick={() => {
-            navigate('/personalexpense')
-          }}>🧑‍🦱 Personal</button>
-
+        {location.pathname === "/groupexpense" && (
+          <button
+            className="settings-btn"
+            onClick={() => {
+              navigate("/personalexpense");
+            }}
+          >
+            🧑‍🦱 Personal
+          </button>
         )}
         <div
           className={`nav-right-user-profile ${isDropdownOpen ? "active" : ""}`}
           onClick={handleProfileClick}
           title="User Profile"
         >
-          <img className="navs-right-user-initials" src={`https://robohash.org/${user?.username}.png`}/>
+          <img
+            className="navs-right-user-initials"
+            src={`https://robohash.org/${user?.username}.png`}
+          />
           <svg
             className={`profile-dropdown-arrow ${isDropdownOpen ? "open" : ""}`}
             width="12"
@@ -117,25 +119,22 @@ const Navbars = () => {
           <div className="profile-dropdown-menu-logo">
             <div className="dropdown-header-logo">
               <div className="user-info-logo">
-                <img className="user-avatar-small-logo" src={`https://robohash.org/${user?.username}.png`}/>
-                <span className="user-name-logo">{user?.username || 'Guest'}</span>
+                <img
+                  className="user-avatar-small-logo"
+                  src={`https://robohash.org/${user?.username}.png`}
+                />
+                <span className="user-name-logo">{user?.username || "Guest"}</span>
               </div>
             </div>
 
             <div className="dropdown-divider-logo" />
 
             <div className="dropdown-options-logo">
-              <button
-                className="dropdown-option-logo"
-                onClick={handleGroupExpenseClick}
-              >
+              <button className="dropdown-option-logo" onClick={handleGroupExpenseClick}>
                 <BsRobot /> <span>AI Agent</span>
               </button>
 
-              <button
-                className="dropdown-option-logo"
-                onClick={handleLogout}
-              >
+              <button className="dropdown-option-logo" onClick={handleLogout}>
                 <RiLogoutBoxRFill />
                 <span>Logout</span>
               </button>

@@ -183,10 +183,18 @@
 }
 
 /* Animation delays for staggered effect */
-.nav-item:nth-child(1) .nav-text { transition-delay: 0.1s; }
-.nav-item:nth-child(2) .nav-text { transition-delay: 0.15s; }
-.nav-item:nth-child(3) .nav-text { transition-delay: 0.2s; }
-.nav-item:nth-child(4) .nav-text { transition-delay: 0.25s; }
+.nav-item:nth-child(1) .nav-text {
+  transition-delay: 0.1s;
+}
+.nav-item:nth-child(2) .nav-text {
+  transition-delay: 0.15s;
+}
+.nav-item:nth-child(3) .nav-text {
+  transition-delay: 0.2s;
+}
+.nav-item:nth-child(4) .nav-text {
+  transition-delay: 0.25s;
+}
 
 /* Main content adjustment */
 .main-content {
@@ -209,7 +217,10 @@
   overflow: hidden;
   opacity: 0;
   transform: translateY(-4px);
-  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
   background: var(--surface);
   margin-left: 2.5rem; /* indent a bit */
   border-left: 2px solid var(--border);

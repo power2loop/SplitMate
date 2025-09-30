@@ -1,14 +1,14 @@
-import React from 'react';
-import { ArrowRight, Download, Star, Shield } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import './CTA.css';
+import { ArrowRight, Download, Shield, Star } from "lucide-react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import "./CTA.css";
 
 const CTA = () => {
-
   const navigate = useNavigate();
-  
+
   return (
-    <section className="cta lp-section" id='CTA'>
+    <section className="cta lp-section" id="CTA">
       <div className="container">
         <div className="cta-content">
           <div className="cta-text">
@@ -17,10 +17,10 @@ const CTA = () => {
               <span className="gradient-text"> expense sharing?</span>
             </h2>
             <p className="lp-text-large lp-text-muted animate-fade-in">
-              Join thousands of users who have already made their financial lives easier. 
-              Start splitting expenses the smart way today.
+              Join thousands of users who have already made their financial lives easier. Start
+              splitting expenses the smart way today.
             </p>
-            
+
             <div className="cta-features animate-slide-in-left">
               <div className="cta-feature">
                 <Star className="icon icon-accent" />
@@ -35,18 +35,19 @@ const CTA = () => {
                 <span>Bank-level security</span>
               </div>
             </div>
-            
+
             <div className="cta-actions animate-scale-in">
-              <button className="lp-btn lp-btn-primary lp-btn-large cta-primary" onClick={() => navigate('register')}>
+              <button
+                className="lp-btn lp-btn-primary lp-btn-large cta-primary"
+                onClick={() => navigate("register")}
+              >
                 <span>Get Started Free</span>
                 <ArrowRight className="icon" />
               </button>
-              <button className="lp-btn lp-btn-secondary lp-btn-large">
-                Download App
-              </button>
+              <button className="lp-btn lp-btn-secondary lp-btn-large">Download App</button>
             </div>
           </div>
-          
+
           <div className="cta-visual animate-slide-in-right">
             <div className="cta-stats">
               <div className="stat-card">

@@ -1,9 +1,12 @@
 // Frontend/src/components/Sidebar/Sidebar.jsx
 import React, { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
 import logo from "../../assets/logo.png";
+
 import "./Sidebar.css";
-import { useStore } from '../../Context/StoreContext.jsx';
+
+import { useStore } from "../../Context/StoreContext.jsx";
 
 export default function Sidebar() {
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -33,7 +36,13 @@ export default function Sidebar() {
       label: "Dashboard",
       path: "/",
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="nav-icon"
+        >
           <rect x="3" y="3" width="7" height="7" />
           <rect x="14" y="3" width="7" height="7" />
           <rect x="14" y="14" width="7" height="7" />
@@ -63,12 +72,19 @@ export default function Sidebar() {
         { id: "personal", label: "Personal Expense", path: "/personalexpense" },
         { id: "group", label: "Group Expense", path: "/groupexpense" },
       ],
-    }, {
+    },
+    {
       id: "aiagent",
       label: "AI Agent",
       path: "/aiagent",
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="nav-icon"
+        >
           <circle cx="12" cy="12" r="3" />
           <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1" />
         </svg>
@@ -79,7 +95,13 @@ export default function Sidebar() {
       label: "Logout",
       // No path -> render as button
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="nav-icon">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="nav-icon"
+        >
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
           <circle cx="12" cy="7" r="4" />
         </svg>
@@ -114,9 +136,7 @@ export default function Sidebar() {
                 <NavLink
                   to={item.path}
                   end
-                  className={({ isActive }) =>
-                    `nav-item ${isActive || isActive ? "active" : ""}`
-                  }
+                  className={({ isActive }) => `nav-item ${isActive || isActive ? "active" : ""}`}
                 >
                   {item.icon}
                   <span className="nav-text">{item.label}</span>
@@ -141,9 +161,7 @@ export default function Sidebar() {
                     <NavLink
                       key={child.id}
                       to={child.path}
-                      className={({ isActive }) =>
-                        `dropdown-item ${isActive ? "active" : ""}`
-                      }
+                      className={({ isActive }) => `dropdown-item ${isActive ? "active" : ""}`}
                     >
                       {child.label}
                     </NavLink>
@@ -158,10 +176,10 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="sidebar-footer">
         <div className="user-profile">
-          <img className="user-avatar" src={`https://robohash.org/${user?.username}.png`}/>
+          <img className="user-avatar" src={`https://robohash.org/${user?.username}.png`} />
           <div className="user-info">
-            <p className="user-name">{user?.username || 'Guest'}</p>
-            <p className="user-role">{user?.email || 'guest@gmail.com'}</p>
+            <p className="user-name">{user?.username || "Guest"}</p>
+            <p className="user-role">{user?.email || "guest@gmail.com"}</p>
           </div>
         </div>
       </div>

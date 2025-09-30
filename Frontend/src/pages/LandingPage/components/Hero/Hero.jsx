@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { ArrowRight, Users, Calculator, Smartphone } from "lucide-react";
 import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
+import { ArrowRight, Calculator, Smartphone, Users } from "lucide-react";
+import React, { useState } from "react";
+
 import "./Hero.css";
 
 const Hero = () => {
@@ -17,14 +18,12 @@ const Hero = () => {
               <span className="gradient-text"> effortlessly</span>
             </h1>
             <p className="hero-description animate-fade-in">
-              The smarter way to manage your money — split bills with friends,
-              track personal expenses, and settle up without awkward
-              conversations or complicated calculations.
+              The smarter way to manage your money — split bills with friends, track personal
+              expenses, and settle up without awkward conversations or complicated calculations.
             </p>
 
-
             <div className="hero-actions animate-scale-in">
-              <a href='#CTA' className="lp-btn lp-btn-primary lp-btn-large hero-cta">
+              <a href="#CTA" className="lp-btn lp-btn-primary lp-btn-large hero-cta">
                 <span>Explore Splitmate</span>
                 <ArrowRight className="icon" />
               </a>
@@ -43,17 +42,12 @@ const Hero = () => {
               <div className="feature-card card-1">
                 <Users className="icon icon-primary" />
                 <h3>Group Management</h3>
-                <p>
-                  Easily create and manage shared groups for splitting expenses.
-                </p>
+                <p>Easily create and manage shared groups for splitting expenses.</p>
               </div>
               <div className="feature-card card-2">
                 <Calculator className="icon icon-accent" />
                 <h3>Smart Calculations</h3>
-                <p>
-                  Automatic balance tracking for both group and personal
-                  expenses.
-                </p>
+                <p>Automatic balance tracking for both group and personal expenses.</p>
               </div>
               <div className="feature-card card-3">
                 <Smartphone className="icon icon-primary" />
@@ -70,11 +64,11 @@ const Hero = () => {
           onClick={() => setShowVideo(false)}
         >
           <div
-            className="w-full max-w-4xl aspect-video rounded-xl overflow-hidden"
+            className="aspect-video w-full max-w-4xl overflow-hidden rounded-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <HeroVideoDialog
-              className="w-full h-full block dark:hidden"
+              className="block h-full w-full dark:hidden"
               animationStyle="from-center"
               videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
               thumbnailSrc="https://startup-template-sage.vercel.app/hero-light.png"

@@ -201,7 +201,9 @@
   padding: 4px 10px;
   cursor: pointer;
   font-size: 13px;
-  transition: background-color 0.15s ease-in-out, opacity 0.15s;
+  transition:
+    background-color 0.15s ease-in-out,
+    opacity 0.15s;
   white-space: nowrap;
 }
 

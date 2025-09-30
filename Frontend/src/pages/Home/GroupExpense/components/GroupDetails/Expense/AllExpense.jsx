@@ -1,11 +1,13 @@
 // src/components/AllExpenses.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import "./AllExpense.css";
-import { api } from "../../../../../../services/api.js";
-import { MdDeleteForever } from "react-icons/md";
-import Loader from "../../../../../../components/Loader/Loader.jsx";
-import { CgArrowsExpandRight } from "react-icons/cg";
 
+import "./AllExpense.css";
+
+import { CgArrowsExpandRight } from "react-icons/cg";
+import { MdDeleteForever } from "react-icons/md";
+
+import Loader from "../../../../../../components/Loader/Loader.jsx";
+import { api } from "../../../../../../services/api.js";
 
 const Expense = ({
   id,
@@ -41,8 +43,9 @@ const Expense = ({
               title="Show split details"
             >
               <CgArrowsExpandRight
-
-                className={open ? "rotated" : ""} style={{ fontWeight: "bold" }} />
+                className={open ? "rotated" : ""}
+                style={{ fontWeight: "bold" }}
+              />
             </button>
           </div>
 
@@ -53,11 +56,10 @@ const Expense = ({
 
           {open && (
             <div id={splitId} className="split-dropdown" role="region">
-              <div className="split-line" style={{ fontWeight: "600" }} >
-                {`Split Method : ${splitMethod} Participant : ${participants.length > 0
-                  ? participants.join(", ")
-                  : "no participants"
-                  }`}
+              <div className="split-line" style={{ fontWeight: "600" }}>
+                {`Split Method : ${splitMethod} Participant : ${
+                  participants.length > 0 ? participants.join(", ") : "no participants"
+                }`}
               </div>
             </div>
           )}
@@ -108,10 +110,10 @@ const AllExpenses = ({ groupId, members = [], lastCreated = null }) => {
     const when = e.date || e.createdAt;
     const date = when
       ? new Date(when).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })
       : "";
 
     const allocations = e.allocations || {};
@@ -121,24 +123,22 @@ const AllExpenses = ({ groupId, members = [], lastCreated = null }) => {
       Array.isArray(e.participants) && e.participants.length > 0
         ? e.participants
         : Object.entries(allocations)
-          .filter(([uid, val]) => {
-            if (val == null) return false;
-            const t = typeof val;
-            if (t === "number") return Number(val) > 0;
-            if (t === "boolean") return val === true;
-            if (t === "object") {
-              if ("included" in val) return Boolean(val.included);
-              if ("share" in val) return Number(val.share) > 0;
-              if ("amount" in val) return Number(val.amount) > 0;
-            }
-            return true;
-          })
-          .map(([uid]) => uid);
+            .filter(([uid, val]) => {
+              if (val == null) return false;
+              const t = typeof val;
+              if (t === "number") return Number(val) > 0;
+              if (t === "boolean") return val === true;
+              if (t === "object") {
+                if ("included" in val) return Boolean(val.included);
+                if ("share" in val) return Number(val.share) > 0;
+                if ("amount" in val) return Number(val.amount) > 0;
+              }
+              return true;
+            })
+            .map(([uid]) => uid);
 
     const participants =
-      rawParticipantIds.length > 0
-        ? rawParticipantIds.map((uid) => nameById[uid] || uid)
-        : [];
+      rawParticipantIds.length > 0 ? rawParticipantIds.map((uid) => nameById[uid] || uid) : [];
 
     return {
       id,
@@ -172,10 +172,9 @@ const AllExpenses = ({ groupId, members = [], lastCreated = null }) => {
 
   const handleDelete = async (id) => {
     try {
-      await api(
-        `/expenses/group/${encodeURIComponent(groupId)}/${encodeURIComponent(id)}`,
-        { method: "DELETE" }
-      );
+      await api(`/expenses/group/${encodeURIComponent(groupId)}/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
       setItems((prev) => prev.filter((x) => x.id !== id));
     } catch (err) {
       alert(err.message || "Failed to delete");

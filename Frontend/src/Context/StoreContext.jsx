@@ -1,5 +1,4 @@
-import {React, useEffect} from "react";
-import { createContext, useContext, useState } from "react";
+import { createContext, React, useContext, useEffect, useState } from "react";
 
 const StoreContext = createContext(null);
 
@@ -11,11 +10,7 @@ export const StoreProvider = ({ children }) => {
     if (saved) setUser(JSON.parse(saved));
   }, [setUser]);
 
-  return (
-    <StoreContext.Provider value={{ user, setUser }}>
-      {children}
-    </StoreContext.Provider>
-  );
+  return <StoreContext.Provider value={{ user, setUser }}>{children}</StoreContext.Provider>;
 };
 
 export const useStore = () => useContext(StoreContext);

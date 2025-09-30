@@ -10,7 +10,9 @@
   overflow-y: auto;
   scrollbar-width: thin;
   background: rgba(255, 255, 255, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .expense-card:hover {
@@ -176,7 +178,9 @@
   color: #333;
   font-size: 0.94rem;
   backdrop-filter: blur(8px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .split-line {

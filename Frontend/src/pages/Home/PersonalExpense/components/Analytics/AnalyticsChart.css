@@ -1,70 +1,70 @@
 /* Analytics Container */
 .pe-analytics-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease-in-out;
-    border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease-in-out;
+  border-radius: 1rem;
 
-    padding: 1.5rem;
+  padding: 1.5rem;
 }
 
 .pe-analytics-container:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 /* Analytics Header */
 .pe-analytics-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .pe-analytics-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
 }
 
 /* Chart Buttons Container */
 .chart-buttons {
-    display: flex;
-    gap: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 /* Toggle Buttons */
 .btn-toggle {
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #cbd5e1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .btn-toggle:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-toggle.active {
-    color: #fff;
-    background: linear-gradient(135deg, #3273ed, #1e50d9);
-    border: none;
-    box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+  color: #fff;
+  background: linear-gradient(135deg, #3273ed, #1e50d9);
+  border: none;
+  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
 }
 
 /* Chart Container */
 .chart-container {
-    height: 16rem;
+  height: 16rem;
 }
 
 canvas {
-    max-height: 250px;
+  max-height: 250px;
 }

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { Calendar, ChevronDown } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import {
-  AreaChart as RechartsAreaChart,
   Area,
-  XAxis,
+  AreaChart as RechartsAreaChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
-  ReferenceLine,
+  XAxis,
 } from "recharts";
-import { Calendar, ChevronDown } from "lucide-react";
+
 import "./Chart.css";
 
 const generateRandomData = (baseValue = 65) => {
@@ -53,8 +54,18 @@ const DateSelector = ({ selectedDate, onDateChange }) => {
   const [selectedYear, setSelectedYear] = useState(selectedDate.getFullYear());
 
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const years = Array.from({ length: 10 }, (_, i) => 2020 + i);
@@ -71,10 +82,7 @@ const DateSelector = ({ selectedDate, onDateChange }) => {
 
   return (
     <div className="date-selector-container">
-      <button
-        className="date-selector-button"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <button className="date-selector-button" onClick={() => setIsOpen(!isOpen)}>
         <Calendar className="date-selector-icon" size={16} />
         <span className="date-selector-text">{formatSelectedDate()}</span>
         <ChevronDown className="date-selector-chevron" size={16} />
@@ -116,16 +124,10 @@ const DateSelector = ({ selectedDate, onDateChange }) => {
             </div>
           </div>
           <div className="date-selector-actions">
-            <button 
-              className="date-selector-cancel"
-              onClick={() => setIsOpen(false)}
-            >
+            <button className="date-selector-cancel" onClick={() => setIsOpen(false)}>
               Cancel
             </button>
-            <button 
-              className="date-selector-apply"
-              onClick={handleApply}
-            >
+            <button className="date-selector-apply" onClick={handleApply}>
               Apply
             </button>
           </div>
@@ -163,12 +165,9 @@ const Chart = () => {
   return (
     <div className={`chart-container ${isVisible ? "visible" : ""}`}>
       <div className="chart-header">
-        <DateSelector 
-          selectedDate={selectedDate}
-          onDateChange={handleDateChange}
-        />
+        <DateSelector selectedDate={selectedDate} onDateChange={handleDateChange} />
       </div>
-      
+
       <div className={`chart-wrapper ${animationStep >= 2 ? "chart-animate" : ""}`}>
         <div className="chart-glow"></div>
         <ResponsiveContainer width="100%" height={333}>
@@ -183,10 +182,10 @@ const Chart = () => {
           >
             <defs>
               <linearGradient id="sophisticatedGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#E6F0FF" stopOpacity={0.95}/>
-                <stop offset="35%" stopColor="#6DA3F5" stopOpacity={0.8}/>
-                <stop offset="65%" stopColor="#3678F0" stopOpacity={0.65}/>
-                <stop offset="100%" stopColor="#0A1E40" stopOpacity={0.45}/>
+                <stop offset="0%" stopColor="#E6F0FF" stopOpacity={0.95} />
+                <stop offset="35%" stopColor="#6DA3F5" stopOpacity={0.8} />
+                <stop offset="65%" stopColor="#3678F0" stopOpacity={0.65} />
+                <stop offset="100%" stopColor="#0A1E40" stopOpacity={0.45} />
               </linearGradient>
 
               <filter id="glow">
@@ -224,12 +223,7 @@ const Chart = () => {
 
             <Tooltip content={<CustomTooltip />} />
 
-            <ReferenceLine
-              y={65}
-              stroke="#3678f0"
-              strokeDasharray="2 2"
-              strokeOpacity={0.5}
-            />
+            <ReferenceLine y={65} stroke="#3678f0" strokeDasharray="2 2" strokeOpacity={0.5} />
 
             <Area
               type="monotone"

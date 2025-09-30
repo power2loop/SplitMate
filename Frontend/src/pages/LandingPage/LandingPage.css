@@ -1,9 +1,9 @@
 /* Scrollable content area below a fixed navbar */
 .lp-main {
-  height: 100vh;                 /* fill the screen */
-  overflow-y: auto;              /* enable vertical scroll */
-  padding-top: var(--navbar-h);  /* space for the navbar height */
-  
+  height: 100vh; /* fill the screen */
+  overflow-y: auto; /* enable vertical scroll */
+  padding-top: var(--navbar-h); /* space for the navbar height */
+
   /* Custom scrollbar (same style you already use) */
   scrollbar-width: thin;
   scrollbar-color: var(--primary) var(--background-alt);
@@ -25,7 +25,6 @@
 .lp-main::-webkit-scrollbar-thumb:hover {
   background: var(--primary-dark);
 }
-
 
 /* Component Css */
 
@@ -71,9 +70,6 @@
   font-size: 18px;
 }
 
-
-
-
 /* Icon Styling */
 .lp-icon {
   width: 24px;
@@ -109,8 +105,6 @@
   background: var(--background-alt);
 }
 
-
-
 /* Feature Icons */
 .feature-icon {
   width: 64px;
@@ -124,14 +118,10 @@
   color: var(--text-white);
 }
 
-
-
-
 /* Sections */
 .lp-section {
   padding: var(--spacing-3xl) 0;
 }
-
 
 /* Typography */
 .lp-heading-2 {
@@ -148,7 +138,6 @@
   margin-bottom: var(--spacing-xs);
 }
 
-
 .lp-text-large {
   font-size: 1.25rem;
   line-height: 1.6;
@@ -158,14 +147,11 @@
   color: var(--text-secondary);
 }
 
-
-
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 :root {
@@ -326,7 +312,6 @@ body {
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0px);

@@ -13,8 +13,8 @@
 .group-expense-content {
   flex: 1;
   overflow-y: auto; /* scrollable content */
-  scrollbar-width: thin;             /* Firefox */
-  scrollbar-color: #1976d2 #e3f2fd;  /* thumb | track */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #1976d2 #e3f2fd; /* thumb | track */
 
   /* Optional padding to avoid content touching scrollbar */
   padding-right: 8px;

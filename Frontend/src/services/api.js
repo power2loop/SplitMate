@@ -9,7 +9,7 @@ const API_BASE = RAW_BASE.replace(/\/+$/, ""); // strip trailing slash
 
 export async function api(path, options = {}) {
   try {
-    const token = (typeof localStorage !== "undefined") ? localStorage.getItem("token") : null;
+    const token = typeof localStorage !== "undefined" ? localStorage.getItem("token") : null;
 
     // ensure leading slash for path
     const p = path.startsWith("/") ? path : `/${path}`;
@@ -17,17 +17,17 @@ export async function api(path, options = {}) {
     const res = await axios({
       url: `${API_BASE}${p}`,
       method: options.method || "GET",
-      data: options.body || undefined,        // Axios serializes JSON for application/json
-      params: options.params || undefined,    // optional query params passthrough
+      data: options.body || undefined, // Axios serializes JSON for application/json
+      params: options.params || undefined, // optional query params passthrough
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(options.headers || {}),
       },
-      withCredentials: true,                  // send cookies when server CORS allows credentials
-      timeout: options.timeout ?? 15000,      // sensible default timeout
-      ...options,                             // allow overriding any axios config
+      withCredentials: true, // send cookies when server CORS allows credentials
+      timeout: options.timeout ?? 15000, // sensible default timeout
+      ...options, // allow overriding any axios config
     });
 
     return res.data; // Axios places parsed response body here

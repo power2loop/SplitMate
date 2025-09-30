@@ -1,6 +1,7 @@
-import React from 'react';
-import { ArrowLeft } from 'lucide-react';
-import './NotFound.css';
+import { ArrowLeft } from "lucide-react";
+import React from "react";
+
+import "./NotFound.css";
 
 const NotFound = () => {
   return (
@@ -10,8 +11,8 @@ const NotFound = () => {
       <h2 className="notfound-subtitle">Page Not Found</h2>
 
       <p className="notfound-text">
-        Sorry, we couldn't find the page you're looking for. 
-        Let's get you back to splitting expenses!
+        Sorry, we couldn't find the page you're looking for. Let's get you back to splitting
+        expenses!
       </p>
 
       <a href="/" className="btn btn-primary notfound-link">

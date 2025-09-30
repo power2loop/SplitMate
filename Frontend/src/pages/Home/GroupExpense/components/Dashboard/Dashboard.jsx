@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { api } from "../../../../../services/api";
+
 import "./Dashboard.css";
 
 /* ---------- Modal primitive ---------- */
@@ -21,11 +23,21 @@ function Modal({ title, children, onClose }) {
   return (
     <>
       <div className="geModalBackdrop" onClick={onClose} />
-      <div className="geModalWrap" role="dialog" aria-modal="true" aria-labelledby="geModalTitle" ref={dialogRef}>
+      <div
+        className="geModalWrap"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="geModalTitle"
+        ref={dialogRef}
+      >
         <div className="geModalCard">
           <div className="geModalHead">
-            <h3 id="geModalTitle" className="geModalTitle">{title}</h3>
-            <button className="geIconBtn" aria-label="Close" onClick={onClose}>✕</button>
+            <h3 id="geModalTitle" className="geModalTitle">
+              {title}
+            </h3>
+            <button className="geIconBtn" aria-label="Close" onClick={onClose}>
+              ✕
+            </button>
           </div>
           <div className="geModalBody">{children}</div>
         </div>
@@ -67,8 +79,12 @@ function JoinGroupModal({ onCancel, onSubmit }) {
       </div>
 
       <div className="geModalActions">
-        <button type="button" className="geBtn geBtnGhost geBtnWide" onClick={onCancel}>Cancel</button>
-        <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={!isValid}>↪ Join Group</button>
+        <button type="button" className="geBtn geBtnGhost geBtnWide" onClick={onCancel}>
+          Cancel
+        </button>
+        <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={!isValid}>
+          ↪ Join Group
+        </button>
       </div>
     </form>
   );
@@ -124,8 +140,12 @@ function CreateGroupModal({ onCancel, onSubmit }) {
       </div>
 
       <div className="geModalActions">
-        <button type="button" className="geBtn geBtnGhost geBtnWide" onClick={onCancel}>Cancel</button>
-        <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={disabled}>Create Group</button>
+        <button type="button" className="geBtn geBtnGhost geBtnWide" onClick={onCancel}>
+          Cancel
+        </button>
+        <button type="submit" className="geBtn geBtnPrimary geBtnWide" disabled={disabled}>
+          Create Group
+        </button>
       </div>
     </form>
   );
@@ -133,8 +153,20 @@ function CreateGroupModal({ onCancel, onSubmit }) {
 
 /* ---------- Data shapers ---------- */
 const shapeMember = (m) => ({
-  id: (m?.id ?? m?._id ?? m?.userId ?? m?.email ?? m?.username ?? Math.random().toString(36)).toString(),
-  initials: (m?.username || "?").split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase(),
+  id: (
+    m?.id ??
+    m?._id ??
+    m?.userId ??
+    m?.email ??
+    m?.username ??
+    Math.random().toString(36)
+  ).toString(),
+  initials: (m?.username || "?")
+    .split(" ")
+    .map((s) => s[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase(),
   color: m?.color || "blue",
 });
 
@@ -179,25 +211,31 @@ const Dashboard = () => {
     });
   }, []);
 
-  const handleCreate = useCallback(async (payload) => {
-    try {
-      const data = await api("/groups", { method: "POST", body: JSON.stringify(payload) });
-      upsertGroup(shapeGroup(data.group));
-      setModal(null);
-    } catch (e) {
-      alert(e.message);
-    }
-  }, [upsertGroup]);
+  const handleCreate = useCallback(
+    async (payload) => {
+      try {
+        const data = await api("/groups", { method: "POST", body: JSON.stringify(payload) });
+        upsertGroup(shapeGroup(data.group));
+        setModal(null);
+      } catch (e) {
+        alert(e.message);
+      }
+    },
+    [upsertGroup]
+  );
 
-  const handleJoin = useCallback(async (inviteCode) => {
-    try {
-      const raw = await api(`/groups/join/${inviteCode}`, { method: "POST" });
-      upsertGroup(shapeGroup(raw));
-      setModal(null);
-    } catch (e) {
-      alert(e.message);
-    }
-  }, [upsertGroup]);
+  const handleJoin = useCallback(
+    async (inviteCode) => {
+      try {
+        const raw = await api(`/groups/join/${inviteCode}`, { method: "POST" });
+        upsertGroup(shapeGroup(raw));
+        setModal(null);
+      } catch (e) {
+        alert(e.message);
+      }
+    },
+    [upsertGroup]
+  );
 
   return (
     <div className="geRoot">
@@ -208,8 +246,12 @@ const Dashboard = () => {
       <div className="geTopBar">
         <h1 className="geTitle">Your Groups</h1>
         <div className="geActions">
-          <button className="geBtn geBtnGhost" onClick={() => setModal("join")}>↪ Join Group</button>
-          <button className="geBtn geBtnPrimary" onClick={() => setModal("create")}>＋ Create Group</button>
+          <button className="geBtn geBtnGhost" onClick={() => setModal("join")}>
+            ↪ Join Group
+          </button>
+          <button className="geBtn geBtnPrimary" onClick={() => setModal("create")}>
+            ＋ Create Group
+          </button>
         </div>
       </div>
 
@@ -229,7 +271,9 @@ const Dashboard = () => {
                 </div>
                 <div className="geAvatars">
                   {(g.members || []).map((m) => (
-                    <span key={m.id} className={`geAvatar ${m.color || "blue"}`}>{m.initials}</span>
+                    <span key={m.id} className={`geAvatar ${m.color || "blue"}`}>
+                      {m.initials}
+                    </span>
                   ))}
                 </div>
               </div>

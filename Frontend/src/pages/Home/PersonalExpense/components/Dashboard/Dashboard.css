@@ -2,414 +2,415 @@
 
 /* Enhanced AI Insights Card */
 .ai-insights-card {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
 }
 
 .ai-insights-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
 }
 
 .ai-insights-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: translate(30px, -30px);
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(30px, -30px);
 }
 
 .ai-insights-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-    position: relative;
-    z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .ai-icon {
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: transform 0.3s ease;
-    animation: aiPulse 2s infinite;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: transform 0.3s ease;
+  animation: aiPulse 2s infinite;
 }
 
 @keyframes aiPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
+  }
 
-    0%,
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
-    }
-
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
-    }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+  }
 }
 
 .ai-insights-card h2 {
-    font-size: 18px;
-    font-weight: 700;
-    color: white;
-    margin: 0;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .ai-insights-card p {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.6;
-    margin: 0;
-    position: relative;
-    z-index: 2;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Stats Grid - MAXIMUM SEPARATION */
 .stats-grid {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    margin-bottom: 24px;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-bottom: 24px;
+  width: 100%;
 }
 
 /* Enhanced Stats Cards */
 .stats-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
-    transition: all 0.3s ease;
-    width: 100%;
-    max-width: 48%;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 48%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
 .stats-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: transparent;
-    transition: background 0.3s ease;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  transition: background 0.3s ease;
 }
 
 .this-month-card::before {
-    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
 }
 
 .investments-card::before {
-    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
 }
 
 .stats-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-    border-color: #3b82f6;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  border-color: #3b82f6;
 }
 
 .stats-card:hover::before {
-    height: 4px;
+  height: 4px;
 }
 
 .card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 /* Enhanced Card Icons */
 .card-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 4px;
-    transition: all 0.3s ease;
-    position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .card-icon::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 14px;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .stats-card:hover .card-icon::after {
-    opacity: 1;
+  opacity: 1;
 }
 
 .stats-card:hover .card-icon {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .this-month-icon {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
 }
 
 .investments-icon {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
 }
 
 /* Card Info - RIGHT SIDE WITH ALL CONTENT */
 .card-info {
-    flex: 1;
-    min-width: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 /* Header Section */
 .card-info h3 {
-    font-size: 12px;
-    font-weight: 600;
-    color: #64748b;
-    margin: 0 0 6px 0;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: color 0.3s ease;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .stats-card:hover .card-info h3 {
-    color: #3b82f6;
+  color: #3b82f6;
 }
 
 .card-value {
-    font-size: 32px;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 0 0 12px 0;
-    line-height: 1;
-    transition: all 0.3s ease;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  line-height: 1;
+  transition: all 0.3s ease;
 }
 
 .stats-card:hover .card-value {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 /* This Month Card - Enhanced */
 .this-month-card .card-details {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .detail-item {
-    font-size: 14px;
-    color: #64748b;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    transition: color 0.3s ease;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transition: color 0.3s ease;
 }
 
 .stats-card:hover .detail-item {
-    color: #475569;
+  color: #475569;
 }
 
 /* Breakdown Section - Enhanced */
 .card-breakdown {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .breakdown-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .breakdown-item:hover {
-    background: #f8fafc;
-    padding-left: 8px;
-    padding-right: 8px;
+  background: #f8fafc;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .breakdown-label {
-    font-size: 14px;
-    color: #64748b;
-    font-weight: 400;
-    transition: color 0.3s ease;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 400;
+  transition: color 0.3s ease;
 }
 
 .breakdown-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1e293b;
-    transition: color 0.3s ease;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  transition: color 0.3s ease;
 }
 
 .breakdown-item:hover .breakdown-label {
-    color: #475569;
+  color: #475569;
 }
 
 .breakdown-item:hover .breakdown-value {
-    color: #3b82f6;
+  color: #3b82f6;
 }
 
 /* Investments Card - Enhanced */
 .investments-card .card-value {
-    color: #059669;
+  color: #059669;
 }
 
 .investments-card .card-info h3 {
-    text-align: left;
+  text-align: left;
 }
 
 .investments-card .card-value {
-    text-align: left;
+  text-align: left;
 }
 
 /* Enhanced Investment Progress */
 .investment-progress {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .progress-bar {
-    flex: 1;
-    height: 8px;
-    background: #f1f5f9;
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
+  flex: 1;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
 }
 
 .progress-fill {
-    height: 100%;
-    width: 85%;
-    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    animation: progressGlow 2s infinite alternate;
+  height: 100%;
+  width: 85%;
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  animation: progressGlow 2s infinite alternate;
 }
 
 @keyframes progressGlow {
-    0% {
-        box-shadow: 0 0 0 rgba(245, 158, 11, 0.4);
-    }
+  0% {
+    box-shadow: 0 0 0 rgba(245, 158, 11, 0.4);
+  }
 
-    100% {
-        box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
-    }
+  100% {
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+  }
 }
 
 .progress-text {
-    font-size: 15px;
-    font-weight: 700;
-    color: #059669;
-    white-space: nowrap;
-    transition: transform 0.3s ease;
+  font-size: 15px;
+  font-weight: 700;
+  color: #059669;
+  white-space: nowrap;
+  transition: transform 0.3s ease;
 }
 
 .stats-card:hover .progress-text {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Mobile responsive */
 @media (max-width: 1200px) {
-    .stats-grid {
-        gap: 20px;
-    }
+  .stats-grid {
+    gap: 20px;
+  }
 
-    .stats-card {
-        max-width: 48%;
-    }
+  .stats-card {
+    max-width: 48%;
+  }
 }
 
 @media (max-width: 900px) {
-    .stats-grid {
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-    }
+  .stats-grid {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
 
-    .stats-card {
-        width: 100%;
-        max-width: 500px;
-        min-width: auto;
-    }
+  .stats-card {
+    width: 100%;
+    max-width: 500px;
+    min-width: auto;
+  }
 }
 
 @media (max-width: 768px) {
-    .ai-insights-card {
-        padding: 16px;
-        margin-bottom: 20px;
-    }
+  .ai-insights-card {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
 
-    .ai-insights-card::before {
-        width: 60px;
-        height: 60px;
-    }
+  .ai-insights-card::before {
+    width: 60px;
+    height: 60px;
+  }
 
-    .stats-card {
-        padding: 20px;
-        max-width: 100%;
-    }
+  .stats-card {
+    padding: 20px;
+    max-width: 100%;
+  }
 
-    .card-header {
-        gap: 16px;
-    }
+  .card-header {
+    gap: 16px;
+  }
 
-    .card-icon {
-        width: 48px;
-        height: 48px;
-    }
+  .card-icon {
+    width: 48px;
+    height: 48px;
+  }
 
-    .card-value {
-        font-size: 28px;
-    }
+  .card-value {
+    font-size: 28px;
+  }
 
-    .ai-insights-card h2 {
-        font-size: 16px;
-    }
+  .ai-insights-card h2 {
+    font-size: 16px;
+  }
 
-    .ai-insights-card p {
-        font-size: 13px;
-    }
+  .ai-insights-card p {
+    font-size: 13px;
+  }
 }
 
 /* Light theme base */
 body {
-    background: #f8fafc;
-    color: #1e293b;
+  background: #f8fafc;
+  color: #1e293b;
 }

@@ -108,18 +108,18 @@
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
   }
-  
+
   .footer-links {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
   }
-  
+
   .footer-bottom {
     flex-direction: column;
     gap: var(--spacing-xs);
     text-align: center;
   }
-  
+
   .social-links {
     justify-content: center;
   }
