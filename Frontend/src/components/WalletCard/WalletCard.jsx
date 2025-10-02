@@ -49,7 +49,7 @@ const WalletCard = () => {
               <path d="M8 11h8" />
             </svg>
           </div>
-          <h3 className="ec-title">Wallet Summary</h3>
+          <h3 className="ec-title">Group Summary</h3>
         </div>
         <div className="ec-balance-indicator">
           <div className="ec-balance-dot"></div>
@@ -90,7 +90,7 @@ const WalletCard = () => {
             <path d="M9 12l2 2 4-4" />
             <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.66 0 3.22.45 4.56 1.23" />
           </svg>
-          Settle Up
+          Details
         </button>
       </div>
 

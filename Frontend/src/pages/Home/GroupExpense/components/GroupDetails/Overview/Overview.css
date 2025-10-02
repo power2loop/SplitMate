@@ -36,7 +36,7 @@
 .back-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  color: rgba(213, 95, 95, 0.717);
+  color: #3b3b3bea;
 }
 
 .title-section h1 {

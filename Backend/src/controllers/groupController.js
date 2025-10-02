@@ -1,11 +1,66 @@
 // controllers/GroupController.js
 import crypto from "crypto";
-import mongoose from "mongoose"; // NEW: for isValidObjectId guard
+import mongoose from "mongoose";
 import Group from "../models/GroupModel.js";
 import User from "../models/UserModel.js";
 import Expense from "../models/ExpenseModel.js"; // optional; only if you use it
-import Settlement from "../models/Settlement.js"; // NEW: used in analytics/settlements
+import Settlement from "../models/Settlement.js";
 import { buildGroupAnalytics } from "../services/reportService.js";
+
+// Helper: robust getter for a user's allocation share across Mongoose Map / plain object and ObjectId / string keys
+function getShare(allocations, userIdStr) {
+  if (!allocations || !userIdStr) return 0;
+
+  // Mongoose Map path
+  if (typeof allocations.get === "function") {
+    let v = allocations.get(userIdStr);
+    if (v == null) {
+      for (const [k, val] of allocations) {
+        if ((k?.toString?.() || k) === userIdStr) return Number(val) || 0;
+      }
+    }
+    return Number(v) || 0;
+  }
+
+  // Plain object path
+  if (Object.prototype.hasOwnProperty.call(allocations, userIdStr)) {
+    return Number(allocations[userIdStr]) || 0;
+  }
+  for (const [k, val] of Object.entries(allocations)) {
+    if ((k?.toString?.() || k) === userIdStr) return Number(val) || 0;
+  }
+  return 0;
+}
+
+// Common summarizer for group cards
+function summarizeGroup(g, userIdStr) {
+  const members = Array.isArray(g.members) ? g.members : [];
+  const expenses = Array.isArray(g.expenses) ? g.expenses : [];
+
+  const expensesCount = expenses.length;
+  const totalSpent = expenses.reduce((sum, e) => sum + (Number(e?.amount) || 0), 0);
+  const myExpense = userIdStr
+    ? expenses.reduce(
+      (sum, e) => sum + (Number(getShare(e?.allocations || {}, userIdStr)) || 0),
+      0
+    )
+    : 0;
+
+  return {
+    id: g._id?.toString(),
+    name: g.name || "",
+    description: g.description || "",
+    members: members.map((m) => ({
+      id: m._id?.toString(),
+      username: m.username,
+      email: m.email,
+      initials: (m.username || "?").slice(0, 2).toUpperCase(),
+    })),
+    expensesCount,
+    totalSpent,
+    myExpense,
+  };
+}
 
 // POST /api/groups
 export const createGroup = async (req, res) => {
@@ -42,6 +97,7 @@ export const joinGroup = async (req, res) => {
       await User.findByIdAndUpdate(req.user._id, { $addToSet: { groups: group._id } });
     }
 
+    // Return raw group; FE should refetch /groups to display computed summaries
     res.json(group);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -62,37 +118,34 @@ export const getGroupDetails = async (req, res) => {
   }
 };
 
+// GET /api/groups/mine (optional) — returns same summary shape as /api/groups
 export const getMyGroups = async (req, res) => {
-  const userId = req.user._id;
-  const groups = await Group.find({ members: userId })
-    .select("name description type expensesCount totalSpent members createdBy")
-    .populate({ path: "members", select: "username", options: { limit: 8 } })
-    .populate({ path: "createdBy", select: "username" });
-  return res.status(200).json(groups);
+  try {
+    const userIdStr = req.user?._id?.toString?.() || "";
+
+    const groups = await Group.find({ members: req.user._id })
+      .populate({ path: "members", select: "username email", options: { limit: 8 } })
+      .populate({ path: "expenses", select: "amount allocations" })
+      .lean();
+
+    const result = (groups || []).map((g) => summarizeGroup(g, userIdStr));
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 };
 
-// GET /api/groups -> all groups for logged-in user
+// GET /api/groups -> all groups for logged-in user (card summaries)
 export const getAllGroup = async (req, res) => {
   try {
+    const userIdStr = req.user?._id?.toString?.() || "";
+
     const groups = await Group.find({ members: req.user._id })
-      .populate("members", "username email")
-      .populate("expenses");
+      .populate({ path: "members", select: "username email", options: { limit: 8 } })
+      .populate({ path: "expenses", select: "amount allocations" }) // only fields required to compute summaries
+      .lean();
 
-    const formatted = groups.map((g) => ({
-      id: g._id.toString(),
-      name: g.name,
-      description: g.description,
-      members: g.members.map((m) => ({
-        id: m._id.toString(),
-        username: m.username,
-        email: m.email,
-        initials: m.username?.slice(0, 2).toUpperCase(),
-      })),
-      expensesCount: g.expenses?.length || 0,
-      totalSpent: g.expenses?.reduce((sum, e) => sum + (e.amount || 0), 0),
-      balance: 0,
-    }));
-
+    const formatted = (groups || []).map((g) => summarizeGroup(g, userIdStr));
     res.json(formatted);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -144,20 +197,20 @@ export const LeaveGroup = async (req, res) => {
   }
 };
 
-
+// GET /api/groups/:id/analytics
 export const getGroupAnalytics = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: "Invalid group id" }); // guard [web:19]
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: "Invalid group id" });
 
     const group = await Group.findById(id)
       .populate("members", "username email")
-      .populate({ path: "expenses", options: { sort: { date: 1, createdAt: 1 } } }); // chronological [web:202]
+      .populate({ path: "expenses", options: { sort: { date: 1, createdAt: 1 } } });
 
     if (!group) return res.status(404).json({ message: "Group not found" });
 
     const recorded = await Settlement.find({ group: group._id, status: { $in: ["completed", "posted"] } })
-      .select("from to amount note createdAt"); // payments included [web:218]
+      .select("from to amount note createdAt");
 
     const currentUserId = req.user?._id?.toString?.() || null;
 
@@ -167,11 +220,11 @@ export const getGroupAnalytics = async (req, res) => {
       members: Array.isArray(group.members) ? group.members : [],
       currentUserId,
       settlements: recorded || [],
-    }); // includes ledger and nets [web:202]
+    });
 
     return res.json(payload);
   } catch (err) {
-    console.error("GET /groups/:id/analytics failed:", err); // log for debugging [web:221]
+    console.error("GET /groups/:id/analytics failed:", err);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -184,7 +237,7 @@ export const recordSettlement = async (req, res) => {
     if (!fromId || !toId || !(Number(amount) > 0)) {
       return res.status(400).json({ message: "fromId, toId and positive amount are required" });
     }
-    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: "Invalid group id" }); // guard [web:19]
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: "Invalid group id" });
 
     const group = await Group.findById(id).select("members");
     if (!group) return res.status(404).json({ message: "Group not found" });

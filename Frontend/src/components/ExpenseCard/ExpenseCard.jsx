@@ -41,7 +41,7 @@ const ExpenseCard = () => {
               <path d="M8 11h8" />
             </svg>
           </div>
-          <h3 className="ec-title">Expense Summary</h3>
+          <h3 className="ec-title">Personal Summary</h3>
         </div>
         <div className="ec-balance-indicator">
           <div className="ec-balance-dot"></div>
@@ -60,7 +60,7 @@ const ExpenseCard = () => {
           </div>
         </div>
         <div className="ec-metric-card">
-          <div className="ec-metric-label">You Owe</div>
+          <div className="ec-metric-label">Investment</div>
           <div className="ec-metric-value">{formatCurrency(expenseData.youOwe)}</div>
           <div
             className={`ec-metric-change ${expenseData.youOweChange >= 0 ? "ec-increase" : "ec-decrease"}`}
@@ -82,7 +82,7 @@ const ExpenseCard = () => {
             <path d="M9 12l2 2 4-4" />
             <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.66 0 3.22.45 4.56 1.23" />
           </svg>
-          Refresh Data
+          Details
         </button>
       </div>
 

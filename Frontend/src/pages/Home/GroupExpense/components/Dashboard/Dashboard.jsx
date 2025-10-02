@@ -1,8 +1,7 @@
+// Dashboard.jsx
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { api } from "../../../../../services/api";
-
 import "./Dashboard.css";
 
 /* ---------- Modal primitive ---------- */
@@ -177,7 +176,7 @@ const shapeGroup = (g) => ({
   members: Array.isArray(g?.members) ? g.members.map(shapeMember) : [],
   expensesCount: g?.expensesCount ?? 0,
   totalSpent: g?.totalSpent ?? 0,
-  balance: g?.balance ?? 0,
+  myExpense: g?.myExpense ?? 0,
 });
 
 /* ---------- Main Dashboard ---------- */
@@ -189,52 +188,47 @@ const Dashboard = () => {
   // StrictMode guard to avoid double fetch in dev
   const fetchedRef = useRef(false);
 
+  const refreshGroups = useCallback(async () => {
+    try {
+      const rows = await api("/groups");
+      const shaped = rows.map(shapeGroup);
+      const byId = new Map(shaped.map((g) => [g.id, g]));
+      setGroups(Array.from(byId.values()));
+    } catch (err) {
+      console.error("Failed to fetch groups", err);
+    }
+  }, []);
+
   useEffect(() => {
     if (fetchedRef.current) return;
     fetchedRef.current = true;
-
-    api("/groups")
-      .then((rows) => {
-        // normalize + dedupe by id
-        const shaped = rows.map(shapeGroup);
-        const byId = new Map(shaped.map((g) => [g.id, g]));
-        setGroups(Array.from(byId.values()));
-      })
-      .catch((err) => console.error("Failed to fetch groups", err));
-  }, []);
-
-  const upsertGroup = useCallback((incoming) => {
-    setGroups((prev) => {
-      const map = new Map(prev.map((g) => [g.id, g]));
-      map.set(incoming.id, incoming);
-      return Array.from(map.values());
-    });
-  }, []);
+    refreshGroups();
+  }, [refreshGroups]);
 
   const handleCreate = useCallback(
     async (payload) => {
       try {
-        const data = await api("/groups", { method: "POST", body: JSON.stringify(payload) });
-        upsertGroup(shapeGroup(data.group));
+        await api("/groups", { method: "POST", body: JSON.stringify(payload) });
+        await refreshGroups(); // ensure computed fields come from backend
         setModal(null);
       } catch (e) {
         alert(e.message);
       }
     },
-    [upsertGroup]
+    [refreshGroups]
   );
 
   const handleJoin = useCallback(
     async (inviteCode) => {
       try {
-        const raw = await api(`/groups/join/${inviteCode}`, { method: "POST" });
-        upsertGroup(shapeGroup(raw));
+        await api(`/groups/join/${inviteCode}`, { method: "POST" });
+        await refreshGroups(); // show correct totals/counts immediately
         setModal(null);
       } catch (e) {
         alert(e.message);
       }
     },
-    [upsertGroup]
+    [refreshGroups]
   );
 
   return (
@@ -281,11 +275,15 @@ const Dashboard = () => {
               <div className="geCardRight">
                 <div>
                   <p className="geHint">Total Spent</p>
-                  <h2 className="geAmount">{g.totalSpent ?? 0}</h2>
+                  <h2 className="geAmount">
+                    {(g.totalSpent ?? 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </h2>
                 </div>
                 <div>
-                  <p className="geHint">Your Balance</p>
-                  <span className="geBadge">{g.balance ?? 0}</span>
+                  <p className="geHint">My Expense</p>
+                  <span className="geBadge">
+                    {(g.myExpense ?? 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </span>
                 </div>
               </div>
             </button>
