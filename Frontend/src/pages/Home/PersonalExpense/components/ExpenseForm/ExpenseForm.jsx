@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { api } from "../../../../../services/api.js"; // Adjust the import path as necessary
 
 import "./ExpenseForm.css";
 
@@ -9,24 +10,34 @@ const ExpenseForm = ({ onAddExpense }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!description || !amount || !category) return;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!description || !amount || !category) return;
 
-    const newExpense = {
-      id: Date.now(),
-      description,
-      amount: parseFloat(amount),
-      category,
-      date: new Date().toISOString().split("T")[0],
-      timestamp: new Date().toISOString(),
+  const payload = {
+    title: description,
+    amount: parseFloat(amount),
+    category,
+    date: new Date().toISOString().split("T")[0],
+  };
+
+  try {
+    const saved = await api("/expenses/personal/add", { method: "POST", body: payload });
+    const normalized = {
+      id: saved._id || saved.id,
+      description: saved.title ?? description,
+      amount: Number(saved.amount ?? payload.amount),
+      category: saved.category ?? category,
+      date: saved.date ?? saved.createdAt ?? new Date().toISOString(),
     };
-
-    onAddExpense(newExpense);
+    onAddExpense(normalized);
     setDescription("");
     setAmount("");
     setCategory("");
-  };
+  } catch (err) {
+    console.error("Error saving expense:", err.message);
+  }
+};
 
   const categories = [
     { value: "Food & Dining", icon: "🍽️" },
@@ -120,7 +131,6 @@ const ExpenseForm = ({ onAddExpense }) => {
                 className={`category-dropdown ${isDropdownOpen ? "open" : ""}`}
                 onClick={toggleDropdown}
               >
-                {/* Absolutely positioned content inside fixed button */}
                 <div className="button-content">
                   <div className="content-text">
                     {category ? (
@@ -134,7 +144,6 @@ const ExpenseForm = ({ onAddExpense }) => {
                   </div>
                 </div>
 
-                {/* Absolutely positioned arrow */}
                 <div className="button-arrow">
                   <svg
                     className={`dropdown-arrow ${isDropdownOpen ? "open" : ""}`}

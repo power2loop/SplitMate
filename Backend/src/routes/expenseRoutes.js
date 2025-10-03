@@ -18,7 +18,7 @@ router.get("/group/:groupId", protect, listGroupExpenses);
 router.delete("/group/:groupId/:expenseId", protect, deleteGroupExpense);
 
 // -------- PERSONAL EXPENSE ROUTES --------
-router.post("/personal/add", protect, validateExpenseCreate, createPersonalExpense);
+router.post("/personal/add", protect, createPersonalExpense);
 router.get("/personal/all", protect, listPersonalExpenses);
 router.delete("/personal/:expenseId", protect, deletePersonalExpense);
 

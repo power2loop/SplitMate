@@ -3,7 +3,6 @@ import crypto from "crypto";
 import mongoose from "mongoose";
 import Group from "../models/GroupModel.js";
 import User from "../models/UserModel.js";
-import Expense from "../models/ExpenseModel.js"; // optional; only if you use it
 import Settlement from "../models/Settlement.js";
 import { buildGroupAnalytics } from "../services/reportService.js";
 

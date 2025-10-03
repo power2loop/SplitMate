@@ -1,38 +1,38 @@
 const EPS = 0.011;
 
 // ---------------- Mongoose Schema-level Middleware ----------------
-export const attachExpenseValidations = (ExpenseSchema) => {
-    ExpenseSchema.pre("validate", function (next) {
-        if (this.type === "group") {
-            if (!this.splitMethod) {
-                return next(Object.assign(new Error("splitMethod required"), { status: 400 }));
-            }
+// export const attachExpenseValidations = (ExpenseSchema) => {
+//     ExpenseSchema.pre("validate", function (next) {
+//         if (this.type === "group") {
+//             if (!this.splitMethod) {
+//                 return next(Object.assign(new Error("splitMethod required"), { status: 400 }));
+//             }
 
-            if (!this.allocations || this.allocations.size === 0) {
-                return next(Object.assign(new Error("allocations required"), { status: 400 }));
-            }
+//             if (!this.allocations || this.allocations.size === 0) {
+//                 return next(Object.assign(new Error("allocations required"), { status: 400 }));
+//             }
 
-            const total = Array.from(this.allocations.values()).reduce(
-                (a, b) => a + Number(b || 0),
-                0
-            );
+//             const total = Array.from(this.allocations.values()).reduce(
+//                 (a, b) => a + Number(b || 0),
+//                 0
+//             );
 
-            if (Math.abs(total - Number(this.amount)) > EPS) {
-                return next(
-                    Object.assign(
-                        new Error(
-                            `allocations must sum to amount: got ${total.toFixed(2)} vs ${Number(
-                                this.amount
-                            ).toFixed(2)}`
-                        ),
-                        { status: 400 }
-                    )
-                );
-            }
-        }
-        next();
-    });
-};
+//             if (Math.abs(total - Number(this.amount)) > EPS) {
+//                 return next(
+//                     Object.assign(
+//                         new Error(
+//                             `allocations must sum to amount: got ${total.toFixed(2)} vs ${Number(
+//                                 this.amount
+//                             ).toFixed(2)}`
+//                         ),
+//                         { status: 400 }
+//                     )
+//                 );
+//             }
+//         }
+//         next();
+//     });
+// };
 
 // ---------------- Express Request-level Middleware ----------------
 export const validateExpenseCreate = (req, res, next) => {

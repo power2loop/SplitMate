@@ -6,13 +6,16 @@ const TransactionList = ({ expenses, onDeleteExpense }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
 
-  const filteredExpenses = expenses.filter((e) => {
-    const matchesSearch =
-      e.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      e.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !categoryFilter || e.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
+const filteredExpenses = expenses.filter((e) => {
+  const desc = e.description ?? "";
+  const cat = e.category ?? "";
+  const matchesSearch =
+    desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cat.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesCategory = !categoryFilter || cat === categoryFilter;
+  return matchesSearch && matchesCategory;
+});
+
 
   // Category icons mapping
   const getCategoryIcon = (category) => {

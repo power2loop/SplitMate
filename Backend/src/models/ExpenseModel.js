@@ -10,8 +10,8 @@ export const PERSONAL_CATEGORIES = Object.freeze([
     "Education",
     "Travel",
     "Rent",
-    "Subscriptions",
-    "Others"
+    "Investment",
+    "Other"
 ]);
 
 const ExpenseSchema = new mongoose.Schema(
@@ -27,9 +27,10 @@ const ExpenseSchema = new mongoose.Schema(
         title: { type: String, required: true, trim: true },
         amount: { type: Number, required: true, min: 0.01 },
         date: { type: String, default: Date.now }, // yyyy-mm-dd
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
         paidBy: { type: String },
         currency: { type: String, default: "INR" },
-        category: { type: String, required: true, enum: PERSONAL_CATEGORIES, index: true },
+        category: { type: String, enum: PERSONAL_CATEGORIES, index: true },
         notes: { type: String, default: "" },
         splitMethod: { type: String, enum: ["equal", "custom", "percent"] },
         allocations: { type: Map, of: Number }
