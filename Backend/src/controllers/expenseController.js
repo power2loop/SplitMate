@@ -1,4 +1,3 @@
-// Backend/src/controllers/expenseController.js (replace only the groupId usage)
 import mongoose from "mongoose";
 import Expense from "../models/ExpenseModel.js";
 import Group from "../models/GroupModel.js";
@@ -6,6 +5,8 @@ import Group from "../models/GroupModel.js";
 const isObjId = (v) => mongoose.Types.ObjectId.isValid(v);
 
 const pick = (obj, keys) => Object.fromEntries(Object.entries(obj ?? {}).filter(([k]) => keys.includes(k)));
+
+// ------------------- GROUP EXPENSES -------------------
 
 export const createGroupExpense = async (req, res, next) => {
     try {
@@ -73,13 +74,38 @@ export const deleteGroupExpense = async (req, res, next) => {
     }
 };
 
-
+// ------------------- PERSONAL EXPENSES -------------------
 
 export const createPersonalExpense = async (req, res, next) => {
     try {
-        const body = pick(req.body, ["title", "amount", "date", "paidBy", "currency", "category", "notes"]);
+        const body = pick(req.body, ["title", "amount", "date", "category"]);
         const exp = await Expense.create({ ...body, type: "personal" });
         return res.status(201).json(exp);
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const listPersonalExpenses = async (_req, res, next) => {
+    try {
+        const expenses = await Expense.find({ type: "personal" }).sort({ createdAt: -1 });
+        return res.json(expenses);
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const deletePersonalExpense = async (req, res, next) => {
+    try {
+        const { expenseId } = req.params;
+
+        if (!isObjId(expenseId)) return res.status(400).json({ message: "invalid expenseId" });
+
+        const deleted = await Expense.findOneAndDelete({ _id: expenseId, type: "personal" });
+
+        if (!deleted) return res.status(404).json({ message: "Personal expense not found" });
+
+        return res.json({ ok: true, deletedId: expenseId });
     } catch (err) {
         next(err);
     }

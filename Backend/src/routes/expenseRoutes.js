@@ -1,15 +1,25 @@
-// Backend/src/routes/expenseRoutes.js
 import { Router } from "express";
-import { createGroupExpense, listGroupExpenses, createPersonalExpense, deleteGroupExpense } from "../controllers/expenseController.js";
+import {
+    createGroupExpense,
+    listGroupExpenses,
+    deleteGroupExpense,
+    createPersonalExpense,
+    listPersonalExpenses,
+    deletePersonalExpense
+} from "../controllers/expenseController.js";
 import { validateExpenseCreate } from "../middlewares/ExpenseMiddleware.js";
 import { protect } from "../middlewares/GroupMiddleware.js";
 
 const router = Router();
 
-router.get("/group/:groupId", protect, listGroupExpenses);
+// -------- GROUP EXPENSE ROUTES --------
 router.post("/group/:groupId", protect, validateExpenseCreate, createGroupExpense);
+router.get("/group/:groupId", protect, listGroupExpenses);
 router.delete("/group/:groupId/:expenseId", protect, deleteGroupExpense);
 
-router.post("/personal", protect, validateExpenseCreate, createPersonalExpense);
+// -------- PERSONAL EXPENSE ROUTES --------
+router.post("/personal/add", protect, validateExpenseCreate, createPersonalExpense);
+router.get("/personal/all", protect, listPersonalExpenses);
+router.delete("/personal/:expenseId", protect, deletePersonalExpense);
 
 export default router;

@@ -1,4 +1,18 @@
 import mongoose from "mongoose";
+export const PERSONAL_CATEGORIES = Object.freeze([
+    "Food & Dining",
+    "Grocery",
+    "Transportation",
+    "Shopping",
+    "Entertainment",
+    "Bills & Utilities",
+    "Health & Fitness",
+    "Education",
+    "Travel",
+    "Rent",
+    "Subscriptions",
+    "Others"
+]);
 
 const ExpenseSchema = new mongoose.Schema(
     {
@@ -12,10 +26,10 @@ const ExpenseSchema = new mongoose.Schema(
         },
         title: { type: String, required: true, trim: true },
         amount: { type: Number, required: true, min: 0.01 },
-        date: { type: String, required: true }, // yyyy-mm-dd
+        date: { type: String, default: Date.now }, // yyyy-mm-dd
         paidBy: { type: String },
         currency: { type: String, default: "INR" },
-        category: { type: String },
+        category: { type: String, required: true, enum: PERSONAL_CATEGORIES, index: true },
         notes: { type: String, default: "" },
         splitMethod: { type: String, enum: ["equal", "custom", "percent"] },
         allocations: { type: Map, of: Number }
