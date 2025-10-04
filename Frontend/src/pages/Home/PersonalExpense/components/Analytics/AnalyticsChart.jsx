@@ -36,7 +36,9 @@ const AnalyticsChart = ({ expenses }) => {
         datasets: [
           {
             data: Object.values(categoryTotals),
-            backgroundColor: ["#8b5cf6", "#3b82f6", "#10b981", "#f43f5e"],
+            backgroundColor: ["#4f46e5", "#3b82f6", "#0d9488", "#dc2626", "#d97706", "#059669", "#7c3aed"],
+
+
           },
         ],
       },
@@ -93,7 +95,7 @@ const AnalyticsChart = ({ expenses }) => {
           {
             label: "Top Categories",
             data,
-            backgroundColor: ["#8b5cf6", "#3b82f6", "#10b981", "#f43f5e", "#f59e0b"],
+            backgroundColor: ["#4f46e5", "#3b82f6", "#0d9488", "#dc2626", "#d97706", "#059669", "#7c3aed"],
           },
         ],
       },

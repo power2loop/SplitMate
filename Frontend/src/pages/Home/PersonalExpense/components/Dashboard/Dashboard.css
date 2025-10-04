@@ -1,6 +1,3 @@
-/* Blue & White Theme Dashboard Styles */
-
-/* Enhanced AI Insights Card */
 .ai-insights-card {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   border-radius: 16px;
@@ -10,9 +7,7 @@
   border: 1px solid #e2e8f0;
   position: relative;
   overflow: hidden;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .ai-insights-card:hover {
@@ -55,6 +50,7 @@
 }
 
 @keyframes aiPulse {
+
   0%,
   100% {
     transform: scale(1);
@@ -85,7 +81,6 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Stats Grid - MAXIMUM SEPARATION */
 .stats-grid {
   display: flex;
   justify-content: space-between;
@@ -94,7 +89,6 @@
   width: 100%;
 }
 
-/* Enhanced Stats Cards */
 .stats-card {
   background: #ffffff;
   border-radius: 16px;
@@ -144,7 +138,6 @@
   gap: 20px;
 }
 
-/* Enhanced Card Icons */
 .card-icon {
   width: 56px;
   height: 56px;
@@ -187,13 +180,11 @@
   color: white;
 }
 
-/* Card Info - RIGHT SIDE WITH ALL CONTENT */
 .card-info {
   flex: 1;
   min-width: 0;
 }
 
-/* Header Section */
 .card-info h3 {
   font-size: 12px;
   font-weight: 600;
@@ -221,7 +212,6 @@
   transform: scale(1.02);
 }
 
-/* This Month Card - Enhanced */
 .this-month-card .card-details {
   margin-bottom: 20px;
 }
@@ -240,7 +230,6 @@
   color: #475569;
 }
 
-/* Breakdown Section - Enhanced */
 .card-breakdown {
   display: flex;
   flex-direction: column;
@@ -285,7 +274,6 @@
   color: #3b82f6;
 }
 
-/* Investments Card - Enhanced */
 .investments-card .card-value {
   color: #059669;
 }
@@ -298,7 +286,6 @@
   text-align: left;
 }
 
-/* Enhanced Investment Progress */
 .investment-progress {
   display: flex;
   align-items: center;
@@ -346,7 +333,7 @@
   transform: scale(1.05);
 }
 
-/* Mobile responsive */
+/* Responsive */
 @media (max-width: 1200px) {
   .stats-grid {
     gap: 20px;
@@ -367,7 +354,6 @@
   .stats-card {
     width: 100%;
     max-width: 500px;
-    min-width: auto;
   }
 }
 
@@ -409,7 +395,6 @@
   }
 }
 
-/* Light theme base */
 body {
   background: #f8fafc;
   color: #1e293b;

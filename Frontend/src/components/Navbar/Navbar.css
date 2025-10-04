@@ -88,6 +88,7 @@
 .nav-right-user-profile.active {
   box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
   transform: scale(1.05);
+
 }
 
 .nav-right-user-profile::before {
@@ -143,15 +144,15 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  margin-right: 10px;
-  width: 180px;
-  /* Reduced from 280px to 200px */
+  margin-right: 13px;
+  width: 170px !important;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   border: 1px solid #e2e8f0;
   animation: dropdownSlideDown 0.2s ease-out;
   z-index: 100;
+
 }
 
 @keyframes dropdownSlideDown {
@@ -282,61 +283,26 @@
   color: #374151;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .navbars {
-    padding: 10px 16px;
-  }
-
-  .brand-text-logo-left {
-    font-size: 24px !important;
-    gap: 8px;
-  }
-
-  .brand-text-logo-left img {
-    width: 35px;
-    height: 40px;
-  }
-
-  .nav-right-user-profile {
-    width: 42px;
-    height: 42px;
-  }
-
-  .navs-right-user-initials {
-    font-size: 12px;
-  }
-
-  .navs-right {
-    margin-right: 20px;
-    padding-bottom: 10px;
-  }
-
-  .profile-dropdown-menu-logo {
-    width: 180px;
-    /* Reduced mobile width from 260px to 180px */
-    right: -10px;
-  }
-}
-
+/* Extra Small Devices (Portrait phones ≤ 480px) */
 @media (max-width: 480px) {
   .navbars {
-    padding: 8px 12px;
+    padding: 8px 2px !important;
   }
 
   .brand-text-logo-left {
-    font-size: 20px !important;
-    gap: 6px;
+    font-size: 17px !important;
+    gap: 1px !important;
+    font-weight: 700 !important;
   }
 
   .brand-text-logo-left img {
-    width: 30px;
-    height: 35px;
+    width: 25px !important;
+    height: 25px !important;
   }
 
   .nav-right-user-profile {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 30px;
   }
 
   .navs-right-user-initials {
@@ -348,9 +314,105 @@
     padding-bottom: 8px;
   }
 
+  /* .profile-dropdown-menu-logo {
+    width: 260px !important;
+    right: -20px !important;
+  } */
+
+  .invite-btn {
+    width: 90% !important;
+    margin-left: 30px !important;
+  }
+}
+
+/* Small Devices (Landscape phones & small tablets: 481px - 768px) */
+@media (max-width: 768px) {
+  .navbars {
+    padding: 10px 8px;
+  }
+
+  .brand-text-logo-left {
+    font-size: 20px;
+    gap: 5px;
+  }
+
+  .brand-text-logo-left img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .nav-right-user-profile {
+    width: 45px;
+    height: 35px;
+  }
+
+  .navs-right-user-initials {
+    font-size: 12px;
+  }
+
   .profile-dropdown-menu-logo {
-    width: 160px;
-    /* Reduced small mobile width from 240px to 160px */
-    right: -20px;
+    width: 200px;
+    right: -15px;
+  }
+}
+
+/* Medium Devices (Tablets & small laptops: 769px - 1024px) */
+@media (max-width: 1024px) {
+  .navbars {
+    padding: 12px 16px;
+  }
+
+  .brand-text-logo-left {
+    font-size: 22px;
+  }
+
+  .brand-text-logo-left img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .nav-right-user-profile {
+    width: 50px;
+    height: 40px;
+  }
+
+  .navs-right-user-initials {
+    font-size: 13px;
+  }
+
+  .profile-dropdown-menu-logo {
+    width: 220px;
+    right: -10px;
+  }
+}
+
+/* Large Devices (Laptops & desktops: ≥ 1025px) */
+@media (min-width: 1025px) {
+  .navbars {
+    padding: 16px 24px;
+  }
+
+  .brand-text-logo-left {
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  .brand-text-logo-left img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nav-right-user-profile {
+    width: 55px;
+    height: 45px;
+  }
+
+  .navs-right-user-initials {
+    font-size: 14px;
+  }
+
+  .profile-dropdown-menu-logo {
+    width: 240px;
+    right: 0;
   }
 }

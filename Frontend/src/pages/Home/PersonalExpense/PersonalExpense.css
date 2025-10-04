@@ -1,25 +1,24 @@
 .personal-expense {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* full viewport height */
-  /* background: linear-gradient(135deg, #4e54c8, #8f94fb); */
+  height: 100vh;
   width: 100%;
 }
 
 .personal-expense-nav {
-  flex-shrink: 0; /* navbar stays fixed */
+  flex-shrink: 0;
   z-index: 10;
 }
 
 .personal-expense-content {
   flex: 1;
-  overflow-y: auto; /* scrollable content */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #1976d2 #e3f2fd; /* thumb | track */
-  padding-right: 8px; /* optional: avoid content touching scrollbar */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #1976d2 #e3f2fd;
+  padding: 1rem;
 }
 
-/* Chrome, Edge, Safari */
+/* Scrollbars (Webkit) */
 .personal-expense-content::-webkit-scrollbar {
   width: 8px;
 }
@@ -39,8 +38,8 @@
   background-color: #1565c0;
 }
 
-/* Fade-in for view switches */
-.personal-expense-content > * {
+/* Fade-in for sections */
+.personal-expense-content>* {
   animation: fadeIn 0.4s ease-in-out;
 }
 
@@ -56,8 +55,7 @@
   }
 }
 
-/* Sections */
-
+/* Section Cards */
 .ai-insights,
 .stats-grid,
 .expense-form-container,
@@ -67,68 +65,37 @@
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  margin: 20px;
-}
-
-.ai-insights {
-  width: 97%;
-}
-
-.stats-grid {
-  width: 97%;
-}
-
-/* Grid Layout for Form + Chart */
-.dashboard-grid {
-  display: flex;
-  flex-direction: row;
-
-  /* grid-template-columns: 1fr 1fr; */
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr 2fr;
-  }
-}
-
-/* Headings */
-.page-container h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-  /* dark gray */
   margin-bottom: 1rem;
 }
 
-/* Buttons inside forms */
-.expense-form-container button {
-  background-color: #3b82f6;
-  /* blue */
-  color: #fff;
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+/* Insights & Stats full width */
+.ai-insights,
+.stats-grid {
+  width: 100%;
 }
 
-.expense-form-container button:hover {
-  background-color: #2563eb;
-  /* darker blue on hover */
-}
-
-/* Analytics Chart */
-.analytics-chart-container {
-  width: 65%;
-  height: 100%;
+/* Dashboard Grid: Form + Chart */
+.dashboard-grid {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
 }
 
-/* Transaction List */
+.expense-form-container {
+  flex: 1 1 300px;
+  min-width: 280px;
+}
+
+.analytics-chart-container {
+  flex: 2 1 500px;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Table */
 .transaction-list-container table {
   width: 100%;
   border-collapse: collapse;
@@ -153,7 +120,6 @@
 /* Delete Button */
 .transaction-list-container .delete-btn {
   background-color: #ef4444;
-  /* red */
   color: #fff;
   padding: 0.25rem 0.75rem;
   border-radius: 6px;
@@ -163,4 +129,66 @@
 
 .transaction-list-container .delete-btn:hover {
   background-color: #b91c1c;
+}
+
+/* === RESPONSIVE BREAKPOINTS === */
+
+/* Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    flex-wrap: nowrap;
+  }
+}
+
+/* Tablet (641px–1023px) */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .dashboard-grid {
+    flex-direction: column;
+  }
+
+  .analytics-chart-container {
+    width: 100%;
+    min-height: 320px;
+  }
+}
+
+/* Mobile (≤640px) */
+@media (max-width: 640px) {
+  .personal-expense-content {
+    padding: 0.5rem;
+  }
+
+  .dashboard-grid {
+    flex-direction: column;
+  }
+
+  .expense-form-container,
+  .analytics-chart-container {
+    width: 100%;
+  }
+
+  .transaction-list-container table {
+    font-size: 0.85rem;
+  }
+
+  .transaction-list-container th,
+  .transaction-list-container td {
+    padding: 0.5rem;
+  }
+}
+
+/* Extra small (≤360px) */
+@media (max-width: 360px) {
+
+  .ai-insights,
+  .stats-grid,
+  .expense-form-container,
+  .analytics-chart-container,
+  .transaction-list-container {
+    padding: 0.75rem;
+  }
+
+  .transaction-list-container table {
+    font-size: 0.75rem;
+  }
 }

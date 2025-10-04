@@ -87,9 +87,8 @@ const StatsGrid = ({ expenses }) => {
       .replace(/^₹/, "₹");
   };
 
-  // Debug info (you can remove this in production)
   console.log("📊 StatsGrid Debug Info:", {
-    currentMonth: currentMonth + 1, // +1 for human readable
+    currentMonth: currentMonth + 1,
     currentYear,
     lastMonth: lastMonth + 1,
     lastMonthYear,

@@ -13,7 +13,6 @@ const PersonalExpense = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch on mount (and on login if token changes)
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -74,7 +73,14 @@ const PersonalExpense = () => {
           </div>
         </div>
         <div className="transaction-list-container">
-          {loading ? <div className="card-effect">Loading...</div> : <TransactionList expenses={expenses} onDeleteExpense={deleteExpense} />}
+          {loading ? (
+            <div className="card-effect">Loading...</div>
+          ) : (
+            <TransactionList
+              expenses={expenses}
+              onDeleteExpense={deleteExpense}
+            />
+          )}
         </div>
       </div>
     </div>
