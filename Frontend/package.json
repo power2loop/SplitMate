@@ -15,6 +15,7 @@
     "@nuxtjs/color-mode": "^3.5.2",
     "@radix-ui/react-slot": "^1.2.3",
     "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^1.10.74",
     "@tabler/icons-react": "^3.34.1",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/vite": "^4.1.13",
