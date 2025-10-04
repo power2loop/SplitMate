@@ -1,30 +1,60 @@
+// src/components/WalletCard/WalletCard.jsx
 import React, { useEffect, useState } from "react";
-
+import { api } from "../../services/api"; // adjust path if needed
 import "./WalletCard.css";
 
 const WalletCard = () => {
   const [walletData, setWalletData] = useState({
-    totalSpent: 57850,
-    totalSpentChange: 18.2,
-    youOwe: 19440,
-    youOweChange: -5.7,
+    totalSpent: 0,
+    totalInvestment: 0,
+    youOwe: 0,
     lastUpdated: new Date(),
+    totalSpentChange: 0,
+    youOweChange: 0,
+    totalInvestmentChange: 0,
   });
 
   const [settleStatus, setSettleStatus] = useState(null); // null | "settling" | "done"
 
-  const updateWalletData = () => {
-    setWalletData({
-      totalSpent: Math.floor(Math.random() * 80000) + 20000,
-      totalSpentChange: +(Math.random() * 40 - 20).toFixed(1),
-      youOwe: Math.floor(Math.random() * 10000) + 500,
-      youOweChange: +(Math.random() * 20 - 10).toFixed(1),
-      lastUpdated: new Date(),
-    });
+  // Keep previous values for calculating change
+  const [prevData, setPrevData] = useState({ totalSpent: 0, youOwe: 0, totalInvestment: 0 });
+
+  const fetchWalletData = async () => {
+    try {
+      const data = await api("users/wallet"); // GET /wallet from backend
+      const newTotalSpent = data.totalSpent || 0;
+      const newYouOwe = data.totalOwePending || 0;
+      const newInvestment = data.totalInvestment || 0;
+
+      setWalletData({
+        totalSpent: newTotalSpent,
+        totalSpentChange: prevData.totalSpent
+          ? +(((newTotalSpent - prevData.totalSpent) / prevData.totalSpent) * 100).toFixed(1)
+          : 0,
+        youOwe: newYouOwe,
+        youOweChange: prevData.youOwe
+          ? +(((newYouOwe - prevData.youOwe) / prevData.youOwe) * 100).toFixed(1)
+          : 0,
+        totalInvestment: newInvestment,
+        totalInvestmentChange: prevData.totalInvestment
+          ? +(((newInvestment - prevData.totalInvestment) / prevData.totalInvestment) * 100).toFixed(1)
+          : 0,
+        lastUpdated: new Date(data.lastUpdated),
+      });
+
+      setPrevData({
+        totalSpent: newTotalSpent,
+        youOwe: newYouOwe,
+        totalInvestment: newInvestment,
+      });
+    } catch (err) {
+      console.error("Error fetching wallet data:", err.message);
+    }
   };
 
   useEffect(() => {
-    const interval = setInterval(updateWalletData, 30000);
+    fetchWalletData(); // initial fetch
+    const interval = setInterval(fetchWalletData, 30000); // refresh every 30s
     return () => clearInterval(interval);
   }, []);
 
@@ -62,12 +92,14 @@ const WalletCard = () => {
           <div className="ec-metric-label">Total Spent</div>
           <div className="ec-metric-value">{formatCurrency(walletData.totalSpent)}</div>
           <div
-            className={`ec-metric-change ${walletData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"}`}
+            className={`ec-metric-change ${
+              walletData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"
+            }`}
           >
             {formatPercentage(walletData.totalSpentChange)}
           </div>
         </div>
-        <div className="ec-metric-card">
+        {/* <div className="ec-metric-card">
           <div className="ec-metric-label">You Owe</div>
           <div className="ec-metric-value">{formatCurrency(walletData.youOwe)}</div>
           <div
@@ -75,14 +107,16 @@ const WalletCard = () => {
           >
             {formatPercentage(walletData.youOweChange)}
           </div>
-        </div>
+        </div> */}
         <div className="ec-metric-card">
           <div className="ec-metric-label">Your Investment</div>
-          <div className="ec-metric-value">{formatCurrency(walletData.youOwe)}</div>
+          <div className="ec-metric-value">{formatCurrency(walletData.totalInvestment)}</div>
           <div
-            className={`ec-metric-change ${walletData.youOweChange >= 0 ? "ec-increase" : "ec-decrease"}`}
+            className={`ec-metric-change ${
+              walletData.totalInvestmentChange >= 0 ? "ec-increase" : "ec-decrease"
+            }`}
           >
-            {formatPercentage(walletData.youOweChange)}
+            {formatPercentage(walletData.totalInvestmentChange)}
           </div>
         </div>
       </div>
