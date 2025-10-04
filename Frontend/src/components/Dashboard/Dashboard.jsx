@@ -1,7 +1,6 @@
 // Frontend/src/components/Dashboard/Dashboard.jsx
 import React from "react";
 import { useStore } from "../../Context/StoreContext.jsx";
-import ExpenseCard from "../ExpenseCard/ExpenseCard";
 import WalletCard from "../WalletCard/WalletCard";
 import GreetBot from "../GreetBot/GreetBot.jsx"
 import Chart from "../Chart/Chart";
@@ -17,7 +16,7 @@ const Dashboard = () => {
           <p>
             Hello,
             <br />
-            <span className="gradient-text">{user?.username || "Guest"}</span>
+            <span className="gradient-text">{user?.username ? user.username.split(" ")[0] : "Guest"}</span>
           </p>
         </div>
         <div className="bot-card">
