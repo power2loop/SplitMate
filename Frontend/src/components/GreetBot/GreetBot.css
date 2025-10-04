@@ -1,3 +1,37 @@
-canvas {
-  max-height: none !important;
+/* GreetBot.css */
+.spline-container {
+  position: relative;
+  width: 100%;
+  max-width: 350px; /* desktop max */
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* If using react-spline prop canvasClassName="spline-canvas", target it */
+.spline-container canvas,
+.spline-container .spline-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .spline-container { max-width: 300px; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .spline-container { max-width: 250px; }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .spline-container { max-width: 200px; }
 }

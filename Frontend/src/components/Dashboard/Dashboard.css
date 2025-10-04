@@ -1,94 +1,139 @@
-/* only style the main content area */
+/* Dashboard.css */
+
+/* Container */
 .main-content {
-  /* background-color: #00c6ff; */
-  padding: 7px;
-  height: 100vh;
+  padding: 10px;
   display: flex;
-  width: 100%;
-  justify-content: space-evenly;
   flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  background: transparent;
 }
 
+/* Cards grid: responsive auto-fit minmax for fluid columns */
 .main-content .cards {
-  height: 45%;
-  /* background-color: #1a1a1a; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Greeting card */
+#greet {
+  min-height: 220px;
   display: flex;
-  /* gap: 5%; */
-  flex-direction: row;
-  align-items: flex-start;
-  /* background-color: #ff2727; */
-}
-
-#data-card{
-  width: 45%;
-  margin-left: 10%;
-}
-
-.cards > .card-small {
-  padding: 15px 0;
-  /* border: 1px solid #ffffff; */
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
 }
 
 .main-content #greet p {
-  font-size: xx-large;
+  font-size: clamp(1rem, 2.5vw, 2rem);
   font-weight: 700;
   color: #4b4b4b;
+  line-height: 1.35;
+  margin: 0;
 }
 
 .main-content #greet p span {
-  font-size: 3.5vw;
-  font-size: clamp(1.25rem, 4vw, 2.5rem);
-  font-weight: bolder;
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  font-weight: 900;
 }
 
-.main-content .bot-card{
-  height: 100%;
-  width: 25%;
-  /* background-color: #00c6ff; */
+/* Wallet card cell */
+#data-card {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Small cards wrapper */
+.cards > .card-small {
+  display: flex;
   position: relative;
+  border-radius: 16px;
+  background: transparent;
 }
 
-.main-content .bot-card .over{
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  height: 57px;
-  z-index: 10;
-  width: 70%;
-  background-color: #f7fafc;
-}
- 
+/* Chart section */
 .main-content > .card-large {
-  /* background: #e96464; */
-  grid-column: 1 / -1;
-  height: 50%;
+  width: 100%;
+  margin-top: 4px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.card-large {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.card-large > .chart-container {
+  flex: 1 1 100%;
+  min-height: 0;
 }
 
 
+/* Gradient text animation */
 .gradient-text {
-  /* create a big blue gradient that can move */
   background: linear-gradient(270deg, #00c6ff, #0072ff, #00c6ff);
   background-size: 400% 400%;
-
-  /* clip the background to the text */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  /* animation */
   animation: gradientFlow 10s ease infinite;
-  display: inline-block; /* needed for background-clip to behave */
+  display: inline-block;
+}
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-@keyframes gradientFlow {
-  0% {
-    background-position: 0% 50%;
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+  #greet {
+    flex-direction: row;
+    text-align: left;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+  .main-content > .card-large {
+    width: 100%;
+    margin: 0 auto;
   }
 }
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  #greet {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+  .main-content #greet p { font-size: clamp(1rem, 5vw, 1.5rem); }
+  .main-content #greet p span { font-size: clamp(1.2rem, 6vw, 2rem); }
+}
+
+/* Extra small */
+@media (max-width: 480px) {
+  .main-content { padding: 8px; }
+  #greet { gap: 10px; }
+  .main-content #greet p { font-size: 1rem; }
+  .main-content #greet p span { font-size: 1.35rem; }
+  .main-content > .card-large {
+    width: 100%;
+    margin: 0 auto;
+    /* height: 500px;  <-- remove this to let resizer control height */
+  }
+}
+

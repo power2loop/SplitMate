@@ -13,16 +13,10 @@ const Dashboard = () => {
     <div className="main-content">
       <div className="cards">
         <div className="card-small" id="greet">
-          <p>
-            Hello,
-            <br />
-            <span className="gradient-text">{user?.username ? user.username.split(" ")[0] : "Guest"}</span>
-          </p>
-        </div>
-        <div className="bot-card">
+          <p>Hello,<br /><span className="gradient-text">{user?.username ? user.username.split(" ")[0] : "Guest"}</span></p>
           <GreetBot/>
-          <div className="over"></div>
         </div>
+        {/* <div className="over"></div> */}
         <div className="card-small" id="data-card">
           <WalletCard />
         </div>
