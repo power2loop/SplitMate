@@ -13,11 +13,15 @@
   height: 45%;
   /* background-color: #1a1a1a; */
   display: flex;
-  justify-content: flex-start;
-  gap: 8vw;
+  /* gap: 5%; */
   flex-direction: row;
   align-items: flex-start;
   /* background-color: #ff2727; */
+}
+
+#data-card{
+  width: 45%;
+  margin-left: 10%;
 }
 
 .cards > .card-small {
@@ -37,11 +41,29 @@
   font-weight: bolder;
 }
 
+.main-content .bot-card{
+  height: 100%;
+  width: 25%;
+  /* background-color: #00c6ff; */
+  position: relative;
+}
+
+.main-content .bot-card .over{
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  height: 60px;
+  z-index: 10;
+  width: 50%;
+  background-color: #f7fafc;
+}
+ 
 .main-content > .card-large {
   /* background: #e96464; */
   grid-column: 1 / -1;
   height: 50%;
 }
+
 
 .gradient-text {
   /* create a big blue gradient that can move */

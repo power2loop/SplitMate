@@ -145,9 +145,9 @@
 
 /* Metrics */
 .ec-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
@@ -159,22 +159,9 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  width: 80%;
 }
 
-.ec-metric-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
-  transition: left 0.5s ease;
-}
-
-.ec-metric-card:hover::before {
-  left: 100%;
-}
 
 .ec-metric-card:hover {
   background: rgba(59, 130, 246, 0.04);

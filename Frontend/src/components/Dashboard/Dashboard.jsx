@@ -1,13 +1,11 @@
 // Frontend/src/components/Dashboard/Dashboard.jsx
 import React from "react";
-
-import Chart from "../Chart/Chart";
-
-import "./Dashboard.css";
-
 import { useStore } from "../../Context/StoreContext.jsx";
 import ExpenseCard from "../ExpenseCard/ExpenseCard";
 import WalletCard from "../WalletCard/WalletCard";
+import GreetBot from "../GreetBot/GreetBot.jsx"
+import Chart from "../Chart/Chart";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const { user } = useStore();
@@ -22,10 +20,11 @@ const Dashboard = () => {
             <span className="gradient-text">{user?.username || "Guest"}</span>
           </p>
         </div>
-        <div className="card-small">
-          <ExpenseCard />
+        <div className="bot-card">
+          <GreetBot/>
+          <div className="over"></div>
         </div>
-        <div className="card-small">
+        <div className="card-small" id="data-card">
           <WalletCard />
         </div>
       </div>

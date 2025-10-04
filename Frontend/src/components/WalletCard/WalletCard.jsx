@@ -76,6 +76,15 @@ const WalletCard = () => {
             {formatPercentage(walletData.youOweChange)}
           </div>
         </div>
+        <div className="ec-metric-card">
+          <div className="ec-metric-label">Your Investment</div>
+          <div className="ec-metric-value">{formatCurrency(walletData.youOwe)}</div>
+          <div
+            className={`ec-metric-change ${walletData.youOweChange >= 0 ? "ec-increase" : "ec-decrease"}`}
+          >
+            {formatPercentage(walletData.youOweChange)}
+          </div>
+        </div>
       </div>
 
       <div className="ec-actions">
