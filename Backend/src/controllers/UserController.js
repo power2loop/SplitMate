@@ -1,6 +1,10 @@
 import User from '../models/UserModel.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import Expense from "../models/ExpenseModel.js";
+import Settlement from "../models/Settlement.js"; 
+import GroupExpense from "../models/GroupModel.js";
 
 export const getAllUsers = async (req, res) => {
     try {
@@ -10,6 +14,88 @@ export const getAllUsers = async (req, res) => {
         console.error(err);
         return res.status(500).json({ success: false, message: "Server error" });
     }
+};
+
+export const getUserWalletData = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "Not authenticated" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
+
+    if (!mongoose.Types.ObjectId.isValid(userId))
+      return res.status(400).json({ message: "Invalid userId" });
+
+    const objectUserId = new mongoose.Types.ObjectId(userId);
+
+    // 1️⃣ Personal expenses
+    const personalExpenses = await Expense.find({ user: objectUserId }).sort({ date: -1 });
+
+    // 2️⃣ Groups where user is a member
+    const groups = await GroupExpense.find({ members: objectUserId }).select("expenses");
+
+    // 3️⃣ All group expense IDs
+    const groupExpenseIds = groups.flatMap(g => g.expenses);
+
+    // 4️⃣ Fetch group expenses **where user has allocations**
+    const groupExpenses = await Expense.find({
+      _id: { $in: groupExpenseIds },
+      type: "group",
+      [`allocations.${userId}`]: { $exists: true } // user has a share
+    }).sort({ date: -1 });
+
+    // 5️⃣ Map group expenses to only include logged-in user's allocation
+    const userGroupExpenses = groupExpenses.map(exp => ({
+      _id: exp._id,
+      title: exp.title,
+      amount: exp.allocations.get(userId) || 0, // only the user's allocation
+      date: exp.date,
+      currency: exp.currency,
+      category: exp.category,
+      type: "group",
+      notes: exp.notes,
+      createdAt: exp.createdAt,
+      updatedAt: exp.updatedAt
+    }));
+
+    // 6️⃣ Total investment (personal + category=Investment)
+    const totalInvestment = personalExpenses
+      .filter(e => e.category === "Investment")
+      .reduce((sum, e) => sum + (e.amount || 0), 0);
+
+    // 7️⃣ Total owes from settlements
+    const [owePendingAgg, oweAllAgg] = await Promise.all([
+      Settlement.aggregate([
+        { $match: { from: objectUserId, status: "pending" } },
+        { $group: { _id: null, total: { $sum: "$amount" } } }
+      ]),
+      Settlement.aggregate([
+        { $match: { from: objectUserId } },
+        { $group: { _id: null, total: { $sum: "$amount" } } }
+      ])
+    ]);
+
+    const totalOwePending = owePendingAgg[0]?.total || 0;
+
+    // 8️⃣ Combine personal + user's allocation from groups
+    const allExpenses = [...personalExpenses, ...userGroupExpenses];
+
+    // 9️⃣ Total spent
+    const totalSpent = allExpenses.reduce((sum, e) => sum + (e.amount || 0), 0);
+
+    return res.status(200).json({
+      totalSpent,
+      totalInvestment,
+      totalOwePending,
+      expenses: allExpenses,
+      lastUpdated: new Date()
+    });
+
+  } catch (error) {
+    console.error("getUserWalletData error:", error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
 };
 
 export const registerUser = async (req, res) => {

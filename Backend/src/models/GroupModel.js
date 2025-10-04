@@ -8,7 +8,7 @@ const groupSchema = new Schema(
     description: { type: String, trim: true, default: "" }, // optional
     inviteCode: { type: String, unique: true, index: true },
     createdBy: { type: Types.ObjectId, ref: "User", required: true },
-    members: [{ type: Types.ObjectId, ref: "User" }],
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     expenses: [{ type: Types.ObjectId, ref: "Expense" }],
   },
   { timestamps: true }
