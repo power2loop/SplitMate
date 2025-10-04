@@ -121,7 +121,7 @@ const AnalyticsChart = ({ expenses }) => {
           ))}
         </div>
       </div>
-      <div className="chart-container">
+      <div className="pe-chart-container">
         <canvas ref={chartRef}></canvas>
       </div>
     </div>

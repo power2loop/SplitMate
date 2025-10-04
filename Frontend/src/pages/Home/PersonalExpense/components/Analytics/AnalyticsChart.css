@@ -61,10 +61,12 @@
 }
 
 /* Chart Container */
-.chart-container {
+.pe-chart-container {
   height: 16rem;
+  display: flex;
+  justify-content: center;
 }
 
-canvas {
+.pe-chart-container canvas {
   max-height: 250px;
 }
