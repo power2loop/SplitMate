@@ -1,7 +1,9 @@
+/* ---------------- Base ---------------- */
 .cta {
   background: linear-gradient(135deg, var(--background) 0%, var(--background-alt) 100%);
   position: relative;
   overflow: hidden;
+  padding: clamp(3rem, 6vw, 6rem) 0;
 }
 
 .cta::before {
@@ -13,29 +15,36 @@
   height: 200%;
   background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
   animation: float 8s ease-in-out infinite;
+  z-index: 0;
 }
 
+/* ---------------- Layout ---------------- */
 .cta-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-3xl);
+  gap: clamp(2rem, 4vw, 5rem);
   align-items: center;
   position: relative;
   z-index: 1;
 }
 
+/* Text Section */
 .cta-text {
-  max-width: 600px;
+  max-width: 640px;
 }
 
 .cta-text h2 {
   margin-bottom: var(--spacing-md);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.2;
 }
 
 .cta-text p {
   margin-bottom: var(--spacing-xl);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
 }
 
+/* ---------------- Features ---------------- */
 .cta-features {
   display: flex;
   flex-direction: column;
@@ -51,9 +60,11 @@
   font-weight: 500;
 }
 
+/* ---------------- Buttons ---------------- */
 .cta-actions {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  flex-wrap: wrap;
 }
 
 .cta-primary {
@@ -69,7 +80,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
   transition: left 0.8s ease;
 }
 
@@ -77,6 +88,7 @@
   left: 100%;
 }
 
+/* ---------------- Stats ---------------- */
 .cta-visual {
   display: flex;
   justify-content: center;
@@ -88,7 +100,7 @@
   grid-template-columns: 1fr;
   gap: var(--spacing-lg);
   width: 100%;
-  max-width: 300px;
+  max-width: 320px;
 }
 
 .stat-card {
@@ -98,7 +110,7 @@
   text-align: center;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   position: relative;
   overflow: hidden;
 }
@@ -119,26 +131,77 @@
 }
 
 .stat-number {
-  font-size: 2.5rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
   font-weight: 800;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
   margin-bottom: var(--spacing-xs);
 }
 
 .stat-label {
   color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
 }
 
-/* Mobile Styles */
-@media (max-width: 768px) {
+/* ---------------- Responsiveness ---------------- */
+
+/* ✅ Tablets (641px–1023px) */
+@media (max-width: 1023px) {
   .cta-content {
     grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
+    text-align: center;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .cta-text {
+    margin: 0 auto;
+  }
+
+  .cta-actions {
+    justify-content: center;
+  }
+
+  .cta-visual {
+    order: -1;
+    margin-bottom: var(--spacing-xl);
+
+  }
+
+  .cta-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    max-width: 100%;
+  }
+
+  .stat-card {
+    padding: var(--spacing-md);
+  }
+
+  .stat-number {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .lp-heading-2 {
+    font-size: 2.5em !important;
+  }
+}
+
+/* ✅ Mobile (≤640px) */
+@media (max-width: 640px) {
+  .cta {
+    padding: clamp(2rem, 5vw, 4rem) 0;
+  }
+
+  .lp-heading-2 {
+    font-size: 2.5em !important;
+  }
+
+  .cta-content {
+    display: flex;
+    flex-direction: column-reverse;
     text-align: center;
   }
 
@@ -147,20 +210,45 @@
     align-items: center;
   }
 
-  .cta-visual {
-    order: -1;
+  .lp-btn {
+    width: 100%;
+    max-width: 300px;
   }
 
   .cta-stats {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-sm);
+    /* grid-template-columns: 1fr;
+    gap: var(--spacing-md); */
+    display: flex;
+    flex-direction: column;
+
   }
 
   .stat-card {
     padding: var(--spacing-md);
+    width: 80vw !important;
+  }
+}
+
+/* ✅ Large Desktop (≥1440px) */
+@media (min-width: 1440px) {
+  .cta-content {
+    gap: clamp(4rem, 6vw, 7rem);
   }
 
   .stat-number {
-    font-size: 1.5rem;
+    font-size: 3rem;
+  }
+}
+
+/* Animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
   }
 }

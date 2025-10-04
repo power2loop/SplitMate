@@ -11,14 +11,16 @@ const CTA = () => {
     <section className="cta lp-section" id="CTA">
       <div className="container">
         <div className="cta-content">
+          {/* Text Section */}
           <div className="cta-text">
             <h2 className="lp-heading-2 animate-fade-in">
               Ready to simplify your
               <span className="gradient-text"> expense sharing?</span>
             </h2>
+
             <p className="lp-text-large lp-text-muted animate-fade-in">
-              Join thousands of users who have already made their financial lives easier. Start
-              splitting expenses the smart way today.
+              Join thousands of users who have already made their financial lives easier.
+              Start splitting expenses the smart way today.
             </p>
 
             <div className="cta-features animate-slide-in-left">
@@ -44,10 +46,13 @@ const CTA = () => {
                 <span>Get Started Free</span>
                 <ArrowRight className="icon" />
               </button>
-              <button className="lp-btn lp-btn-secondary lp-btn-large">Download App</button>
+              <button className="lp-btn lp-btn-secondary lp-btn-large">
+                Download App
+              </button>
             </div>
           </div>
 
+          {/* Visual Section */}
           <div className="cta-visual animate-slide-in-right">
             <div className="cta-stats">
               <div className="stat-card">

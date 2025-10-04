@@ -1,7 +1,7 @@
 import logo from "@/assets/logo.png";
 import { Menu, X } from "lucide-react";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./Navbar.css";
 
@@ -15,17 +15,19 @@ const Navbar = () => {
         <div className="lp-nav-content">
           {/* Brand Logo */}
           <div className="lp-nav-brand">
-            {/* <Link to="/" style={{ textDecoration: "none" }}> */}
             <h2 className="lp-brand-text-logo">
-              <img src={logo} alt="logo" style={{ width: "40px", height: "45px" }} />
+              <img
+                src={logo}
+                alt="logo"
+                style={{ width: "40px", height: "45px" }}
+              />
               SplitMate
             </h2>
-            {/* </Link> */}
           </div>
 
           {/* Navigation Links */}
           <div className={`lp-nav-menu ${isOpen ? "lp-nav-menu-open" : ""}`}>
-            <a href="#features" className="lp-">
+            <a href="#features" className="lp-nav-link">
               Features
             </a>
             <a href="#how-it-works" className="lp-nav-link">
@@ -37,20 +39,45 @@ const Navbar = () => {
             <a href="#support" className="lp-nav-link">
               Support
             </a>
+
+            {/* Actions inside dropdown on mobile */}
+            <div className="lp-nav-actions mobile-actions">
+              <button
+                className="lp-btn lp-btn-secondary"
+                onClick={() => navigate("/register")}
+              >
+                Sign In
+              </button>
+              <button
+                className="lp-btn lp-btn-primary"
+                onClick={() => navigate("/register")}
+              >
+                Get Started
+              </button>
+            </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="lp-nav-actions">
-            <button className="lp-btn lp-btn-secondary" onClick={() => navigate("/register")}>
+          {/* Desktop Action Buttons */}
+          <div className="lp-nav-actions desktop-actions">
+            <button
+              className="lp-btn lp-btn-secondary"
+              onClick={() => navigate("/register")}
+            >
               Sign In
             </button>
-            <button className="lp-btn lp-btn-primary" onClick={() => navigate("/register")}>
+            <button
+              className="lp-btn lp-btn-primary"
+              onClick={() => navigate("/register")}
+            >
               Get Started
             </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button className="lp-mobile-menu-btn lp-md-hidden" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            className="lp-mobile-menu-btn"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {isOpen ? <X className="lp-icon" /> : <Menu className="lp-icon" />}
           </button>
         </div>

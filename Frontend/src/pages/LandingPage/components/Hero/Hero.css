@@ -28,16 +28,14 @@
   animation: float 6s ease-in-out infinite;
 }
 
-/* Layout: mobile-first single column */
+/* Layout: mobile-first */
 .hero-content {
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(16px, 4vw, 48px);
-  /* fluid gap */
   align-items: center;
   min-height: clamp(520px, 70vh, 700px);
   text-align: center;
-  /* better for single column */
 }
 
 /* Tablet and up: two columns */
@@ -62,15 +60,15 @@
 }
 
 .hero-title {
-  font-size: clamp(2.1rem, 5vw, 3.5rem);
+  font-size: clamp(1.75rem, 5vw, 3.5rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.15;
   margin-bottom: clamp(12px, 2.5vw, 20px);
   color: var(--text-primary);
 }
 
 .hero-description {
-  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-size: clamp(0.95rem, 1.6vw, 1.25rem);
   line-height: 1.65;
   color: var(--text-secondary);
   margin-bottom: clamp(16px, 3vw, 28px);
@@ -79,6 +77,7 @@
 /* Actions */
 .hero-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: clamp(10px, 2vw, 16px);
   margin-bottom: clamp(16px, 3vw, 28px);
   justify-content: center;
@@ -109,13 +108,13 @@
   left: 100%;
 }
 
-/* Visual area */
+/* Visual */
 .hero-visual {
   position: relative;
-  height: clamp(320px, 45vw, 500px);
+  height: clamp(280px, 45vw, 500px);
 }
 
-/* If you still use floating feature cards, keep these responsive sizes; otherwise, you can remove the whole block */
+/* Feature Cards */
 .feature-cards {
   position: relative;
   height: 100%;
@@ -129,10 +128,8 @@
   padding: clamp(var(--spacing-md), 2.5vw, var(--spacing-lg));
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border);
-  width: clamp(220px, 32vw, 280px);
-  transition:
-    transform var(--transition-normal),
-    box-shadow var(--transition-normal);
+  width: clamp(200px, 32vw, 280px);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .feature-card:hover {
@@ -140,7 +137,7 @@
   box-shadow: var(--shadow-xl);
 }
 
-/* Desktop float positions */
+/* Desktop floating */
 @media (min-width: 1024px) {
   .card-1 {
     top: 0;
@@ -162,30 +159,66 @@
   }
 }
 
-/* Tablet positions (tighter) */
+/* ✅ Tablet (640px–1023px) — fixed version */
 @media (min-width: 640px) and (max-width: 1023.98px) {
-  .card-1 {
-    top: 0;
-    left: 10%;
+  .hero-content {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 1rem;
   }
 
-  .card-2 {
-    top: 40%;
-    right: 4%;
-    transform: translateY(-50%);
+  .hero-visual {
+    position: relative;
+    height: auto;
+    /* Allow stacking */
   }
 
+  .feature-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+    height: auto;
+    position: relative;
+    padding-top: 10%;
+    padding-bottom: 10px;
+  }
+
+  .feature-card {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0;
+    transform: none;
+    animation: none;
+  }
+
+  .card-1,
+  .card-2,
   .card-3 {
-    bottom: 0;
-    left: 6%;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
   }
 }
 
-/* Mobile: stack visual above, no absolute overlap to avoid clipping */
+/* Mobile stacked */
 @media (max-width: 639.98px) {
+  .hero-title {
+    margin-top: 40px;
+    font-size: 2em !important;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
   .hero-visual {
     order: -1;
-    height: clamp(280px, 48vw, 360px);
+    height: auto;
+    margin-bottom: var(--spacing-md);
   }
 
   .feature-card {
@@ -197,17 +230,43 @@
   .card-1,
   .card-2,
   .card-3 {
-    top: auto;
-    right: auto;
-    left: auto;
-    bottom: auto;
+    position: relative;
     transform: none;
     animation: none;
   }
 }
 
-/* Typography/animation helpers */
+/* Ultra-small screens */
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.5rem;
+    margin-top: 40px;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lp-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .feature-card {
+    width: 95%;
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Float animation */
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0);
