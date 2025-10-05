@@ -21,10 +21,10 @@ const Home = () => {
             className={`sidebar-overlay ${sidebarOpen ? "is-visible" : ""}`}
             onClick={() => setSidebarOpen(false)}
           />
-        </>
-      )}
 
-      {/* Top bar visible on ≤1024px */}
+
+
+                {/* Top bar visible on ≤1024px */}
       <header className="app-topbar">
   <div className="topbar-left">
     <img src={logo} alt="logo" className="topbar-logo" />
@@ -43,8 +43,9 @@ const Home = () => {
     </svg>
   </button>
 </header>
+        </>
 
-
+      )}
       <Outlet />
     </div>
   );
