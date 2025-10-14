@@ -1,216 +1,217 @@
-import { Calendar, ChevronDown } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import {
-  Area,
-  AreaChart as RechartsAreaChart,
-  ReferenceLine,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-} from "recharts";
-
+import React, { useEffect, useRef, useState } from "react";
+import ReactECharts from "echarts-for-react";
+import { api } from "../../services/api";
 import "./Chart.css";
 
-const generateRandomData = (baseValue = 65) => [
-  { date: "Apr 2", value: Math.floor(Math.random() * 40) + baseValue - 20 },
-  { date: "Apr 7", value: Math.floor(Math.random() * 40) + baseValue - 15 },
-  { date: "Apr 12", value: Math.floor(Math.random() * 40) + baseValue - 10 },
-  { date: "Apr 17", value: Math.floor(Math.random() * 40) + baseValue - 5 },
-  { date: "Apr 22", value: Math.floor(Math.random() * 40) + baseValue },
-  { date: "Apr 27", value: Math.floor(Math.random() * 40) + baseValue + 5 },
-  { date: "May 2", value: Math.floor(Math.random() * 40) + baseValue + 10 },
-  { date: "May 7", value: Math.floor(Math.random() * 40) + baseValue + 5 },
-  { date: "May 12", value: Math.floor(Math.random() * 40) + baseValue },
-  { date: "May 17", value: Math.floor(Math.random() * 40) + baseValue + 15 },
-  { date: "May 23", value: Math.floor(Math.random() * 40) + baseValue + 8 },
-  { date: "May 29", value: Math.floor(Math.random() * 40) + baseValue + 12 },
-  { date: "Jun 3", value: Math.floor(Math.random() * 40) + baseValue + 6 },
-  { date: "Jun 8", value: Math.floor(Math.random() * 40) + baseValue + 18 },
-  { date: "Jun 13", value: Math.floor(Math.random() * 40) + baseValue + 22 },
-  { date: "Jun 18", value: Math.floor(Math.random() * 40) + baseValue + 16 },
-  { date: "Jun 23", value: Math.floor(Math.random() * 40) + baseValue + 25 },
-  { date: "Jun 30", value: Math.floor(Math.random() * 40) + baseValue + 20 },
-];
+const ComboChart = () => {
+  const pieRef = useRef(null);
+  const barRef = useRef(null);
+  const containerRef = useRef(null);
 
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    const val = payload[0]?.value;
-    return (
-      <div className="custom-tooltip">
-        <p className="tooltip-label">{label}</p>
-        <p className="tooltip-value">
-          Value: <span className="tooltip-number">{val}</span>
-        </p>
-      </div>
-    );
-  }
-  return null;
-};
+  const [walletData, setWalletData] = useState({
+    totalSpent: 0,
+    totalInvestment: 0,
+  });
 
-const DateSelector = ({ selectedDate, onDateChange }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(selectedDate.getMonth());
-  const [selectedYear, setSelectedYear] = useState(selectedDate.getFullYear());
-
-  const months = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December",
-  ];
-  const years = Array.from({ length: 10 }, (_, i) => 2020 + i);
-
-  const handleApply = () => {
-    const newDate = new Date(selectedYear, selectedMonth, 1);
-    onDateChange(newDate);
-    setIsOpen(false);
+  // Fetch wallet data
+  const fetchWalletData = async () => {
+    try {
+      const data = await api("users/wallet");
+      setWalletData({
+        totalSpent: data.totalSpent || 0,
+        totalInvestment: data.totalInvestment || 0,
+      });
+    } catch (err) {
+      console.error("Error fetching wallet data:", err.message);
+    }
   };
-  const formatSelectedDate = () =>
-    `${months[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`;
-
-  return (
-    <div className="date-selector-container">
-      <button
-        className="date-selector-button"
-        onClick={() => setIsOpen((v) => !v)}
-        aria-haspopup="dialog"
-        aria-expanded={isOpen}
-      >
-        <Calendar className="date-selector-icon" size={16} />
-        <span className="date-selector-text">{formatSelectedDate()}</span>
-        <ChevronDown className="date-selector-chevron" size={16} />
-      </button>
-
-      {isOpen && (
-        <div className="date-selector-dropdown" role="dialog" aria-label="Select period">
-          <div className="date-selector-header">
-            <h4>Select Period</h4>
-          </div>
-          <div className="date-selector-content">
-            <div className="date-selector-section">
-              <label htmlFor="month">Month</label>
-              <select
-                id="month"
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                className="date-selector-select"
-              >
-                {months.map((month, index) => (
-                  <option key={month} value={index}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="date-selector-section">
-              <label htmlFor="year">Year</label>
-              <select
-                id="year"
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                className="date-selector-select"
-              >
-                {years.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="date-selector-actions">
-            <button className="date-selector-cancel" onClick={() => setIsOpen(false)}>
-              Cancel
-            </button>
-            <button className="date-selector-apply" onClick={handleApply}>
-              Apply
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Chart = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [animationStep, setAnimationStep] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [chartData, setChartData] = useState(generateRandomData());
 
   useEffect(() => {
-    const t1 = setTimeout(() => setIsVisible(true), 100);
-    const t2 = setTimeout(() => setAnimationStep(1), 600);
-    const t3 = setTimeout(() => setAnimationStep(2), 1200);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
+    fetchWalletData();
+    const interval = setInterval(fetchWalletData, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const handleDateChange = (newDate) => {
-    setSelectedDate(newDate);
-    const baseValue = 45 + Math.floor(Math.random() * 40);
-    setChartData(generateRandomData(baseValue));
+  const pieOption = {
+    tooltip: {
+      trigger: "item",
+      formatter: "{b}: ₹{c} ({d}%)",
+      backgroundColor: "#fff",
+      borderColor: "#e5e7eb",
+      borderWidth: 1,
+      textStyle: { fontFamily: "Poppins", color: "#111827" },
+      extraCssText:
+        "box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 12px; padding: 12px 16px;",
+    },
+    legend: {
+      orient: "vertical",
+      left: "left",
+      textStyle: { fontFamily: "Poppins", color: "#374151", fontWeight: 500 },
+    },
+    series: [
+      {
+        name: "Wallet Summary",
+        type: "pie",
+        radius: ["45%", "70%"], // donut style
+        center: ["50%", "50%"],
+        data: [
+          { value: walletData.totalSpent, name: "Personal Expense" },
+          { value: walletData.totalInvestment, name: "Investment" },
+        ],
+        color: [
+          {
+            type: "linear", x: 0, y: 0, x2: 1, y2: 1, colorStops: [
+              { offset: 0, color: "#fca5a5" },
+              { offset: 1, color: "#f87171" },
+            ]
+          },
+          {
+            type: "linear", x: 0, y: 0, x2: 1, y2: 1, colorStops: [
+              { offset: 0, color: "#93c5fd" },
+              { offset: 1, color: "#3b82f6" },
+            ]
+          },
+        ],
+        label: {
+          fontFamily: "Poppins",
+          fontWeight: 600,
+          color: "#111827",
+          formatter: "{b}\n₹{c} ({d}%)",
+        },
+        emphasis: {
+          scale: true,
+          scaleSize: 10,
+          shadowBlur: 20,
+          shadowColor: "rgba(0,0,0,0.3)",
+        },
+        itemStyle: { borderColor: "#fff", borderWidth: 2 },
+      },
+    ],
   };
 
+  const barOption = {
+    title: {
+      text: "Wallet Summary",
+      left: "center",
+      textStyle: {
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: 600,
+        color: "#111827",
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+      backgroundColor: "#fff",
+      borderWidth: 1,
+      borderColor: "#e5e7eb",
+      textStyle: { color: "#111827", fontFamily: "Poppins" },
+      extraCssText:
+        "box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 12px; padding: 12px 16px;",
+      formatter: (params) =>
+        params
+          .map(
+            (p) =>
+              `<div style="color:${p.color}; font-weight:500;">
+                 ${p.seriesName}: ₹${p.value.toLocaleString("en-IN")}
+               </div>`
+          )
+          .join(""),
+    },
+    xAxis: {
+      type: "category",
+      data: ["Wallet"],
+      axisLine: { lineStyle: { color: "#E5E7EB" } },
+      axisLabel: { color: "#6b7280", fontFamily: "Poppins", fontWeight: 500 },
+    },
+    yAxis: {
+      type: "value",
+      axisLine: { show: false },
+      splitLine: { lineStyle: { color: "#f3f4f6" } },
+      axisLabel: { color: "#6b7280", fontFamily: "Poppins" },
+    },
+    series: [
+      {
+        name: "Personal Expense",
+        type: "bar",
+        data: [walletData.totalSpent],
+        barWidth: "40%",
+        itemStyle: {
+          borderRadius: [8, 8, 0, 0],
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "#f87171" },
+              { offset: 1, color: "#fca5a5" },
+            ],
+          },
+        },
+        emphasis: { focus: "series", scale: true },
+      },
+      {
+        name: "Investment",
+        type: "bar",
+        data: [walletData.totalInvestment],
+        barWidth: "40%",
+        itemStyle: {
+          borderRadius: [8, 8, 0, 0],
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "#60a5fa" },
+              { offset: 1, color: "#3b82f6" },
+            ],
+          },
+        },
+        emphasis: { focus: "series", scale: true },
+      },
+    ],
+    grid: { left: "8%", right: "8%", bottom: "12%", top: "20%", containLabel: true },
+    animationDuration: 1200,
+    animationEasing: "cubicOut",
+  };
+
+  // Responsive
+  useEffect(() => {
+    const pieChart = pieRef.current?.getEchartsInstance();
+    const barChart = barRef.current?.getEchartsInstance();
+    const observer = new ResizeObserver(() => {
+      pieChart?.resize();
+      barChart?.resize();
+    });
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={`chart-container ${isVisible ? "visible" : ""}`}>
-      <div className="chart-header">
-        <DateSelector selectedDate={selectedDate} onDateChange={handleDateChange} />
-      </div>
+    <div className="chart-container visible" ref={containerRef}>
+      <div className="chart-flex">
+        <div className="chart-item">
+          <ReactECharts
+            ref={pieRef}
+            option={pieOption}
+            style={{ width: "100%", height: "100%" }} // fill parent
+          />
+        </div>
 
-      <div className={`chart-wrapper ${animationStep >= 2 ? "chart-animate" : ""}`}>
-        <div className="chart-glow" />
-        {/* Critical: explicit responsive height and no margins on this element */}
-        <div className="chart-resizer">
-          <ResponsiveContainer width="100%" height="100%">
-            <RechartsAreaChart data={chartData} margin={{ top: 56, right: 24, left: 24, bottom: 16 }}>
-              {/* defs, XAxis, Tooltip, ReferenceLine, Area unchanged */}
-              <defs>
-                <linearGradient id="sophisticatedGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#E6F0FF" stopOpacity={0.95} />
-                  <stop offset="35%" stopColor="#6DA3F5" stopOpacity={0.8} />
-                  <stop offset="65%" stopColor="#3678F0" stopOpacity={0.65} />
-                  <stop offset="100%" stopColor="#0A1E40" stopOpacity={0.45} />
-                </linearGradient>
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                  <feMerge>
-                    <feMergeNode in="coloredBlur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feDropShadow dx="0" dy="4" stdDeviation="8" floodColor="#0EA5E9" floodOpacity="0.3" />
-                </filter>
-              </defs>
-
-              <XAxis
-                dataKey="date"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: "#5e5e5eff", fontSize: 12, fontWeight: 500, fontFamily: "Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" }}
-                interval={0}
-                className="axis-text"
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <ReferenceLine y={65} stroke="#3678f0" strokeDasharray="2 2" strokeOpacity={0.5} />
-              <Area
-                type="monotone"
-                dataKey="value"
-                stroke="#FFFFFF"
-                strokeWidth={3}
-                fill="url(#sophisticatedGradient)"
-                fillOpacity={1}
-                filter="url(#shadow)"
-                className="area-path"
-              />
-            </RechartsAreaChart>
-          </ResponsiveContainer>
+        <div className="chart-item">
+          <ReactECharts
+            ref={barRef}
+            option={barOption}
+            style={{ width: "100%", height: "100%" }} // fill parent
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export default Chart;
+export default ComboChart;

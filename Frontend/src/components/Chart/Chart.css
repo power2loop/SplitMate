@@ -1,113 +1,125 @@
-.chart-container {
-  position: relative;
+.Home-Container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 16px;
-  overflow: hidden;
+  min-height: 100vh;
+  background: #f8fafc;
 }
 
-/* margins on wrapper, not resizer */
+.top-section {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  height: 250px;
+}
+
+.chart-container {
+  flex: 1;
+  min-height: 500px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.chart-flex {
+  display: flex;
+  gap: 16px;
+  min-width: 700px;
+  height: 100%;
+}
+
+.chart-item {
+  flex: 1;
+  height: 100%;
+}
+
 .chart-wrapper {
   position: relative;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity .4s ease, transform .4s ease;
-  box-shadow: 0 7px 29px rgba(100,100,111,.2);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  box-shadow: 0 7px 29px rgba(100, 100, 111, 0.2);
   border-radius: 12px;
-  margin: 0 12px 12px 12px;
-  background: radial-gradient(1200px 1200px at 50% -200px, rgba(54,120,240,0.06), transparent 60%) #fff;
-}
-.chart-container.visible .chart-wrapper { opacity: 1; transform: translateY(0); }
-
-.chart-glow { position: absolute; inset: 0; pointer-events: none; filter: saturate(120%); }
-
-.chart-header {
-  display: flex;
-  justify-content: flex-end;
-  padding: 12px 16px 0 16px;
-  position: relative;
-  z-index: 10;
+  background: radial-gradient(1200px 1200px at 50% -200px,
+      rgba(54, 120, 240, 0.06),
+      transparent 60%) #fff;
+  height: 100%;
 }
 
-/* Critical: explicit height for parent of ResponsiveContainer */
+.chart-container.visible .chart-wrapper {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .chart-resizer {
-  position: relative;
   width: 100%;
-  height: clamp(220px, 48vw, 360px);
+  height: 100%;
 }
 
-/* Tooltip */
 .custom-tooltip {
   background: #ffffff;
   color: #111827;
-  box-shadow: 0 10px 25px rgba(0,0,0,.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid #eef2ff;
-}
-.custom-tooltip .tooltip-label { margin: 0; font-weight: 700; font-size: 14px; color: #0f172a; }
-.custom-tooltip .tooltip-value { margin: 4px 0 0 0; font-size: 13px; color: #374151; }
-.custom-tooltip .tooltip-number { font-weight: 800; color: #1d4ed8; }
-
-.axis-text tspan {
-  font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-
-/* Date selector (unchanged styles from your version or improved ones) */
-.date-selector-container { position: relative; }
-.date-selector-button {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
-  font-size: 14px; font-weight: 600; color: #374151; cursor: pointer; transition: all .2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,.1);
-}
-.date-selector-button:hover { border-color: #3678f0; box-shadow: 0 2px 6px rgba(54,120,240,.15); }
-.date-selector-icon { color: #6b7280; }
-.date-selector-text { font-family: Poppins, sans-serif; }
-.date-selector-chevron { color: #9ca3af; transition: transform .2s ease; }
-.date-selector-button:hover .date-selector-chevron { transform: rotate(180deg); }
-
-.date-selector-dropdown {
-  position: absolute; top: calc(100% + 8px); right: 0;
-  background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,.15);
-  z-index: 20; min-width: 280px; overflow: hidden;
-}
-.date-selector-header { padding: 13px 10px 10px; border-bottom: 1px solid #f3f4f6; }
-.date-selector-header h4 { margin: 0; font-size: 16px; font-weight: 700; color: #111827; font-family: Poppins, sans-serif; }
-.date-selector-content { padding: 16px; display: flex; gap: 16px; }
-.date-selector-section { flex: 1; }
-.date-selector-section label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #374151; font-family: Poppins, sans-serif; }
-.date-selector-select {
-  width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px;
-  font-size: 14px; color: #374151; background: #fff; cursor: pointer; transition: border-color .2s, box-shadow .2s;
   font-family: Poppins, sans-serif;
 }
-.date-selector-select:focus { outline: none; border-color: #3678f0; box-shadow: 0 0 0 3px rgba(54,120,240,.1); }
-.date-selector-actions { padding: 12px 16px; display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid #f3f4f6; background: #f9fafb; }
-.date-selector-cancel, .date-selector-apply {
-  padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s ease; font-family: Poppins, sans-serif;
-}
-.date-selector-cancel { background: transparent; border: 1px solid #d1d5db; color: #6b7280; }
-.date-selector-cancel:hover { background: #f3f4f6; border-color: #9ca3af; }
-.date-selector-apply { background: #3678f0; border: 1px solid #3678f0; color: #fff; }
-.date-selector-apply:hover { background: #2563eb; border-color: #2563eb; }
 
-/* Responsive */
+.custom-tooltip .tooltip-label {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.custom-tooltip .tooltip-value {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #374151;
+}
+
+.custom-tooltip .tooltip-number {
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
 @media (max-width: 1024px) {
-  .chart-wrapper { margin: 0 8px 10px 8px; }
-  .chart-resizer { height: clamp(220px, 52vw, 340px); }
+  .chart-flex {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 }
+
 @media (max-width: 768px) {
-  .chart-header { justify-content: center; padding: 12px 12px 0 12px; }
-  .date-selector-dropdown { right: -16px; left: -16px; min-width: auto; }
-  .date-selector-content { flex-direction: column; gap: 12px; }
-  .chart-resizer { height: clamp(220px, 60vw, 320px); }
+  .chart-flex {
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .chart-item {
+    min-width: 100%;
+    height: 500px;
+  }
 }
+
 @media (max-width: 480px) {
-  .chart-wrapper { margin: 0 6px 8px 6px; }
-  .chart-resizer { height: clamp(200px, 64vw, 300px); }
-  .date-selector-button { font-size: 13px; }
-  .custom-tooltip .tooltip-label { font-size: 13px; }
-  .custom-tooltip .tooltip-value { font-size: 12px; }
+  .chart-wrapper {
+    margin: 0 6px;
+  }
+
+  .chart-item {
+    height: 400px;
+  }
+
+  .custom-tooltip .tooltip-label {
+    font-size: 13px;
+  }
+
+  .custom-tooltip .tooltip-value {
+    font-size: 12px;
+  }
 }

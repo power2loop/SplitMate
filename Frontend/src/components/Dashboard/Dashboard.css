@@ -31,8 +31,8 @@
   padding: 20px;
   border-radius: 16px;
   background: #ffffff;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .main-content #greet p {
@@ -56,7 +56,7 @@
 }
 
 /* Small cards wrapper */
-.cards > .card-small {
+.cards>.card-small {
   display: flex;
   position: relative;
   border-radius: 16px;
@@ -64,14 +64,18 @@
 }
 
 /* Large chart card */
-.main-content > .card-large {
+.main-content>.card-large {
   width: 100%;
   margin-top: 4px;
   background: #ffffff;
   border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+
+  /* Fixed height relative to other cards */
+  min-height: 280px;
+  /* Adjust this value as needed */
 }
 
 .card-large {
@@ -80,8 +84,8 @@
   min-height: 0;
 }
 
-.card-large > .chart-container {
-  flex: 1 1 100%;
+.card-large>.chart-container {
+  flex: 1 1 auto;
   min-height: 0;
 }
 
@@ -96,9 +100,17 @@
 }
 
 @keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* ====== Tablet (≤ 1024px) ====== */
@@ -113,24 +125,23 @@
     gap: 20px;
   }
 
-  .main-content > .card-large {
+  .main-content>.card-large {
     width: 100%;
     margin: 0 auto;
+    min-height: 240px;
   }
 }
 
 /* ====== Small tablet (≤ 890px) ====== */
 @media (max-width: 890px) {
-  .main-content > .card-large {
-    display: none; /* Hide the chart card */
+  .main-content>.card-large {
+    display: none;
+    /* Hide the chart card */
   }
 
   .main-content .cards {
-    grid-template-columns: 1fr 1fr; /* 2 columns layout */
-  }
-  .main-content > .card-large {
-    width: 100%;
-    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+    /* 2 columns layout */
   }
 }
 
@@ -149,7 +160,8 @@
   }
 
   .main-content .cards {
-    grid-template-columns: 1fr; /* Single column */
+    grid-template-columns: 1fr;
+    /* Single column */
   }
 
   .main-content #greet p {
@@ -181,7 +193,7 @@
     font-size: 1.35rem;
   }
 
-  .main-content > .card-large {
-   display: none;
+  .main-content>.card-large {
+    display: none;
   }
 }

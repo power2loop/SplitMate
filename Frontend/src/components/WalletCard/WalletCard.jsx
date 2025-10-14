@@ -92,9 +92,8 @@ const WalletCard = () => {
           <div className="ec-metric-label">Total Spent</div>
           <div className="ec-metric-value">{formatCurrency(walletData.totalSpent)}</div>
           <div
-            className={`ec-metric-change ${
-              walletData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"
-            }`}
+            className={`ec-metric-change ${walletData.totalSpentChange >= 0 ? "ec-increase" : "ec-decrease"
+              }`}
           >
             {formatPercentage(walletData.totalSpentChange)}
           </div>
@@ -112,9 +111,8 @@ const WalletCard = () => {
           <div className="ec-metric-label">Your Investment</div>
           <div className="ec-metric-value">{formatCurrency(walletData.totalInvestment)}</div>
           <div
-            className={`ec-metric-change ${
-              walletData.totalInvestmentChange >= 0 ? "ec-increase" : "ec-decrease"
-            }`}
+            className={`ec-metric-change ${walletData.totalInvestmentChange >= 0 ? "ec-increase" : "ec-decrease"
+              }`}
           >
             {formatPercentage(walletData.totalInvestmentChange)}
           </div>
