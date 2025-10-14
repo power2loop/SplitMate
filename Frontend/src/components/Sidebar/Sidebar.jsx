@@ -99,75 +99,91 @@ export default function Sidebar({ isOpen = false, setIsOpen }) {
       </div>
 
       <nav className="sidebar-nav">
-        {navItems.map((item) => {
-          const isActive =
-            location.pathname === item.path ||
-            item.children?.some((c) => location.pathname.startsWith(c.path));
+  {navItems.map((item) => {
+    const isActive =
+      location.pathname === item.path ||
+      item.children?.some((c) => location.pathname.startsWith(c.path));
 
-          const itemClass = `nav-item ${isActive ? "active" : ""}`;
+    const itemClass = `nav-item ${isActive ? "active" : ""}`;
 
-          return (
-            <div
-              key={item.id}
-              className="nav-wrapper"
-              onMouseEnter={() => item.children && setOpenDropdown(item.id)}
-              onMouseLeave={() => item.children && setOpenDropdown(null)}
-            >
-              {item.path && !item.children ? (
-                <NavLink to={item.path} end className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} onClick={() => setIsOpen?.(false)}>
-                  {item.icon}
-                  <span className="nav-text">{item.label}</span>
-                </NavLink>
-              ) : (
-                // inside navItems.map
-                <button
-                  type="button"
-                  className={itemClass}
-                  onClick={() => {
-                    if (item.children) {
-                      setOpenDropdown((prev) => (prev === item.id ? null : item.id));
-                    } else {
-                      handleParentClick(item);
-                    }
-                  }}
-                  aria-expanded={openDropdown === item.id}
-                  aria-controls={item.children ? `${item.id}-dropdown` : undefined}
-                >
-                  {item.icon}
-                  <span className="nav-text">{item.label}</span>
-                  {item.children && (
-                    <svg className={`chev ${openDropdown === item.id ? "rot" : ""}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  )}
-                </button>
+    const isMobile = window.innerWidth <= 768;
 
-              )}
+    return (
+      <div
+        key={item.id}
+        className="nav-wrapper"
+        onMouseEnter={() => !isMobile && item.children && setOpenDropdown(item.id)}
+        onMouseLeave={() => !isMobile && item.children && setOpenDropdown(null)}
+      >
+        {item.path && !item.children ? (
+          <NavLink
+            to={item.path}
+            end
+            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
+            onClick={() => setIsOpen?.(false)}
+          >
+            {item.icon}
+            <span className="nav-text">{item.label}</span>
+          </NavLink>
+        ) : (
+          <button
+            type="button"
+            className={itemClass}
+            onClick={() => {
+              if (item.children) {
+                // Toggle dropdown (mobile)
+                setOpenDropdown((prev) => (prev === item.id ? null : item.id));
+              } else {
+                handleParentClick(item);
+              }
+            }}
+            aria-expanded={openDropdown === item.id}
+            aria-controls={item.children ? `${item.id}-dropdown` : undefined}
+          >
+            {item.icon}
+            <span className="nav-text">{item.label}</span>
+            {item.children && (
+              <svg
+                className={`chev ${openDropdown === item.id ? "rot" : ""}`}
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            )}
+          </button>
+        )}
 
-              {item.children && (
-                <div
-                  id={`${item.id}-dropdown`}
-                  className={`dropdown ${openDropdown === item.id ? "open" : ""}`}
-                  role="menu"
-                >
-                  {item.children.map((child) => (
-                    <NavLink
-                      key={child.id}
-                      to={child.path}
-                      className={({ isActive }) => `dropdown-item ${isActive ? "active" : ""}`}
-                      onClick={() => setIsOpen?.(false)}
-                      role="menuitem"
-                    >
-                      {child.label}
-                    </NavLink>
+        {item.children && (
+          <div
+            id={`${item.id}-dropdown`}
+            className={`dropdown ${openDropdown === item.id ? "open" : ""}`}
+            role="menu"
+          >
+            {item.children.map((child) => (
+              <NavLink
+                key={child.id}
+                to={child.path}
+                className={({ isActive }) => `dropdown-item ${isActive ? "active" : ""}`}
+                onClick={() => {
+                  setIsOpen?.(false);
+                  setOpenDropdown(null);
+                }}
+                role="menuitem"
+              >
+                {child.label}
+              </NavLink>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  })}
+</nav>
 
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </nav>
 
       <div className="sidebar-footer">
         <div className="user-profile">

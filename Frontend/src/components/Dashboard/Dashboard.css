@@ -1,18 +1,18 @@
 /* Dashboard.css */
 
-/* Container */
+/* ====== Base layout ====== */
 .main-content {
-  padding: 10px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 20px;
+  gap: 24px;
   box-sizing: border-box;
   overflow-x: hidden;
   background: transparent;
 }
 
-/* Cards grid: responsive auto-fit minmax for fluid columns */
+/* Cards grid: flexible responsive columns */
 .main-content .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -63,7 +63,7 @@
   background: transparent;
 }
 
-/* Chart section */
+/* Large chart card */
 .main-content > .card-large {
   width: 100%;
   margin-top: 4px;
@@ -79,11 +79,11 @@
   flex-direction: column;
   min-height: 0;
 }
+
 .card-large > .chart-container {
   flex: 1 1 100%;
   min-height: 0;
 }
-
 
 /* Gradient text animation */
 .gradient-text {
@@ -94,17 +94,39 @@
   animation: gradientFlow 10s ease infinite;
   display: inline-block;
 }
+
 @keyframes gradientFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Tablet adjustments */
+/* ====== Tablet (≤ 1024px) ====== */
 @media (max-width: 1024px) {
   #greet {
     flex-direction: row;
     text-align: left;
+  }
+
+  .main-content {
+    padding: 12px;
+    gap: 20px;
+  }
+
+  .main-content > .card-large {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* ====== Small tablet (≤ 890px) ====== */
+@media (max-width: 890px) {
+  .main-content > .card-large {
+    display: none; /* Hide the chart card */
+  }
+
+  .main-content .cards {
+    grid-template-columns: 1fr 1fr; /* 2 columns layout */
   }
   .main-content > .card-large {
     width: 100%;
@@ -112,7 +134,7 @@
   }
 }
 
-/* Mobile adjustments */
+/* ====== Mobile (≤ 768px) ====== */
 @media (max-width: 768px) {
   #greet {
     flex-direction: column;
@@ -120,20 +142,46 @@
     text-align: center;
     gap: 12px;
   }
-  .main-content #greet p { font-size: clamp(1rem, 5vw, 1.5rem); }
-  .main-content #greet p span { font-size: clamp(1.2rem, 6vw, 2rem); }
-}
 
-/* Extra small */
-@media (max-width: 480px) {
-  .main-content { padding: 8px; }
-  #greet { gap: 10px; }
-  .main-content #greet p { font-size: 1rem; }
-  .main-content #greet p span { font-size: 1.35rem; }
-  .main-content > .card-large {
-    width: 100%;
-    margin: 0 auto;
-    /* height: 500px;  <-- remove this to let resizer control height */
+  .main-content {
+    padding: 10px;
+    gap: 16px;
+  }
+
+  .main-content .cards {
+    grid-template-columns: 1fr; /* Single column */
+  }
+
+  .main-content #greet p {
+    font-size: clamp(1rem, 5vw, 1.5rem);
+  }
+
+  .main-content #greet p span {
+    font-size: clamp(1.2rem, 6vw, 2rem);
   }
 }
 
+/* ====== Extra small (≤ 480px) ====== */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 8px;
+    gap: 12px;
+  }
+
+  #greet {
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .main-content #greet p {
+    font-size: 1rem;
+  }
+
+  .main-content #greet p span {
+    font-size: 1.35rem;
+  }
+
+  .main-content > .card-large {
+   display: none;
+  }
+}
