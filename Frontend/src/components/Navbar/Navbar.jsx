@@ -3,19 +3,19 @@ import React, { useEffect, useRef, useState } from "react";
 import { BsRobot } from "react-icons/bs";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
 import { useStore } from "../../Context/StoreContext.jsx";
-
 import "./Navbar.css";
+import { IoIosPersonAdd } from "react-icons/io";
+import { MdGroupAdd } from "react-icons/md";
+
+
 
 const Navbars = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { user, setUser } = useStore();
-
   const location = useLocation();
-  let isLocation = true;
 
   const handleProfileClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -23,24 +23,28 @@ const Navbars = () => {
 
   const handleGroupExpenseClick = () => {
     setIsDropdownOpen(false);
-    navigate("/groupExpense");
+    navigate("/groupexpense");
+  };
+
+  const handlePersonalExpenseClick = () => {
+    setIsDropdownOpen(false);
+    navigate("/personalexpense");
   };
 
   const handleLogout = async () => {
     try {
-      // Tell server to clear the httpOnly cookie
       await fetch("/api/users/logout", {
         method: "POST",
         credentials: "include",
       });
     } catch (e) {
-      // even if the request fails, clear client state to be safe
+      // even if request fails, clear local state
     } finally {
       setUser(null);
-      // Adjust this route if your landing page path differs
       navigate("/landingpage", { replace: true });
     }
   };
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -59,35 +63,19 @@ const Navbars = () => {
       <div className="nav-brand-left">
         <Link to="/" style={{ textDecoration: "none" }}>
           <h2 className="brand-text-logo-left">
-            <img src={logo} alt="SplitMate Logo" style={{ width: "40px", height: "45px" }} />
+            <img
+              src={logo}
+              alt="SplitMate Logo"
+              style={{ width: "40px", height: "45px" }}
+            />
             SplitMate
           </h2>
         </Link>
       </div>
 
-      {/* User Profile Dropdown */}
+      {/* Right section with user dropdown */}
       <div className="navs-right" ref={dropdownRef}>
-        {location.pathname === "/personalexpense" && (
-          <button
-            className="invite-btn"
-            onClick={() => {
-              navigate("/groupexpense");
-            }}
-          >
-            👨‍👩‍👧‍👦 Group
-          </button>
-        )}
-
-        {location.pathname === "/groupexpense" && (
-          <button
-            className="settings-btn"
-            onClick={() => {
-              navigate("/personalexpense");
-            }}
-          >
-            🧑‍🦱 Personal
-          </button>
-        )}
+        {/* Profile Avatar */}
         <div
           className={`nav-right-user-profile ${isDropdownOpen ? "active" : ""}`}
           onClick={handleProfileClick}
@@ -96,6 +84,7 @@ const Navbars = () => {
           <img
             className="navs-right-user-initials"
             src={`https://robohash.org/${user?.username}.png`}
+            alt="User Avatar"
           />
           <svg
             className={`profile-dropdown-arrow ${isDropdownOpen ? "open" : ""}`}
@@ -122,18 +111,46 @@ const Navbars = () => {
                 <img
                   className="user-avatar-small-logo"
                   src={`https://robohash.org/${user?.username}.png`}
+                  alt="User Avatar"
                 />
-                <span className="user-name-logo">{user?.username || "Guest"}</span>
+                <span className="user-name-logo">
+                  {user?.username || "Guest"}
+                </span>
               </div>
             </div>
 
             <div className="dropdown-divider-logo" />
 
             <div className="dropdown-options-logo">
-              <button className="dropdown-option-logo" onClick={handleGroupExpenseClick}>
+              {/* Show only one of the two buttons depending on current route */}
+              {location.pathname === "/personalexpense" && (
+                <button
+                  className="dropdown-option-logo"
+                  onClick={handleGroupExpenseClick}
+                >
+                  <MdGroupAdd />
+                  <span>Group Expense</span>
+                </button>
+              )}
+
+              {location.pathname === "/groupexpense" && (
+                <button
+                  className="dropdown-option-logo"
+                  onClick={handlePersonalExpenseClick}
+                >
+                  <IoIosPersonAdd />
+                  <span>Personal Expense</span>
+                </button>
+              )}
+
+              <div className="dropdown-divider-logo" />
+
+              {/* AI Agent */}
+              <button className="dropdown-option-logo">
                 <BsRobot /> <span>AI Agent</span>
               </button>
 
+              {/* Logout */}
               <button className="dropdown-option-logo" onClick={handleLogout}>
                 <RiLogoutBoxRFill />
                 <span>Logout</span>

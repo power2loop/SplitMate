@@ -227,15 +227,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  /* Reduced from 12px to 10px */
   padding: 10px 12px;
-  /* Reduced from 12px 16px to 10px 12px */
   background: transparent;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 13px;
-  /* Reduced from 14px to 13px */
   font-weight: 500;
   color: #374151;
   text-align: left;
@@ -245,7 +242,6 @@
 .dropdown-option-logo span {
   color: #374151;
   font-size: 13px;
-  /* Reduced from 14px to 13px */
   font-weight: 500;
 }
 
@@ -274,16 +270,13 @@
   transition: color 0.2s ease;
   flex-shrink: 0;
   width: 14px;
-  /* Reduced icon size from 16px to 14px */
   height: 14px;
-  /* Reduced icon size from 16px to 14px */
 }
 
 .dropdown-option-logo:hover svg {
   color: #374151;
 }
 
-/* Extra Small Devices (Portrait phones ≤ 480px) */
 @media (max-width: 480px) {
   .navbars {
     padding: 8px 2px !important;
@@ -313,11 +306,6 @@
     margin-right: 10px;
     padding-bottom: 8px;
   }
-
-  /* .profile-dropdown-menu-logo {
-    width: 260px !important;
-    right: -20px !important;
-  } */
 
   .invite-btn {
     width: 90% !important;

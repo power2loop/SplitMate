@@ -15,12 +15,12 @@ import "./Overview.css";
 import { BsFillPersonPlusFill } from "react-icons/bs";
 import { FaArrowLeft, FaMoneyBillAlt } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
-import { IoBarChart, IoHome, IoSettings } from "react-icons/io5";
+import { IoBarChart, IoHome, IoSettings, IoMenu, IoClose } from "react-icons/io5";
 
 const Overview = () => {
   const navigate = useNavigate();
-  const { groupId: routeGroupId } = useParams(); // e.g., /details/:groupId [web:49]
-  const { user } = useStore() || {}; // user from context if available [web:62]
+  const { groupId: routeGroupId } = useParams(); // e.g., /details/:groupId
+  const { user } = useStore() || {};
 
   // Core state loaded from API
   const [group, setGroup] = useState(null);
@@ -34,10 +34,13 @@ const Overview = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Mobile hamburger menu state
+  const [menuOpen, setMenuOpen] = useState(false);
+
   // For optimistic update of AllExpenses without refetch
   const [lastCreated, setLastCreated] = useState(null);
 
-  const id = routeGroupId; // ObjectId or invite code [web:49]
+  const id = routeGroupId; // ObjectId or invite code
 
   // Fetch group details
   useEffect(() => {
@@ -68,7 +71,7 @@ const Overview = () => {
     return () => {
       alive = false;
     };
-  }, [id]); // refetch when param changes [web:49]
+  }, [id]);
 
   // Derived UI fields with fallbacks
   const {
@@ -86,7 +89,7 @@ const Overview = () => {
       ? expenses.reduce((s, e) => s + (Number(e?.amount) || 0), 0)
       : 0;
     return { expenses: totalExpenses, members: members?.length || 0 };
-  }, [expenses, members]); // memoize derived totals [web:80]
+  }, [expenses, members]);
 
   const totalExpenses = totals.expenses;
   const totalMembers = totals.members;
@@ -118,7 +121,7 @@ const Overview = () => {
           text: `Join group with code: ${inviteCode}`,
           url: window.location.href,
         });
-      } catch {}
+      } catch { }
     } else {
       copyCode();
     }
@@ -126,7 +129,6 @@ const Overview = () => {
 
   // Add expense callback: receives server-created expense from AddExpenseModal
   const onAddExpense = (serverExpense) => {
-    // Ensure a new array instance so React re-renders immediately (immutable update) [web:80]
     setGroup((prev) => {
       if (!prev) return prev;
       const nextExpenses = Array.isArray(prev.expenses)
@@ -135,13 +137,8 @@ const Overview = () => {
       return { ...prev, expenses: nextExpenses };
     });
 
-    // Pass to AllExpenses so it can prepend without a refetch [web:80]
     setLastCreated(serverExpense);
-
-    // Optional: show the list immediately
     setActiveTab("expenses");
-
-    // Close modal
     setAddOpen(false);
   };
 
@@ -165,6 +162,30 @@ const Overview = () => {
     } catch (e) {
       alert(e.message);
     }
+  };
+
+  // Close mobile menu on Escape
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
+  // Helper open handlers from menu items
+  const openInviteFromMenu = () => {
+    setMenuOpen(false);
+    setInviteOpen(true);
+  };
+  const openSettingsFromMenu = () => {
+    setMenuOpen(false);
+    setSettingsOpen(true);
+  };
+  const openAddFromMenu = () => {
+    setMenuOpen(false);
+    setAddOpen(true);
   };
 
   if (loading) {
@@ -208,33 +229,91 @@ const Overview = () => {
               <p>{description}</p>
             </div>
           </div>
+
           <div className="header-right">
+            {/* Inline actions visible on larger screens */}
+            <div className="action-buttons">
+              <button
+                className="invite-btn"
+                style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
+                onClick={handleInvite}
+              >
+                <BsFillPersonPlusFill />
+                Invite
+              </button>
+              <button
+                className="settings-btn"
+                style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
+                onClick={() => setSettingsOpen(true)}
+              >
+                <IoSettings />
+                Settings
+              </button>
+              <button
+                className="add-expense-btn"
+                style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
+                onClick={() => setAddOpen(true)}
+              >
+                <IoMdAddCircle />
+                Add Expense
+              </button>
+            </div>
+
+            {/* Hamburger button for small screens */}
             <button
-              className="invite-btn"
-              style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
-              onClick={handleInvite}
+              className="hamburger-btn"
+              aria-label={menuOpen ? "Close actions menu" : "Open actions menu"}
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              aria-controls="actions-menu"
+              onClick={() => setMenuOpen((v) => !v)}
             >
-              <BsFillPersonPlusFill />
-              Invite
-            </button>
-            <button
-              className="settings-btn"
-              style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
-              onClick={() => setSettingsOpen(true)}
-            >
-              <IoSettings />
-              Settings
-            </button>
-            <button
-              className="add-expense-btn"
-              style={{ display: "flex", alignItems: "center", gap: "2px", fontSize: "15px" }}
-              onClick={() => setAddOpen(true)}
-            >
-              <IoMdAddCircle />
-              Add Expense
+              {menuOpen ? <IoClose /> : <IoMenu />}
             </button>
           </div>
         </div>
+
+        {/* Mobile actions menu */}
+        {menuOpen && (
+          <div
+            className="hamburger-menu-backdrop"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setMenuOpen(false);
+            }}
+          >
+            <div
+              id="actions-menu"
+              className="hamburger-menu"
+              role="menu"
+              aria-label="Actions"
+            >
+              <button
+                className="hamburger-item"
+                role="menuitem"
+                onClick={openInviteFromMenu}
+              >
+                <BsFillPersonPlusFill />
+                Invite
+              </button>
+              <button
+                className="hamburger-item"
+                role="menuitem"
+                onClick={openSettingsFromMenu}
+              >
+                <IoSettings />
+                Settings
+              </button>
+              <button
+                className="hamburger-item"
+                role="menuitem"
+                onClick={openAddFromMenu}
+              >
+                <IoMdAddCircle />
+                Add Expense
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="navigation-tabs" id="overview">
           <a
@@ -279,10 +358,6 @@ const Overview = () => {
                   <span>Members</span>
                   <span className="count">{totalMembers}</span>
                 </div>
-                {/* <div className="summary-item">
-                  <span>Invite Code</span>
-                  <span className="invite-code">{inviteCode || "—"}</span>
-                </div> */}
                 <div className="summary-item">
                   <span>Created By</span>
                   <span className="detail">{createdBy?.username}</span>
