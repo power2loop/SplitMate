@@ -140,16 +140,15 @@
 .settle-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   /* auto spacing */
-  gap: 12px;
+  gap: 10px;
   padding: 8px 12px;
   border-bottom: 1px dashed #e5e7eb;
 }
 
 .settle-from,
 .settle-to {
-  min-width: 82px;
+  min-width: 64px;
   height: 28px;
   border-radius: 8px;
   background: #e5e7eb;
@@ -189,7 +188,7 @@
 .settle-amount {
   font-weight: 600;
   color: #dc2626;
-  min-width: 70px;
+  min-width: 30px;
   text-align: right;
 }
 
@@ -335,4 +334,34 @@
   .split-heatmap {
     grid-template-columns: 1fr;
   }
+  
+  .row.two-cards .card {
+    width: 100%;
+  }
+
+  .row{
+    display: flex;
+    flex-direction: column;
+  }
+
+  #settle-row {
+  padding: 0px;
 }
+}
+
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .row.two-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .row.two-cards .card {
+    width: 100%;
+  }
+
+  #settle-row {
+  padding: 2px;
+}
+}
+

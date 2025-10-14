@@ -359,9 +359,6 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .goa-trip-container {
-    padding: 15px;
-  }
 
   .header {
     display: flex;

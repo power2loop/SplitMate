@@ -229,16 +229,13 @@ const Analytics = ({ groupId }) => {
             const key = `${s.fromId}-${s.toId}-${s.amount}`;
             const disabled = postingId === key;
             return (
-              <div key={i} className="settle-row">
+              <div key={i} className="settle-row" id="settle-row">
                 <div className="settle-from">
                   {s.fromName ?? s.from ?? s.fromId}
                 </div>
                 <span className="arrow">→</span>
                 <div className="settle-to">
                   {s.toName ?? s.to ?? s.toId}
-                </div>
-                <div className="settle-text">
-                  Owes ₹{Math.round(Number(s.amount) || 0)}
                 </div>
                 <div className="settle-amount">
                   ₹{Math.round(Number(s.amount) || 0)}

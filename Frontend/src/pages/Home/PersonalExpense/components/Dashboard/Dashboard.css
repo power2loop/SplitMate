@@ -346,7 +346,7 @@
 
 @media (max-width: 900px) {
   .stats-grid {
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
     align-items: center;
   }
