@@ -1,4 +1,4 @@
-.wrapper {
+/* .wrapper {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -24,4 +24,105 @@ p {
   font-family: 'Muli', sans-serif;
   font-weight: normal;
   
+} */
+
+
+.comingsoon-container {
+  height: 88.5vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+}
+
+.gradient-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, #6a11cb, #2575fc, #ff512f, #dd2476);
+  background-size: 400% 400%;
+  animation: gradientMove 10s ease infinite;
+  z-index: 0;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.coming-content {
+  text-align: center;
+  z-index: 2;
+}
+
+.title {
+  font-size: 5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.time-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 1rem;
+  width: 80px;
+  transition: transform 0.3s ease;
+}
+
+.time-box:hover {
+  transform: scale(1.05);
+}
+
+.time-box span {
+  font-size: 1.8rem;
+  font-weight: 600;
+  display: block;
+}
+
+.time-box p {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  opacity: 0.8;
+}
+
+/* Floating particles */
+.floating-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  top: calc(100% * var(--i, 0));
+  left: calc(100% * var(--j, 0));
+  animation: float 5s ease-in-out infinite;
 }

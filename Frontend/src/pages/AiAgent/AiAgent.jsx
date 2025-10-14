@@ -74,21 +74,110 @@
 // export default AiAgent;
 
 
-import React from 'react'
-import "./AiAgent.css"
-import Navbars from '../../components/Navbar/Navbar'
+// import React from 'react'
+// import "./AiAgent.css"
+// import Navbars from '../../components/Navbar/Navbar'
 
-const AiAgent = () => {
+// const AiAgent = () => {
+//   return (
+//     <>
+//   <Navbars/>
+//     <div class="wrapper">
+//   <h1>coming soon<span class="dot">.</span></h1>
+//   <p>Put some text here.</p>
+//  </div>
+//  </>
+//   )
+// }
+
+// export default AiAgent
+
+
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Navbars from '../../components/Navbar/Navbar'
+import "./AiAgent.css";
+
+export default function AiAgent() {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+
+  useEffect(() => {
+    const targetDate = new Date("2025-12-31T00:00:00").getTime(); // ⏰ launch date
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        clearInterval(interval);
+        setTimeLeft({ days: 0, hours: 0, mins: 0, secs: 0 });
+      } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        setTimeLeft({ days, hours, mins, secs });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
-  <Navbars/>
-    <div class="wrapper">
-  <h1>coming soon<span class="dot">.</span></h1>
-  <p>Put some text here.</p>
- </div>
- </>
-  )
+    <Navbars/>
+    <div className="comingsoon-container">
+      <div className="gradient-bg"></div>
+
+      <motion.div
+        className="coming-content"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      >
+        <h1 className="title">🚀 Coming Soon</h1>
+        <p className="subtitle">Something awesome is on the way...</p>
+
+        <div className="countdown">
+          <div className="time-box">
+            <span>{timeLeft.days}</span>
+            <p>Days</p>
+          </div>
+          <div className="time-box">
+            <span>{timeLeft.hours}</span>
+            <p>Hours</p>
+          </div>
+          <div className="time-box">
+            <span>{timeLeft.mins}</span>
+            <p>Minutes</p>
+          </div>
+          <div className="time-box">
+            <span>{timeLeft.secs}</span>
+            <p>Seconds</p>
+          </div>
+        </div>
+      </motion.div>
+
+      <div className="floating-particles">
+        {Array.from({ length: 15 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="particle"
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.3, 1, 0.3],
+              scale: [0.8, 1.2, 0.8],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+    </>
+  );
 }
-
-export default AiAgent
-
