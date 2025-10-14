@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import "./index.css";
 
 import L from "./components/Loader/Loader";
+import ComingSoon from "./components/ComingSoon/ComingSoon";
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
 
           <Route path="aiagent" element={<AiAgent />} />
           <Route path="/register" element={<AuthForm />} />
-          <Route path="/*" element={<NotFound />} />
+          <Route path="/" element={<NotFound />} />
+          <Route path='/ComingSoon' element={<ComingSoon/>} />
           <Route path="/groupdetails" element={<GroupDetails />} />
           <Route path="/aimodel" element={<AiModel />} />
           <Route path="/l" element={<L />} />

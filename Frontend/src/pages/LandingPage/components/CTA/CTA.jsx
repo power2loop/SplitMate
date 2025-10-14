@@ -1,6 +1,5 @@
 import { ArrowRight, Download, Shield, Star } from "lucide-react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import "./CTA.css";
 
@@ -41,12 +40,12 @@ const CTA = () => {
             <div className="cta-actions animate-scale-in">
               <button
                 className="lp-btn lp-btn-primary lp-btn-large cta-primary"
-                onClick={() => navigate("register")}
+                onClick={() => navigate("/register")}
               >
-                <span>Get Started Free</span>
+                <span> <a href="">Get Started Free</a></span>
                 <ArrowRight className="icon" />
               </button>
-              <button className="lp-btn lp-btn-secondary lp-btn-large">
+              <button className="lp-btn lp-btn-secondary lp-btn-large" onClick={() => navigate("/ComingSoon")}>
                 Download App
               </button>
             </div>

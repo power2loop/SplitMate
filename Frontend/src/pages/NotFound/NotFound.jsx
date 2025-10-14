@@ -15,7 +15,7 @@ const NotFound = () => {
         expenses!
       </p>
 
-      <a href="/" className="btn btn-primary notfound-link">
+      <a href="/landingpage" className="btn btn-primary notfound-link">
         <ArrowLeft className="icon" />
         <span>Back to Home</span>
       </a>

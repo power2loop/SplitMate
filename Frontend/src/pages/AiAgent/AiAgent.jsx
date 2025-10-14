@@ -97,6 +97,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbars from '../../components/Navbar/Navbar'
 import "./AiAgent.css";
+import ComingSoon from "../../components/ComingSoon/ComingSoon";
 
 export default function AiAgent() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
@@ -127,57 +128,7 @@ export default function AiAgent() {
   return (
     <>
     <Navbars/>
-    <div className="comingsoon-container">
-      <div className="gradient-bg"></div>
-
-      <motion.div
-        className="coming-content"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-      >
-        <h1 className="title">🚀 Coming Soon</h1>
-        <p className="subtitle">Something awesome is on the way...</p>
-
-        <div className="countdown">
-          <div className="time-box">
-            <span>{timeLeft.days}</span>
-            <p>Days</p>
-          </div>
-          <div className="time-box">
-            <span>{timeLeft.hours}</span>
-            <p>Hours</p>
-          </div>
-          <div className="time-box">
-            <span>{timeLeft.mins}</span>
-            <p>Minutes</p>
-          </div>
-          <div className="time-box">
-            <span>{timeLeft.secs}</span>
-            <p>Seconds</p>
-          </div>
-        </div>
-      </motion.div>
-
-      <div className="floating-particles">
-        {Array.from({ length: 15 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="particle"
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.3, 1, 0.3],
-              scale: [0.8, 1.2, 0.8],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-      </div>
-    </div>
+    <ComingSoon/>
     </>
   );
 }
