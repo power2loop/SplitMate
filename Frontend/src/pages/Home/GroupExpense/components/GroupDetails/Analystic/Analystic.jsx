@@ -1,22 +1,9 @@
 // Frontend/src/pages/Home/GroupExpense/components/GroupDetails/Analystic/Analystic.jsx
 import React, { useEffect, useMemo, useState } from "react";
-
 import "./Analystic.css";
 
 import { IoMdBookmarks } from "react-icons/io";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import ReactECharts from "echarts-for-react";
 
 import Loader from "../../../../../../components/Loader/Loader.jsx";
 import { api } from "../../../../../../services/api.js";
@@ -70,7 +57,7 @@ const Analytics = ({ groupId }) => {
     };
   }, [groupId]);
 
-  // Fireworks helper: two-origins burst loop for a short duration
+  // Fireworks helper
   function triggerFireworks() {
     const duration = 3000;
     const animationEnd = Date.now() + duration;
@@ -79,10 +66,7 @@ const Analytics = ({ groupId }) => {
 
     const interval = window.setInterval(() => {
       const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
+      if (timeLeft <= 0) return clearInterval(interval);
 
       const particleCount = 50 * (timeLeft / duration);
       confetti({
@@ -113,9 +97,7 @@ const Analytics = ({ groupId }) => {
         },
       });
 
-      // Trigger fireworks immediately on success; no extra UI/button
       triggerFireworks();
-
       await fetchAnalytics();
     } catch (e) {
       setErr(e.message || "Failed to settle");
@@ -255,8 +237,6 @@ const Analytics = ({ groupId }) => {
             );
           })}
 
-          {/* No extra confetti UI/component here */}
-          {/* Fireworks are triggered programmatically in settle() */}
           {/* Balance Breakdown */}
           <div className="balance-breakdown">
             <h4>Balance Breakdown:</h4>
@@ -290,24 +270,33 @@ const Analytics = ({ groupId }) => {
       <div className="card split-heatmap">
         <div className="split-box">
           <h3>Expense Split by % per Person</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={payers}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                dataKey="amount"
-                label
-              >
-                {payers.map((p, index) => (
-                  <Cell key={`cell-${index}`} fill={p.color || "#8B5CF6"} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <ReactECharts
+            style={{ height: 300, width: "100%" }}
+            option={{
+              tooltip: { trigger: "item" },
+              legend: { bottom: 0 },
+              series: [
+                {
+                  name: "Expense Split",
+                  type: "pie",
+                  radius: "50%",
+                  data: payers.map((p) => ({
+                    value: p.amount,
+                    name: p.name,
+                    itemStyle: { color: p.color || "#8B5CF6" },
+                  })),
+                  emphasis: {
+                    itemStyle: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: "rgba(0,0,0,0.5)",
+                    },
+                  },
+                  label: { formatter: "{b}: {d}%" },
+                },
+              ],
+            }}
+          />
         </div>
         <div className="split-box">
           <h3>Heatmap Calendar (Daily Spend Intensity)</h3>
@@ -329,21 +318,23 @@ const Analytics = ({ groupId }) => {
       {/* Daily Spending Timeline */}
       <div className="card timeline-chart">
         <h3>Daily Spending Timeline</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={timelineData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="amount" fill="url(#colorUv)" radius={[6, 6, 0, 0]} />
-            <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#3B82F6" stopOpacity={0.2} />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
+        <ReactECharts
+          style={{ height: 300, width: "100%" }}
+          option={{
+            tooltip: { trigger: "axis" },
+            xAxis: { type: "category", data: timelineData.map((d) => d.date) },
+            yAxis: { type: "value" },
+            grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
+            series: [
+              {
+                data: timelineData.map((d) => d.amount),
+                type: "bar",
+                itemStyle: { color: "#3B82F6" },
+                barBorderRadius: [6, 6, 0, 0],
+              },
+            ],
+          }}
+        />
       </div>
     </div>
   );

@@ -274,7 +274,7 @@
 .split-box {
   background: #fff;
   border-radius: 12px;
-  padding: 16px;
+  padding: 8px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
@@ -334,19 +334,19 @@
   .split-heatmap {
     grid-template-columns: 1fr;
   }
-  
+
   .row.two-cards .card {
     width: 100%;
   }
 
-  .row{
+  .row {
     display: flex;
     flex-direction: column;
   }
 
   #settle-row {
-  padding: 0px;
-}
+    padding: 0px;
+  }
 }
 
 
@@ -361,7 +361,6 @@
   }
 
   #settle-row {
-  padding: 2px;
+    padding: 2px;
+  }
 }
-}
-
