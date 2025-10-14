@@ -1,111 +1,88 @@
-import Chart from "chart.js/auto";
-import React, { useEffect, useRef, useState } from "react";
-
+import React, { useState, useMemo } from "react";
+import ReactECharts from "echarts-for-react";
 import "./AnalyticsChart.css";
 
 const AnalyticsChart = ({ expenses }) => {
-  const chartRef = useRef(null);
-  const chartInstance = useRef(null);
   const [chartType, setChartType] = useState("category");
 
-  useEffect(() => {
-    if (chartInstance.current) chartInstance.current.destroy();
+  // Aggregate data
+  const categoryTotals = useMemo(() => {
+    const totals = {};
+    expenses.forEach((e) => {
+      const cat = e.category || "Other";
+      totals[cat] = (totals[cat] || 0) + e.amount;
+    });
+    return totals;
+  }, [expenses]);
 
-    const ctx = chartRef.current.getContext("2d");
+  const dailyTotals = useMemo(() => {
+    const totals = {};
+    expenses.forEach((e) => {
+      const date = e.date
+        ? new Date(e.date).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0];
+      totals[date] = (totals[date] || 0) + e.amount;
+    });
+    return totals;
+  }, [expenses]);
 
+  // Chart options
+  const options = useMemo(() => {
     if (chartType === "category") {
-      createCategoryChart(ctx);
+      return {
+        title: { text: "Expenses by Category", left: "center" },
+        tooltip: { trigger: "item", formatter: "{b}: ₹{c} ({d}%)" },
+        legend: { type: "scroll", orient: "vertical", left: "left" },
+        series: [
+          {
+            type: "pie",
+            radius: ["40%", "70%"],
+            avoidLabelOverlap: false,
+            data: Object.entries(categoryTotals).map(([name, value]) => ({
+              name,
+              value,
+            })),
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0,0,0,0.3)",
+              },
+            },
+          },
+        ],
+        color: [
+          "#4f46e5", "#f63beaff", "#0d9488", "#dc2626", "#d97706",
+          "#03ff29ff", "#00eeffff", "#2563eb", "#ffcc00ff", "#f2ff03ff",
+        ],
+      };
     } else if (chartType === "trend") {
-      createTrendChart(ctx);
+      const dates = Object.keys(dailyTotals).sort();
+      const data = dates.map((d) => dailyTotals[d]);
+      return {
+        title: { text: "Spending Trend Over Time", left: "center" },
+        tooltip: { trigger: "axis" },
+        xAxis: { type: "category", data: dates, axisLabel: { rotate: 45 } },
+        yAxis: { type: "value" },
+        series: [{ data, type: "line", smooth: true, areaStyle: {}, color: "#8b5cf6" }],
+        grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
+      };
     } else {
-      createComparisonChart(ctx);
+      const sortedCategories = Object.entries(categoryTotals)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10); // top 10
+      const labels = sortedCategories.map(([cat]) => cat);
+      const data = sortedCategories.map(([, amt]) => amt);
+      return {
+        title: { text: "Top Categories", left: "center" },
+        tooltip: { trigger: "axis" },
+        xAxis: { type: "category", data: labels, axisLabel: { rotate: 20, interval: 0 } },
+        yAxis: { type: "value" },
+        series: [{ data, type: "bar", barWidth: "50%", itemStyle: { color: "#4f46e5" } }],
+        grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
+      };
     }
-  }, [expenses, chartType]);
-
-  // 📊 Chart 1: Category Distribution (Doughnut)
-  const createCategoryChart = (ctx) => {
-    const categoryTotals = {};
-    expenses.forEach((e) => {
-      categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.amount;
-    });
-
-    chartInstance.current = new Chart(ctx, {
-      type: "doughnut",
-      data: {
-        labels: Object.keys(categoryTotals),
-        datasets: [
-          {
-            data: Object.values(categoryTotals),
-            backgroundColor: ["#4f46e5", "#f63beaff", "#0d9488", "#dc2626", "#d97706", "#03ff29ff", "#00eeffff", "#2563eb", "#ffcc00ff", "#f2ff03ff", "#00bbffff"],
-
-
-          },
-        ],
-      },
-    });
-  };
-
-  // 📈 Chart 2: Trend over Time (Line chart)
-  const createTrendChart = (ctx) => {
-    const dailyTotals = {};
-    expenses.forEach((e) => {
-      const date = e.date || new Date(e.timestamp).toISOString().split("T")[0];
-      dailyTotals[date] = (dailyTotals[date] || 0) + e.amount;
-    });
-
-    const labels = Object.keys(dailyTotals).sort();
-    const data = labels.map((date) => dailyTotals[date]);
-
-    chartInstance.current = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Daily Spending",
-            data,
-            borderColor: "#8b5cf6",
-            fill: false,
-            tension: 0.3,
-          },
-        ],
-      },
-    });
-  };
-
-  // ⚖️ Chart 3: Comparison (Bar chart of top categories)
-  const createComparisonChart = (ctx) => {
-    const categoryTotals = {};
-    expenses.forEach((e) => {
-      categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.amount;
-    });
-
-    const sortedCategories = Object.entries(categoryTotals)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5); // top 5
-
-    const labels = sortedCategories.map(([cat]) => cat);
-    const data = sortedCategories.map(([, amt]) => amt);
-
-    chartInstance.current = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Top Categories",
-            data,
-            backgroundColor: ["#4f46e5", "#f63beaff", "#0d9488", "#dc2626", "#d97706", "#03ff29ff", "#00eeffff", "#2563eb", "#ffcc00ff", "#f2ff03ff", "#00bbffff"],
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: { beginAtZero: true },
-        },
-      },
-    });
-  };
+  }, [chartType, categoryTotals, dailyTotals]);
 
   return (
     <div className="pe-analytics-container">
@@ -118,13 +95,18 @@ const AnalyticsChart = ({ expenses }) => {
               onClick={() => setChartType(t)}
               className={`btn-toggle ${chartType === t ? "active" : ""}`}
             >
-              {t}
+              {t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
           ))}
         </div>
       </div>
       <div className="pe-chart-container">
-        <canvas ref={chartRef}></canvas>
+        {/* Force re-render by using chartType as key */}
+        <ReactECharts
+          key={chartType}
+          option={options}
+          style={{ height: "400px", width: "100%" }}
+        />
       </div>
     </div>
   );
