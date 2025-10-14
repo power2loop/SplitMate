@@ -124,6 +124,7 @@ const Navbars = () => {
             <div className="dropdown-options-logo">
               {/* Show only one of the two buttons depending on current route */}
               {location.pathname === "/personalexpense" && (
+                <>
                 <button
                   className="dropdown-option-logo"
                   onClick={handleGroupExpenseClick}
@@ -131,9 +132,15 @@ const Navbars = () => {
                   <MdGroupAdd />
                   <span>Group Expense</span>
                 </button>
+
+                <button className="dropdown-option-logo"> 
+                <BsRobot /> <a href="/aiagent"><span>AI Agent</span></a>
+              </button>
+              </>
               )}
 
               {location.pathname === "/groupexpense" && (
+                <>
                 <button
                   className="dropdown-option-logo"
                   onClick={handlePersonalExpenseClick}
@@ -141,14 +148,34 @@ const Navbars = () => {
                   <IoIosPersonAdd />
                   <span>Personal Expense</span>
                 </button>
+                <button className="dropdown-option-logo"> 
+                <BsRobot /> <a href="/aiagent"><span>AI Agent</span></a>
+              </button>
+
+                </>
               )}
 
-              <div className="dropdown-divider-logo" />
-
               {/* AI Agent */}
-              <button className="dropdown-option-logo">
-                <BsRobot /> <span>AI Agent</span>
-              </button>
+              {location.pathname === "/aiagent" && (
+                <>
+                <button
+                  className="dropdown-option-logo"
+                  onClick={handlePersonalExpenseClick}
+                >
+                  <IoIosPersonAdd />
+                  <span>Personal Expense</span>
+                </button>
+
+
+                <button
+                  className="dropdown-option-logo"
+                  onClick={handleGroupExpenseClick}
+                >
+                  <MdGroupAdd />
+                  <span>Group Expense</span>
+                </button>
+                </>
+              )}
 
               {/* Logout */}
               <button className="dropdown-option-logo" onClick={handleLogout}>

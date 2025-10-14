@@ -126,24 +126,24 @@ const WalletCard = () => {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M12 5v14m-7-7h14" />
           </svg>
-          Add Expense
+          <a href="/personalexpense">Add Expense</a>
         </button>
         <button className="ec-btn ec-settle-up" onClick={handleSettleUp}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M9 12l2 2 4-4" />
             <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.66 0 3.22.45 4.56 1.23" />
           </svg>
-          Details
+          <a href="/groupexpense">Group Details</a>
         </button>
       </div>
 
-      {settleStatus && (
+      {/* {settleStatus && (
         <div
           className={`ec-settle-popup ${settleStatus === "settling" ? "ec-settling" : "ec-done"}`}
         >
           {settleStatus === "settling" ? "Settling..." : "Done!"}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
