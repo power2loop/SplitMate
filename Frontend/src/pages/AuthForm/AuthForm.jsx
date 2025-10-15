@@ -1,8 +1,6 @@
 // Frontend/src/pages/AuthForm/AuthForm.jsx
 import React, { useState } from "react";
-
 import "./AuthForm.css";
-
 import { FaRegUser } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineAlternateEmail } from "react-icons/md";
@@ -12,6 +10,9 @@ import { useNavigate } from "react-router-dom";
 import loginImg from "../../assets/log.svg";
 import registerImg from "../../assets/register.svg";
 import { useStore } from "../../Context/StoreContext.jsx";
+
+import { auth, googleProvider } from "../../firebaseConfig";
+import { signInWithPopup } from "firebase/auth";
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -65,6 +66,50 @@ const AuthForm = () => {
     }
   };
 
+  //Firebase login
+const handleGoogleLogin = async () => {
+  clearMsg();
+  setLoading(true);
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    const token = await user.getIdToken();
+
+    const res = await fetch("/api/users/google-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid response from server");
+    }
+
+    if (!res.ok) throw new Error(data?.message || "Google login failed");
+
+    if (data.user) {
+      setUser(data.user);
+      localStorage.setItem("splitmateUser", JSON.stringify(data.user));
+    }
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
+
+    setMsg({ type: "success", text: "Logged in with Google successfully" });
+    navigate("/", { replace: true });
+  } catch (err) {
+    console.error(err);
+    setMsg({ type: "error", text: err.message });
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     clearMsg();
@@ -93,6 +138,7 @@ const AuthForm = () => {
       setIsSignUpMode(false);
     } catch (err) {
       setMsg({ type: "error", text: err.message });
+      console.log(err.message);
     } finally {
       setLoading(false);
     }
@@ -133,7 +179,7 @@ const AuthForm = () => {
             </button>
             <p className="socialTextR">Or Sign in with social platforms</p>
             <div className="socialMediaR">
-              <a href="#" className="socialIconR" aria-label="Google sign in">
+              <a href="#" className="socialIconR" aria-label="Google sign in" onClick={handleGoogleLogin} disabled={loading}>
                 <FcGoogle />
               </a>
             </div>
@@ -181,7 +227,7 @@ const AuthForm = () => {
             </button>
             <p className="socialTextR">Or Sign up with social platforms</p>
             <div className="socialMediaR" style={{ marginBottom: "25px" }}>
-              <a href="#" className="socialIconR" aria-label="Google sign up">
+              <a href="#" className="socialIconR" aria-label="Google sign up" onClick={handleGoogleLogin} disabled={loading}>
                 <FcGoogle />
               </a>
             </div>
