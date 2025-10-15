@@ -64,7 +64,7 @@ const AnalyticsChart = ({ expenses }) => {
         tooltip: { trigger: "axis" },
         xAxis: { type: "category", data: dates, axisLabel: { rotate: 45 } },
         yAxis: { type: "value" },
-        series: [{ data, type: "line", smooth: true, areaStyle: {}, color: "#8b5cf6" }],
+        series: [{ data, type: "line", smooth: true, areaStyle: {}, color: "#326cffff" }],
         grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
       };
     } else {
@@ -78,7 +78,7 @@ const AnalyticsChart = ({ expenses }) => {
         tooltip: { trigger: "axis" },
         xAxis: { type: "category", data: labels, axisLabel: { rotate: 20, interval: 0 } },
         yAxis: { type: "value" },
-        series: [{ data, type: "bar", barWidth: "50%", itemStyle: { color: "#4f46e5" } }],
+        series: [{ data, type: "bar", barWidth: "50%", itemStyle: { color: "#326cffff" } }],
         grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
       };
     }
