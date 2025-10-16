@@ -139,7 +139,7 @@
     rgba(0, 0, 0, 0.3) 0px 18px 36px -18px,
     rgba(10, 37, 64, 0.25) 0px -1px 4px 0px inset;
   color: #0d47a1;
-  margin-top: 190px;
+  margin-top: 130px;
 
 }
 
@@ -434,7 +434,7 @@
 }
 
 .invite-dialog {
-  width: 400px;
+  width: 310px;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid #cfe3ff;
   border-radius: 14px;

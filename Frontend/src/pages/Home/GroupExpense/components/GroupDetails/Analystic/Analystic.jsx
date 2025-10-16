@@ -217,7 +217,7 @@ const Analytics = ({ groupId }) => {
                 </div>
                 <span className="arrow">→</span>
                 <div className="settle-to">
-                  {s.toName ?? s.to ?? s.toId}
+                  {s.toName.split(" ")[0] ?? s.to ?? s.toId}
                 </div>
                 <div className="settle-amount">
                   ₹{Math.round(Number(s.amount) || 0)}

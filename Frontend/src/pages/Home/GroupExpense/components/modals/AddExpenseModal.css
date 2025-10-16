@@ -730,8 +730,8 @@
 
 @media (max-width: 480px) {
   .expense-dialog {
-    width: calc(100vw - 16px);
-    max-height: calc(100vh - 16px);
+    width: 85vw;
+    height: 80vh;
   }
 
   .expense-header h3 {

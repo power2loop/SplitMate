@@ -1,6 +1,5 @@
 /* Analytics Container */
 .analytics-container {
-  padding: 20px;
   font-family: "Segoe UI", sans-serif;
   min-height: 100vh;
   background: #f9fafb;
@@ -337,11 +336,6 @@
 
   .row.two-cards .card {
     width: 100%;
-  }
-
-  .row {
-    display: flex;
-    flex-direction: column;
   }
 
   #settle-row {
