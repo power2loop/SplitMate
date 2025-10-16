@@ -1,10 +1,8 @@
-// Backend/src/routes/groupRoutes.js
 import express from "express";
 import {
     createGroup,
     joinGroup,
     getGroupDetails,
-    getAllGroup,
     getMyGroups,
     LeaveGroup,
     DeleteGroup,
