@@ -9,6 +9,7 @@ import AddExpenseModal from "../../modals/AddExpenseModal";
 import GroupSettingsModal from "../../modals/GroupSettingsModal";
 import Analytics from "../Analystic/Analystic";
 import AllExpenses from "../Expense/AllExpense";
+import { MoveLeft } from 'lucide-react';
 
 import "./Overview.css";
 
@@ -222,7 +223,7 @@ const Overview = () => {
               className="back-btn"
               style={{ gap: "20px", fontSize: "30px" }}
             >
-              <FaArrowLeft />
+              <MoveLeft size={40} />
             </button>
             <div className="title-section">
               <h1>{title}</h1>
@@ -322,7 +323,7 @@ const Overview = () => {
             style={{ gap: "5px" }}
             onClick={() => setActiveTab("overview")}
           >
-            <IoHome />
+            🏠
             Overview
           </a>
           <a
@@ -331,7 +332,7 @@ const Overview = () => {
             style={{ gap: "5px" }}
             onClick={() => setActiveTab("analytics")}
           >
-            <IoBarChart />
+            📊
             Analytics
           </a>
           <a
@@ -340,7 +341,7 @@ const Overview = () => {
             style={{ gap: "5px" }}
             onClick={() => setActiveTab("expenses")}
           >
-            <FaMoneyBillAlt />
+            💵
             Expenses
           </a>
         </div>
