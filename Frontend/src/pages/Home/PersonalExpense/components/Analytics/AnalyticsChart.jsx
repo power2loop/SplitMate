@@ -26,60 +26,181 @@ const AnalyticsChart = ({ expenses }) => {
     return totals;
   }, [expenses]);
 
-  // Chart options
   const options = useMemo(() => {
     if (chartType === "category") {
       return {
-        title: { text: "Expenses by Category", left: "center" },
-        tooltip: { trigger: "item", formatter: "{b}: ₹{c} ({d}%)" },
-        legend: { type: "scroll", orient: "vertical", left: "left" },
+        title: {
+          text: "Expenses by Category",
+          left: "center",
+          top: 10,
+          textStyle: {
+            fontSize: window.innerWidth < 768 ? 14 : 16,
+            fontWeight: 'bold'
+          }
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{b}: ₹{c} ({d}%)",
+          textStyle: {
+            fontSize: window.innerWidth < 768 ? 12 : 14
+          }
+        },
+        legend: {
+          orient: window.innerWidth < 768 ? "horizontal" : "vertical",
+          left: window.innerWidth < 768 ? "center" : "left",
+          top: window.innerWidth < 768 ? "bottom" : "middle",
+          bottom: window.innerWidth < 768 ? 10 : "auto",
+          itemWidth: window.innerWidth < 768 ? 12 : 25,
+          itemHeight: window.innerWidth < 768 ? 12 : 14,
+          textStyle: {
+            fontSize: window.innerWidth < 768 ? 10 : 12
+          },
+          padding: window.innerWidth < 768 ? [5, 0] : [0, 0]
+        },
+        grid: {
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          containLabel: true
+        },
         series: [
           {
             type: "pie",
-            radius: ["40%", "70%"],
-            avoidLabelOverlap: false,
-            data: Object.entries(categoryTotals).map(([name, value]) => ({
-              name,
-              value,
-            })),
+            radius: window.innerWidth < 768
+              ? ["30%", "60%"]
+              : window.innerWidth < 480
+                ? ["25%", "55%"]
+                : ["40%", "70%"],
+            center: window.innerWidth < 768
+              ? ["50%", "45%"]
+              : ["60%", "50%"],
+            label: {
+              show: window.innerWidth >= 768,
+              formatter: "{b}: {d}%",
+              fontSize: window.innerWidth < 768 ? 10 : 12
+            },
+            labelLine: {
+              show: window.innerWidth >= 768
+            },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0,0,0,0.3)",
-              },
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
             },
+            data: Object.entries(categoryTotals).map(([name, value]) => ({
+              name,
+              value,
+            })),
           },
-        ],
-        color: [
-          "#4f46e5", "#f63beaff", "#0d9488", "#dc2626", "#d97706",
-          "#03ff29ff", "#00eeffff", "#2563eb", "#ffcc00ff", "#f2ff03ff",
         ],
       };
     } else if (chartType === "trend") {
       const dates = Object.keys(dailyTotals).sort();
       const data = dates.map((d) => dailyTotals[d]);
       return {
-        title: { text: "Spending Trend Over Time", left: "center" },
-        tooltip: { trigger: "axis" },
-        xAxis: { type: "category", data: dates, axisLabel: { rotate: 45 } },
-        yAxis: { type: "value" },
-        series: [{ data, type: "line", smooth: true, areaStyle: {}, color: "#326cffff" }],
-        grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
+        title: {
+          text: "Spending Trend Over Time",
+          left: "center",
+          textStyle: {
+            fontSize: window.innerWidth < 768 ? 14 : 16,
+            fontWeight: 'bold'
+          }
+        },
+        tooltip: {
+          trigger: "axis",
+          textStyle: {
+            fontSize: window.innerWidth < 768 ? 12 : 14
+          }
+        },
+        grid: {
+          left: window.innerWidth < 768 ? "15%" : "10%",
+          right: window.innerWidth < 768 ? "15%" : "10%",
+          top: window.innerWidth < 768 ? "20%" : "15%",
+          bottom: window.innerWidth < 768 ? "25%" : "15%",
+          containLabel: true
+        },
+        xAxis: {
+          type: "category",
+          data: dates,
+          axisLabel: {
+            rotate: window.innerWidth < 768 ? 45 : 30,
+            fontSize: window.innerWidth < 768 ? 10 : 12
+          }
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            fontSize: window.innerWidth < 768 ? 10 : 12
+          }
+        },
+        legend: { show: false },
+        series: [
+          {
+            data,
+            type: "line",
+            smooth: true,
+            areaStyle: {},
+            color: "#4f46e5",
+            lineStyle: {
+              width: window.innerWidth < 768 ? 2 : 3
+            }
+          },
+        ],
       };
     } else {
       const sortedCategories = Object.entries(categoryTotals)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 10); // top 10
+        .slice(0, 10);
       const labels = sortedCategories.map(([cat]) => cat);
       const data = sortedCategories.map(([, amt]) => amt);
       return {
-        title: { text: "Top Categories", left: "center" },
-        tooltip: { trigger: "axis" },
-        xAxis: { type: "category", data: labels, axisLabel: { rotate: 20, interval: 0 } },
-        yAxis: { type: "value" },
-        series: [{ data, type: "bar", barWidth: "50%", itemStyle: { color: "#326cffff" } }],
-        grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
+        title: {
+          text: "Top Categories",
+          left: "center",
+          textStyle: {
+            fontSize: window.innerWidth < 768 ? 14 : 16,
+            fontWeight: 'bold'
+          }
+        },
+        tooltip: {
+          trigger: "axis",
+          textStyle: {
+            fontSize: window.innerWidth < 768 ? 12 : 14
+          }
+        },
+        grid: {
+          left: window.innerWidth < 768 ? "15%" : "10%",
+          right: window.innerWidth < 768 ? "15%" : "10%",
+          top: window.innerWidth < 768 ? "20%" : "15%",
+          bottom: window.innerWidth < 768 ? "25%" : "15%",
+          containLabel: true
+        },
+        xAxis: {
+          type: "category",
+          data: labels,
+          axisLabel: {
+            rotate: window.innerWidth < 768 ? 30 : 20,
+            fontSize: window.innerWidth < 768 ? 10 : 12
+          }
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            fontSize: window.innerWidth < 768 ? 10 : 12
+          }
+        },
+        legend: { show: false },
+        series: [
+          {
+            data,
+            type: "bar",
+            barWidth: window.innerWidth < 768 ? "40%" : "50%",
+            itemStyle: { color: "#4f46e5" },
+          },
+        ],
       };
     }
   }, [chartType, categoryTotals, dailyTotals]);
@@ -100,12 +221,17 @@ const AnalyticsChart = ({ expenses }) => {
           ))}
         </div>
       </div>
+
       <div className="pe-chart-container">
-        {/* Force re-render by using chartType as key */}
         <ReactECharts
           key={chartType}
           option={options}
-          style={{ height: "400px", width: "100%" }}
+          style={{ height: "100%", width: "100%" }}
+          opts={{
+            renderer: "canvas",
+            width: 'auto',
+            height: 'auto'
+          }}
         />
       </div>
     </div>

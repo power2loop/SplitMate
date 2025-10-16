@@ -10,34 +10,34 @@ const ExpenseForm = ({ onAddExpense }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!description || !amount || !category) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!description || !amount || !category) return;
 
-  const payload = {
-    title: description,
-    amount: parseFloat(amount),
-    category,
-    date: new Date().toISOString().split("T")[0],
-  };
-
-  try {
-    const saved = await api("/expenses/personal/add", { method: "POST", body: payload });
-    const normalized = {
-      id: saved._id || saved.id,
-      description: saved.title ?? description,
-      amount: Number(saved.amount ?? payload.amount),
-      category: saved.category ?? category,
-      date: saved.date ?? saved.createdAt ?? new Date().toISOString(),
+    const payload = {
+      title: description,
+      amount: parseFloat(amount),
+      category,
+      date: new Date().toISOString().split("T")[0],
     };
-    onAddExpense(normalized);
-    setDescription("");
-    setAmount("");
-    setCategory("");
-  } catch (err) {
-    console.error("Error saving expense:", err.message);
-  }
-};
+
+    try {
+      const saved = await api("/expenses/personal/add", { method: "POST", body: payload });
+      const normalized = {
+        id: saved._id || saved.id,
+        description: saved.title ?? description,
+        amount: Number(saved.amount ?? payload.amount),
+        category: saved.category ?? category,
+        date: saved.date ?? saved.createdAt ?? new Date().toISOString(),
+      };
+      onAddExpense(normalized);
+      setDescription("");
+      setAmount("");
+      setCategory("");
+    } catch (err) {
+      console.error("Error saving expense:", err.message);
+    }
+  };
 
   const categories = [
     { value: "Food & Dining", icon: "🍽️" },
