@@ -8,7 +8,7 @@ import {
     DeleteGroup,
     getGroupAnalytics,
     recordSettlement,
-} from "../controllers/GroupController.js";
+} from "../controllers/groupController.js";
 import { protect } from "../middlewares/GroupMiddleware.js";
 
 const router = express.Router();
