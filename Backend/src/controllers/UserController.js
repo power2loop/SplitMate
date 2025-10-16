@@ -27,36 +27,58 @@ if (!admin.apps.length) {
   });
 }
 
+// Make sure admin is initialized via env/service account earlier (no hardcoded creds in code)
+
 export const googleLogin = async (req, res) => {
   try {
     const { token } = req.body;
-    if (!token) return res.status(400).json({ message: "Token missing" });
+    if (!token) return res.status(400).json({ message: "Missing Firebase token" });
 
-    // 🔍 Verify Firebase ID token
+    // verify Firebase token
     const decoded = await admin.auth().verifyIdToken(token);
-    const { name, email, picture, uid } = decoded;
+    const { uid, email, name, picture } = decoded;
 
-    // 🔎 Find or create MongoDB user
+    // try find by email first
     let user = await User.findOne({ email });
 
     if (!user) {
+      // create new user for Google sign-in
       user = await User.create({
-        username: name || email.split("@")[0],
+        username: name || (email ? email.split("@")[0] : `user_${uid}`),
         email,
-        password: uid, // dummy
-        profilePic: picture,
+        password: undefined, // no password for google users
+        firebaseUid: uid,
+        profilePic: picture || null,
         provider: "google",
         isGoogleUser: true,
         isVerified: true
       });
+    } else {
+      // if user exists but not linked to firebase, link it
+      if (!user.firebaseUid) {
+        user.firebaseUid = uid;
+        user.provider = user.provider || "google";
+        user.isGoogleUser = true;
+        user.isVerified = true;
+        await user.save();
+      }
     }
 
-    // 🎟 Create JWT for your app
+    // sign backend JWT (same as loginUser/registerUser)
     const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
-    res.status(200).json({
+    // set cookie to match your other endpoints
+    res.cookie("token", jwtToken, {
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    return res.status(200).json({
       success: true,
       message: "Google login successful",
       user: {
@@ -70,9 +92,10 @@ export const googleLogin = async (req, res) => {
 
   } catch (error) {
     console.error("Google login error:", error);
-    res.status(400).json({ message: "Google login failed", error: error.message });
+    return res.status(400).json({ message: "Google login failed", error: error.message });
   }
 };
+
 
 export const getAllUsers = async (req, res) => {
     try {
@@ -86,70 +109,57 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserWalletData = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ message: "Not authenticated" });
+    // requireAuth sets req.user (a Mongoose-ish object or at least an object with id)
+    const user = req.user;
+    if (!user) return res.status(401).json({ message: "Not authenticated" });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.id;
+    const objectUserId = new mongoose.Types.ObjectId(user._id || user.id);
 
-    if (!mongoose.Types.ObjectId.isValid(userId))
-      return res.status(400).json({ message: "Invalid userId" });
-
-    const objectUserId = new mongoose.Types.ObjectId(userId);
-
-    // 1️⃣ Personal expenses
+    // personal expenses
     const personalExpenses = await Expense.find({ user: objectUserId }).sort({ date: -1 });
 
-    // 2️⃣ Groups where user is a member
+    // groups where user is member
     const groups = await GroupExpense.find({ members: objectUserId }).select("expenses");
 
-    // 3️⃣ All group expense IDs
-    const groupExpenseIds = groups.flatMap(g => g.expenses);
+    const groupExpenseIds = groups.flatMap(g => g.expenses || []);
 
-    // 4️⃣ Fetch group expenses **where user has allocations**
     const groupExpenses = await Expense.find({
       _id: { $in: groupExpenseIds },
       type: "group",
-      [`allocations.${userId}`]: { $exists: true } // user has a share
+      [`allocations.${objectUserId}`]: { $exists: true } // user has a share
     }).sort({ date: -1 });
 
-    // 5️⃣ Map group expenses to only include logged-in user's allocation
-    const userGroupExpenses = groupExpenses.map(exp => ({
-      _id: exp._id,
-      title: exp.title,
-      amount: exp.allocations.get(userId) || 0, // only the user's allocation
-      date: exp.date,
-      currency: exp.currency,
-      category: exp.category,
-      type: "group",
-      notes: exp.notes,
-      createdAt: exp.createdAt,
-      updatedAt: exp.updatedAt
-    }));
+    // Map group expenses for this user (adapt to your allocations structure)
+    const userGroupExpenses = groupExpenses.map(exp => {
+      // allocations could be Map or object - normalize
+      const alloc = exp.allocations?.get?.(String(objectUserId)) ?? exp.allocations?.[String(objectUserId)];
+      return {
+        _id: exp._id,
+        title: exp.title,
+        amount: alloc || 0,
+        date: exp.date,
+        currency: exp.currency,
+        category: exp.category,
+        type: "group",
+        notes: exp.notes,
+        createdAt: exp.createdAt,
+        updatedAt: exp.updatedAt
+      };
+    });
 
-    // 6️⃣ Total investment (personal + category=Investment)
     const totalInvestment = personalExpenses
       .filter(e => e.category === "Investment")
       .reduce((sum, e) => sum + (e.amount || 0), 0);
 
-    // 7️⃣ Total owes from settlements
-    const [owePendingAgg, oweAllAgg] = await Promise.all([
-      Settlement.aggregate([
-        { $match: { from: objectUserId, status: "pending" } },
-        { $group: { _id: null, total: { $sum: "$amount" } } }
-      ]),
-      Settlement.aggregate([
-        { $match: { from: objectUserId } },
-        { $group: { _id: null, total: { $sum: "$amount" } } }
-      ])
+    const [owePendingAgg] = await Settlement.aggregate([
+      { $match: { from: objectUserId, status: "pending" } },
+      { $group: { _id: null, total: { $sum: "$amount" } } }
     ]);
 
-    const totalOwePending = owePendingAgg[0]?.total || 0;
+    const totalOwePending = owePendingAgg?.total || 0;
 
-    // 8️⃣ Combine personal + user's allocation from groups
     const allExpenses = [...personalExpenses, ...userGroupExpenses];
 
-    // 9️⃣ Total spent
     const totalSpent = allExpenses.reduce((sum, e) => sum + (e.amount || 0), 0);
 
     return res.status(200).json({
@@ -165,6 +175,7 @@ export const getUserWalletData = async (req, res) => {
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 export const registerUser = async (req, res) => {
     const { username, email, password } = req.body;

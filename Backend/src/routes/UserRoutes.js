@@ -1,6 +1,7 @@
 // src/routes/UserRoutes.js
 import express from 'express';
 import { checkSchema, validationResult } from 'express-validator';
+import { requireAuth } from '../middlewares/UserMiddleware.js'
 import { registerUser, loginUser, getAllUsers, logoutUser, getUserWalletData, googleLogin } from '../controllers/UserController.js';
 
 const router = express.Router();
@@ -39,7 +40,10 @@ function runValidation(req, res, next) {
 
 router.post('/register', registerSchema, runValidation, registerUser);
 router.post('/login', loginSchema, runValidation, loginUser);
-router.get("/wallet", getUserWalletData);
+
+// protect wallet with requireAuth
+router.get("/wallet", requireAuth, getUserWalletData);
+
 router.post('/', getAllUsers);
 router.post("/google-login", googleLogin);
 router.post('/logout', logoutUser);

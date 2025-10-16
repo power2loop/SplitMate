@@ -14,6 +14,9 @@ export default function Sidebar({ isOpen = false, setIsOpen }) {
   const handleLogout = async () => {
     try {
       await fetch("/api/users/logout", { method: "POST", credentials: "include" });
+      localStorage.removeItem("token");
+      localStorage.removeItem("splitmateUser");
+      setUser(null);
     } catch (e) {
       // ignore
     } finally {

@@ -182,6 +182,7 @@
   width: 100%;
   border-radius: 12px;
   background: #f9fbff;
+  overflow: hidden;
 }
 
 .user-avatar {

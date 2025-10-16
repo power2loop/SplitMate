@@ -91,12 +91,12 @@ const handleGoogleLogin = async () => {
     if (!res.ok) throw new Error(data?.message || "Google login failed");
 
     if (data.user) {
-      setUser(data.user);
-      localStorage.setItem("splitmateUser", JSON.stringify(data.user));
-    }
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-    }
+  setUser(data.user);
+  localStorage.setItem("splitmateUser", JSON.stringify(data.user));
+}
+if (data.token) {
+  localStorage.setItem("token", data.token); // backend JWT
+}
 
     setMsg({ type: "success", text: "Logged in with Google successfully" });
     navigate("/", { replace: true });
