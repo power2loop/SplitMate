@@ -1,4 +1,3 @@
-// controllers/GroupController.js
 import crypto from "crypto";
 import mongoose from "mongoose";
 import Group from "../models/GroupModel.js";
