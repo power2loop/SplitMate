@@ -276,45 +276,36 @@ const Overview = () => {
 
         {/* Mobile actions menu */}
         {menuOpen && (
-          <div
-            className="hamburger-menu-backdrop"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) setMenuOpen(false);
-            }}
-          >
-            <div
-              id="actions-menu"
-              className="hamburger-menu"
-              role="menu"
-              aria-label="Actions"
-            >
-              <button
-                className="hamburger-item"
-                role="menuitem"
-                onClick={openInviteFromMenu}
-              >
-                <BsFillPersonPlusFill />
-                Invite
-              </button>
-              <button
-                className="hamburger-item"
-                role="menuitem"
-                onClick={openSettingsFromMenu}
-              >
-                <IoSettings />
-                Settings
-              </button>
-              <button
-                className="hamburger-item"
-                role="menuitem"
-                onClick={openAddFromMenu}
-              >
-                <IoMdAddCircle />
-                Add Expense
-              </button>
-            </div>
-          </div>
-        )}
+  <div
+    className="hamburger-menu-backdrop"
+    onClick={(e) => {
+      if (e.target === e.currentTarget) setMenuOpen(false);
+    }}
+  >
+    <div
+      id="actions-menu"
+      className="hamburger-menu animate-slide-down"
+      role="menu"
+      aria-label="Actions"
+    >
+      <button className="hamburger-item" role="menuitem" onClick={openInviteFromMenu}>
+        <i className="ri-user-add-line"></i>
+        Invite Members
+      </button>
+
+      <button className="hamburger-item" role="menuitem" onClick={openSettingsFromMenu}>
+        <i className="ri-settings-3-line"></i>
+        Settings
+      </button>
+
+      <button className="hamburger-item" role="menuitem" onClick={openAddFromMenu}>
+        <i className="ri-wallet-3-line"></i>
+        Add Expense
+      </button>
+    </div>
+  </div>
+)}
+
 
         <div className="navigation-tabs" id="overview">
           <a

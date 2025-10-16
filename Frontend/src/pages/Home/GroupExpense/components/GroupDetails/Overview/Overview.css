@@ -117,55 +117,117 @@
 }
 
 /* Hamburger menu overlay */
+/* === Backdrop === */
 .hamburger-menu-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(10, 20, 40, 0.35);
+  backdrop-filter: blur(6px);
   display: grid;
   place-items: start end;
-  padding: 12px;
-  z-index: 70;
+  padding: 16px;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease forwards;
 }
 
+/* === Menu Box === */
 .hamburger-menu {
-  width: 200px;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid #cfe3ff;
-  border-radius: 12px;
-  backdrop-filter: blur(16px);
-  padding: 8px;
+  width: 220px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 14px;
+  border: 1px solid rgba(13, 71, 161, 0.15);
+  padding: 10px;
   box-shadow:
-    rgba(50, 50, 93, 0.25) 0px 30px 60px -12px,
-    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px,
-    rgba(10, 37, 64, 0.25) 0px -1px 4px 0px inset;
+    0 10px 25px rgba(0, 0, 0, 0.08),
+    0 0 1px rgba(0, 0, 0, 0.1);
   color: #0d47a1;
-  margin-top: 130px;
-
+  margin-top: 100px;
+  transform-origin: top right;
 }
 
+/* === Menu Items === */
 .hamburger-item {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: transparent;
   border: none;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 12px 14px;
   cursor: pointer;
-  color: #000000;
+  color: #0a2540;
   font-weight: 600;
-  transition: background 0.15s ease, transform 0.05s ease;
   font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.hamburger-item i {
+  font-size: 18px;
+  color: #0d47a1;
+  transition: color 0.25s ease;
 }
 
 .hamburger-item:hover {
   background: #e3f2fd;
+  transform: translateX(-3px);
+}
+
+.hamburger-item:hover i {
+  color: #1976d2;
 }
 
 .hamburger-item:active {
-  transform: translateY(1px);
+  transform: scale(0.98);
 }
+
+/* === Animations === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(6px);
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .hamburger-menu {
+    width: 85%;
+    margin-top: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 16px;
+  }
+
+  .hamburger-item {
+    font-size: 15px;
+    padding: 14px;
+  }
+
+  .hamburger-menu-backdrop {
+    place-items: center;
+  }
+}
+
 
 /* Navigation tabs */
 .navigation-tabs {
