@@ -6,7 +6,7 @@ import {
     createPersonalExpense,
     listPersonalExpenses,
     deletePersonalExpense
-} from "../controllers/expenseController.js";
+} from "../controllers/ExpenseController.js";
 import { validateExpenseCreate } from "../middlewares/ExpenseMiddleware.js";
 import { protect } from "../middlewares/GroupMiddleware.js";
 
