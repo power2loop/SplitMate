@@ -7,24 +7,26 @@ import UserRoutes from './src/routes/UserRoutes.js';
 import GroupRoutes from './src/routes/GroupRoutes.js';
 import { connectDB } from './src/config/db.js';
 import expenseRoutes from "./src/routes/expenseRoutes.js";
+import path from "path";
+import { fileURLToPath } from 'url';
 
 
 const app = express();
 connectDB();
-const ORIGIN = "http://localhost:5317";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
 
 app.use(cors({
-    origin: ORIGIN,                 // exact origin, not "*"
-    credentials: true,              // adds Access-Control-Allow-Credentials: true
+    credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
-})); // handles preflight for these routes too
-
+}));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 app.get('/', (_req, res) => res.send('API is running...'));
 
 app.use('/api/users', UserRoutes);

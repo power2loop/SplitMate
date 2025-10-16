@@ -1,9 +1,8 @@
-// src/services/api.js
 import axios from "axios";
 
 const RAW_BASE = import.meta.env.DEV
   ? "/api"
-  : (import.meta.env.VITE_API_BASE ?? "https://localhost:5000/api");
+  : (import.meta.env.VITE_API_BASE ?? import.meta.env.VITE_BACKEND_URL);
 
 const API_BASE = RAW_BASE.replace(/\/+$/, "");
 

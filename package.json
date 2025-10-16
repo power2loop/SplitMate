@@ -15,8 +15,11 @@
   "type": "module",
   "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "splitmate": "concurrently \"npm run start --prefix Backend\" \"npm run dev --prefix Frontend\""
+    "build": "npm install --prefix ./Backend && npm install --prefix ./Frontend && npm run build --prefix ./Frontend",
+    "start": "node Backend/server.js",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "frontend": "npm run dev --prefix ./Frontend",
+    "backend": "npm run start --prefix ./Backend"
   },
   "dependencies": {
     "ansi-regex": "^5.0.1",
