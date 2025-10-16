@@ -1,12 +1,12 @@
-// server.js (or src/app.js)
+
 import express from 'express';
 import 'dotenv/config.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import UserRoutes from './src/routes/UserRoutes.js';
-import GroupRoutes from './src/routes/GroupRoutes.js';
+import GroupRoutes from './src/routes/groupRoutes.js';
 import { connectDB } from './src/config/db.js';
-import expenseRoutes from "./src/routes/ExpenseRoutes.js";
+import expenseRoutes from "./src/routes/expenseRoutes.js";
 import path from "path";
 import { fileURLToPath } from 'url';
 
