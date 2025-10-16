@@ -22,6 +22,10 @@
   align-items: center;
 }
 
+.lp-nav-link .rate{
+   margin-right: 4px;
+  }
+
 .lp-brand-text-logo {
   display: flex;
   align-items: center;

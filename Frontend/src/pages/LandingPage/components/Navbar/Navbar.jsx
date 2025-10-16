@@ -33,11 +33,11 @@ const Navbar = () => {
             <a href="#how-it-works" className="lp-nav-link">
               How it works
             </a>
-            <a href="#pricing" className="lp-nav-link">
+            {/* <a href="#pricing" className="lp-nav-link">
               Pricing
-            </a>
+            </a> */}
             <a href="#support" className="lp-nav-link">
-              Support
+              <span className="rate">Rate Us</span><i class="ri-bard-line"></i>
             </a>
 
             {/* Actions inside dropdown on mobile */}
