@@ -7,7 +7,7 @@ export const requireAuth = async (req, res, next) => {
         const header = req.get("Authorization");
         const headerToken = header?.startsWith("Bearer ") ? header.slice(7) : null;
         const token = cookieToken || headerToken;
-        console.log(token);
+        // console.log(token);
 
         if (!token) {
             return res.status(401).json({ success: false, message: "No token provided" });
