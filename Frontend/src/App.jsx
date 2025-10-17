@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import AiModel from "./components/AiModel/AiModel";
+// import AiModel from "./components/AiModel/AiModel";
 import Dashboard from "./components/Dashboard/Dashboard";
 import AiAgent from "./pages/AiAgent/AiAgent";
 import AuthForm from "./pages/AuthForm/AuthForm";
@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import "./index.css";
 
-import L from "./components/Loader/Loader";
+// import L from "./components/Loader/Loader";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
 
 function App() {
@@ -33,10 +33,10 @@ function App() {
           <Route path="aiagent" element={<AiAgent />} />
           <Route path="/register" element={<AuthForm />} />
           <Route path="/" element={<NotFound />} />
-          <Route path='/ComingSoon' element={<ComingSoon/>} />
+          <Route path='/ComingSoon' element={<ComingSoon />} />
           <Route path="/groupdetails" element={<GroupDetails />} />
-          <Route path="/aimodel" element={<AiModel />} />
-          <Route path="/l" element={<L />} />
+          {/* <Route path="/aimodel" element={<AiModel />} /> */}
+          {/* <Route path="/l" element={<L />} /> */}
         </Routes>
       </Router>
     </>
