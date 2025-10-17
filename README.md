@@ -167,7 +167,7 @@ text
 - **Email**: kumarvkvikash3@gmail.com
 
 ### **[Aryan Gupta]** 
-- **GitHub**: [@aryan Gupta][(https://github.com/friend-username](https://github.com/Aryangupta15))
+- **GitHub**: [@aryan Gupta](https://github.com/Aryangupta15))
 - **LinkedIn**: [Aryan Gupta](https://www.linkedin.com/in/aryan-gupta-01k/)]
 - **Email**:aryangupta.x01@gmail.com
 
