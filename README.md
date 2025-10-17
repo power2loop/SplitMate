@@ -186,15 +186,6 @@ We welcome contributions! Please follow these steps:
 
 ---
 
-## 👨‍💻 Developer
-
-**Your Name**
-- GitHub: [@power2loop](https://github.com/power2loop)
-- LinkedIn:[ [Vikash Kumar]](https://www.linkedin.com/in/vikash-kumar-b56a68228/)
-- Email: kumarvkvikash3@gmail.com
-
----
-
 ## 🙏 Acknowledgments
 
 - [Chart.js](https://www.chartjs.org/) for beautiful data visualizations
