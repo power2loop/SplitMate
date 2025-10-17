@@ -8,6 +8,6 @@ export const connectDB = async () => {
 
     } catch (error) {
         console.error(`Error: ${error.message}`);
-        process.exit(1); // Exit process with failure
+        process.exit(1);
     }
 };

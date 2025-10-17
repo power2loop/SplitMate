@@ -53,7 +53,7 @@ const AuthForm = () => {
         localStorage.setItem("splitmateUser", JSON.stringify(data.user));
       }
       if (data?.token) {
-        localStorage.setItem("token", data.token); // <-- add this
+        localStorage.setItem("token", data.token);
       }
 
       setMsg({ type: "success", text: "Logged in successfully" });
@@ -67,46 +67,46 @@ const AuthForm = () => {
   };
 
   //Firebase login
-const handleGoogleLogin = async () => {
-  clearMsg();
-  setLoading(true);
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
-    const token = await user.getIdToken();
-
-    const res = await fetch("/api/users/google-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    });
-
-    let data;
+  const handleGoogleLogin = async () => {
+    clearMsg();
+    setLoading(true);
     try {
-      data = await res.json();
-    } catch {
-      throw new Error("Invalid response from server");
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      const token = await user.getIdToken();
+
+      const res = await fetch("/api/users/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
+
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Invalid response from server");
+      }
+
+      if (!res.ok) throw new Error(data?.message || "Google login failed");
+
+      if (data.user) {
+        setUser(data.user);
+        localStorage.setItem("splitmateUser", JSON.stringify(data.user));
+      }
+      if (data.token) {
+        localStorage.setItem("token", data.token); // backend JWT
+      }
+
+      setMsg({ type: "success", text: "Logged in with Google successfully" });
+      navigate("/", { replace: true });
+    } catch (err) {
+      console.error(err);
+      setMsg({ type: "error", text: err.message });
+    } finally {
+      setLoading(false);
     }
-
-    if (!res.ok) throw new Error(data?.message || "Google login failed");
-
-    if (data.user) {
-  setUser(data.user);
-  localStorage.setItem("splitmateUser", JSON.stringify(data.user));
-}
-if (data.token) {
-  localStorage.setItem("token", data.token); // backend JWT
-}
-
-    setMsg({ type: "success", text: "Logged in with Google successfully" });
-    navigate("/", { replace: true });
-  } catch (err) {
-    console.error(err);
-    setMsg({ type: "error", text: err.message });
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
