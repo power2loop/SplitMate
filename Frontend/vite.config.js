@@ -14,16 +14,33 @@ export default defineConfig({
       "@": resolve(__dirname, "src"),
     },
   },
+  // Add base configuration for production
+  base: "/",
+  // Define environment variables with defaults
+  define: {
+    // Ensure environment variables have fallbacks
+    __VITE_API_BASE_URL__: JSON.stringify(process.env.VITE_API_BASE_URL || ""),
+  },
   server: {
-    port: 5317, // dev server port
-    strictPort: true, // exit if 5317 is in use
-    open: "/landingpage", // open this path on start
+    port: 5317,
+    strictPort: true,
+    open: "/landingpage",
     proxy: {
-      // SPA calls like fetch('/api/users/register') will be proxied in dev
       "/api": {
-        target: "http://127.0.0.1:5000", // Use IPv4 explicitly instead of localhost
+        target: "http://127.0.0.1:5000",
         changeOrigin: true,
         secure: false,
+      },
+    },
+  },
+  // Production build optimizations
+  build: {
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+        },
       },
     },
   },

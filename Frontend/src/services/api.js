@@ -1,9 +1,26 @@
 import axios from "axios";
 
-const RAW_BASE = import.meta.env.DEV
-  ? "/api"
-  : (import.meta.env.VITE_API_BASE ?? import.meta.env.VITE_BACKEND_URL);
+const getApiBase = () => {
+  // Development: use proxy
+  if (import.meta.env.DEV) {
+    return "/api";
+  }
 
+  // Production: check environment variables, fallback to same domain
+  const envUrl = import.meta.env.VITE_API_BASE ?? import.meta.env.VITE_BACKEND_URL;
+  if (envUrl) {
+    return envUrl;
+  }
+
+  // Final fallback: use current domain for production
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}/api`;
+  }
+
+  return "/api";
+};
+
+const RAW_BASE = getApiBase();
 const API_BASE = RAW_BASE.replace(/\/+$/, "");
 
 export async function api(path, options = {}) {
