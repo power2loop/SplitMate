@@ -15,6 +15,7 @@
 - [Installation](#-installation)
 - [Usage](#-usage)
 - [Screenshots](#-screenshots)
+- [Development Team](#-development-team)
 - [Contributing](#-contributing)
 
 
@@ -155,6 +156,23 @@ text
 
 
 ---
+
+## 👥 Development Team
+
+**Collaborative Project Developed By:**
+
+### **Vikash Kumar**
+- **GitHub**: [@power2loop](https://github.com/power2loop)
+- **LinkedIn**: [Vikash Kumar](https://www.linkedin.com/in/vikash-kumar-b56a68228/)
+- **Email**: kumarvkvikash3@gmail.com
+
+### **[Aryan Gupta]** 
+- **GitHub**: [@aryan Gupta][(https://github.com/friend-username](https://github.com/Aryangupta15))
+- **LinkedIn**: [Aryan Gupta](https://www.linkedin.com/in/aryan-gupta-01k/)]
+- **Email**:aryangupta.x01@gmail.com
+
+*This project showcases effective collaborative development, demonstrating modern full-stack architecture, clean code practices, and seamless teamwork in distributed development.*
+
 
 ## 🤝 Contributing
 
