@@ -188,7 +188,7 @@ We welcome contributions! Please follow these steps:
 
 ## 🙏 Acknowledgments
 
-- [Chart.js](https://www.chartjs.org/) for beautiful data visualizations
+- [Echart.js](https://www.chartjs.org/) for beautiful data visualizations
 - [TailwindCSS](https://tailwindcss.com/) for modern styling
 - [MongoDB](https://www.mongodb.com/) for flexible data storage
 - [Render](https://render.com/) for reliable deployment
