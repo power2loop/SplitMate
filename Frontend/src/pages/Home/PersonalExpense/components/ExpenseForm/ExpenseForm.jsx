@@ -54,7 +54,7 @@ const ExpenseForm = ({ onAddExpense }) => {
   ];
 
   const handleCategorySelect = (selectedCategory) => {
-    setCategory(selectedCategory);
+    setCategory(selectedCategory.trim());
     setIsDropdownOpen(false);
   };
 
@@ -78,8 +78,11 @@ const ExpenseForm = ({ onAddExpense }) => {
   }, []);
 
   const getSelectedCategory = () => {
-    return categories.find((cat) => cat.value === category);
+    return categories.find(
+      (cat) => cat.value.trim().toLowerCase() === category.trim().toLowerCase()
+    );
   };
+
 
   return (
     <div className="expense-form-container">

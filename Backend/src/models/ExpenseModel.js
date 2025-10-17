@@ -6,7 +6,7 @@ export const PERSONAL_CATEGORIES = Object.freeze([
     "Shopping",
     "Entertainment",
     "Bills & Utilities",
-    "Health & Fitness",
+    "Healthcare",
     "Education",
     "Travel",
     "Rent",
