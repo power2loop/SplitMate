@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import Expense from "../models/ExpenseModel.js";
-import Settlement from "../models/Settlement.js"; 
+import Settlement from "../models/Settlement.js";
 import GroupExpense from "../models/GroupModel.js";
 import admin from "firebase-admin";
 
@@ -11,19 +11,18 @@ import admin from "firebase-admin";
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
-  "type": "service_account",
-  "project_id": "splitmate-f5991",
-  "private_key_id": "75b3393c17a70c3ab4855a83cdc52da5637296f7",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDBZv+2wj4jeTbr\nuIHuWb4IpPZIf2e70HzVR7b5gs7svSIOkOS4P8T7lCZVohoqi3H3ye6a0URV3TBo\nIdgyT5Yj0UN1DpNQM4Kyex3XK7xs9cCwrjY9s7GNcP7Xu/tn9Iz7xuAXO0BgE7FT\n4g9hKHbjlTigcGtC8s0XjhUTCUunu0J3dFLhtXFPBmTeutAoNrSNlPxZck6XpUu6\n6vBA3lNvmXH0UFnNfLX/sEb3GXa+L5YCYFefEys0CjpZbF1D4o5LKq/Nl9HPvuTV\n/F72UhN74ytVH31gSm1ZrGOEsvQo0wZWfs9MLsvPYXXdVjCi8+bXquV9gcGIOIvs\nEpxu5QvNAgMBAAECggEAA+GjxNLeWVFfQN1KOXb2rS8z83l1PIAs/fyoIgXtkmbe\nYpL8Hsn5YGjGSC3Qdp8N8q92/jqwRHgU0GvKzBtr2xhMhHr1q+aVSAqCxN6G+CiS\n/knQxUMKBvuqKR9uN6I2m/4o6hkcHysZNTw6zqc7+f0oEulKZ2Sxy0koxAySTyBr\nggErkyxpxsn35XtzL/9L/Ahq834+oBJnMk5FJuxz29BWpaO3fSsfPN+SuJLHqhoa\nL6F2NFR6ohwJR+05dBGNGynixeEscm9L5tRUoTHqK6VX284KDDs/BB44GyUx1boS\n6iDk+Xey1xavkF5BaBwAJgs97rzZz1GWsfqxSIx+BQKBgQD6fFB1vpsTErj1eEAS\nXz0NEU5pAB2d4pzbjmypG4q+I6yACnJ5GMEvSG2TTly5WYcepXzMWbpNggNWDVr9\n6qoKe2arg1VybzimempznYip0qO7iiMER18l+c4tmI5lPBa+qB/xKXvdYGsisNml\ntMb1JFI2VH7LBaCNuUpjnAZgWwKBgQDFqPmXs5QADn7ekTt1KcV7ZPHYuNi/hA6C\nse/HdwV44SyNt/Fa/I0ziq+9Ha6CzeymacpdNVTqYAGWJqapxdCEwy5DHN4E1INm\nuhezl1qhw2XdHIHasA5egR5BLexxFSjxx93G9IRJzHeoXM3/MAbFXdMaSuUJtRHp\nPFWvZtZ89wKBgCDbr95SO5t76EFjHdyLG8IcFBIYDsqIUJVIkJ56W2/n1BgTxsJ1\n6dmfAajCLc2undf6U22nE5ZZSMDADcCjSN0JJQW4u7vANUk5Y7942dWVKR9P1poY\nFrYvl8lJatyCzmUCPvZuv63hmQw68MIY/cRomFRCL0PIoDAXL1fzvq5jAoGAdXeq\nfYF3n2D9/P+KumKMvnyLTiTsi0TL6tgcjAor8l6/v6llgpE8yTjOoDGXmJ0Q2wVc\nAnDDelZ8GuP1gEfTWFM2lyP8vhodzVsi4tQ8RI5/Zxyd/31JzNgnRs0oCzxsDOSe\n5LJEPCeLpT8iHVpJa9oKr0F7RH2bm2UD9y3CopkCgYA5CGdoOdoLQtkS0wBLf952\ne/jU2zfE74DGMlsFKULPg58Rp/l/2Js3ccfHsKr20vZEmHpxX4UWKozoVps2c/ti\nmWqluhtR1CAV+867ZaZncCBlquO3EPIdHOVYwmNL7F4/cVPptHC1zAslk1nH98R3\nfP3ZLY58XbcPYkvjHkNipQ==\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-fbsvc@splitmate-f5991.iam.gserviceaccount.com",
-  "client_id": "117907467138406036125",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40splitmate-f5991.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
-),
+      type: process.env.FIREBASE_TYPE,
+      project_id: process.env.FIREBASE_PROJECT_ID,
+      private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+      private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: process.env.FIREBASE_CLIENT_EMAIL,
+      client_id: process.env.FIREBASE_CLIENT_ID,
+      auth_uri: process.env.FIREBASE_AUTH_URI,
+      token_uri: process.env.FIREBASE_TOKEN_URI,
+      auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_CERT,
+      client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL,
+      universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN
+    }),
   });
 }
 
@@ -98,13 +97,13 @@ export const googleLogin = async (req, res) => {
 
 
 export const getAllUsers = async (req, res) => {
-    try {
-        const allUser = await User.find();
-        return res.status(200).json({ success: true, message: allUser });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, message: "Server error" });
-    }
+  try {
+    const allUser = await User.find();
+    return res.status(200).json({ success: true, message: allUser });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
 export const getUserWalletData = async (req, res) => {
@@ -178,82 +177,82 @@ export const getUserWalletData = async (req, res) => {
 
 
 export const registerUser = async (req, res) => {
-    const { username, email, password } = req.body;
-    try {
-        const existing = await User.findOne({ email });
-        if (existing) return res.status(409).json({ success: false, message: "Email already registered" });
+  const { username, email, password } = req.body;
+  try {
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(409).json({ success: false, message: "Email already registered" });
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, email, password: hashedPassword });
-        await newUser.save();
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword });
+    await newUser.save();
 
-        // ✅ Generate JWT token on registration
-        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    // ✅ Generate JWT token on registration
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-        // ✅ Set cookie
-        res.cookie("token", token, {
-            httpOnly: true,
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            path: "/",
-        });
+    // ✅ Set cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: "/",
+    });
 
-        return res.status(201).json({
-            success: true,
-            message: "User registered successfully",
-            user: { id: newUser._id, username: newUser.username, email: newUser.email },
-            token
-        });
-    } catch (err) {
-        if (err?.code === 11000) {
-            return res.status(409).json({ success: false, message: "Email already registered" });
-        }
-        console.error(err);
-        return res.status(500).json({ success: false, message: "Server error" });
+    return res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      user: { id: newUser._id, username: newUser.username, email: newUser.email },
+      token
+    });
+  } catch (err) {
+    if (err?.code === 11000) {
+      return res.status(409).json({ success: false, message: "Email already registered" });
     }
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
 export const loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await User.findOne({ email });
-        const ok = user && await bcrypt.compare(password, user.password);
-        if (!ok) return res.status(401).json({ success: false, message: "Invalid credentials" });
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    const ok = user && await bcrypt.compare(password, user.password);
+    if (!ok) return res.status(401).json({ success: false, message: "Invalid credentials" });
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            path: "/",
-        });
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
 
-        return res.status(200).json({
-            success: true,
-            message: "Logged in",
-            user: { id: user._id, username: user.username, email: user.email },
-            token
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, message: "Server error" });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Logged in",
+      user: { id: user._id, username: user.username, email: user.email },
+      token
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
 export const logoutUser = async (req, res) => {
-    try {
-        res.clearCookie("token", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-            path: "/",
-        });
-        return res.status(200).json({ success: true, message: "Logged out" });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, message: "Server error" });
-    }
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      path: "/",
+    });
+    return res.status(200).json({ success: true, message: "Logged out" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 };
