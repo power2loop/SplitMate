@@ -24,7 +24,7 @@ if (fs.existsSync(distPath)) {
 }
 
 const FrontendUrl = process.env.NODE_ENV === 'production'
-    ? "https://splitmate-pvhu.onrender.com"
+    ? "https://splitmate-pvhu.onrender.com/"
     : "http://localhost:5317";
 
 app.use(cors({
