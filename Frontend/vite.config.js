@@ -21,8 +21,9 @@ export default defineConfig({
     proxy: {
       // SPA calls like fetch('/api/users/register') will be proxied in dev
       "/api": {
-        target: "http://localhost:5000", // your Express port
+        target: "http://127.0.0.1:5000", // Use IPv4 explicitly instead of localhost
         changeOrigin: true,
+        secure: false,
       },
     },
   },

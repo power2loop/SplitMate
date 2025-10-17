@@ -8,13 +8,21 @@ import { connectDB } from './src/config/db.js';
 import expenseRoutes from "./src/routes/expenseRoutes.js";
 import path from "path";
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const app = express();
 connectDB();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// For production, allow any origin or specify your domain
+// Check if dist folder exists
+const distPath = path.join(__dirname, '../Frontend/dist');
+console.log('Dist path:', distPath);
+console.log('Dist exists:', fs.existsSync(distPath));
+if (fs.existsSync(distPath)) {
+    console.log('Dist contents:', fs.readdirSync(distPath));
+}
+
 const FrontendUrl = process.env.NODE_ENV === 'production'
     ? "https://splitmate-pvhu.onrender.com"
     : "http://localhost:5317";
@@ -28,19 +36,21 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, '../Frontend/dist')));
+// Serve static files
+app.use(express.static(distPath));
 
 // API routes
 app.use('/api/users', UserRoutes);
 app.use('/api/groups', GroupRoutes);
 app.use("/api/expenses", expenseRoutes);
 
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
+// Catch-all route
+app.get('/*splat', (req, res) => {
+    console.log('Catch-all route hit for:', req.url);
+    res.sendFile(path.join(distPath, 'index.html'));
 });
 
-
-app.listen(process.env.PORT || 5000, () => {
-    console.log(`Server is running on port ${process.env.PORT || 5000}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT}`);
 });
