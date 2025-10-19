@@ -166,9 +166,9 @@ text
 - **LinkedIn**: [Vikash Kumar](https://www.linkedin.com/in/vikash-kumar-b56a68228/)
 - **Email**: kumarvkvikash3@gmail.com
 
-### **[Aryan Gupta]** 
-- **GitHub**: [@aryan Gupta](https://github.com/Aryangupta15))
-- **LinkedIn**: [Aryan Gupta](https://www.linkedin.com/in/aryan-gupta-01k/)]
+### **Aryan Gupta** 
+- **GitHub**: [@aryan Gupta](https://github.com/Aryangupta15)
+- **LinkedIn**: [Aryan Gupta](https://www.linkedin.com/in/aryan-gupta-01k/)
 - **Email**:aryangupta.x01@gmail.com
 
 *This project showcases effective collaborative development, demonstrating modern full-stack architecture, clean code practices, and seamless teamwork in distributed development.*
@@ -188,7 +188,7 @@ We welcome contributions! Please follow these steps:
 
 ## 🙏 Acknowledgments
 
-- [Chart.js](https://www.chartjs.org/) for beautiful data visualizations
+- [Echart.js](https://www.chartjs.org/) for beautiful data visualizations
 - [TailwindCSS](https://tailwindcss.com/) for modern styling
 - [MongoDB](https://www.mongodb.com/) for flexible data storage
 - [Render](https://render.com/) for reliable deployment
