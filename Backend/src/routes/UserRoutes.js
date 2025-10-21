@@ -49,3 +49,4 @@ router.post("/google-login", googleLogin);
 router.post('/logout', logoutUser);
 
 export default router;
+

@@ -12,13 +12,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 // };
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FB_API_KEY,
-  authDomain: import.meta.env.VITE_FB_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FB_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FB_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FB_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FB_APP_ID,
-  measurementId: import.meta.env.VITE_FB_MEASUREMENT_ID,
+  apiKey: "AIzaSyDilgZFXAkrf-Kloye1OsLiwAShCpm1FE0",
+  authDomain: "splitmate-5c755.firebaseapp.com",
+  projectId: "splitmate-5c755",
+  storageBucket: "splitmate-5c755.firebasestorage.app",
+  messagingSenderId: "82951149055",
+  appId: "1:82951149055:web:f93dc606a0541a4d0503ca",
+  measurementId: "G-YSNWGVCDS2"
 };
 
 const app = initializeApp(firebaseConfig);
