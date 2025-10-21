@@ -27,7 +27,7 @@ export default defineConfig({
     open: "/landingpage",
     proxy: {
       "/api": {
-        target: "https://splitmate-pvhu.onrender.com/",
+        target: "https://splitmate-pvhu.onrender.com",
         changeOrigin: true,
         secure: false,
       },
