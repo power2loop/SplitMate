@@ -8,9 +8,10 @@ import 'dotenv/config.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const Backend_Uri = process.env.BACKEND_URI === 'production'
-    ? "https://splitmate-pvhu.onrender.com/"
-    : "http://localhost:5000";
+const Backend_Uri = process.env.NODE_ENV === 'production'
+  ? process.env.BACKEND_URI
+  : "http://localhost:5000";
+
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -32,7 +33,7 @@ export default defineConfig({
     open: "/landingpage",
     proxy: {
       "/api": {
-        target: Backend_Uri,
+        target: "http://127.0.0.1:5000",
         changeOrigin: true,
         secure: false,
       },

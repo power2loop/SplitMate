@@ -7,6 +7,10 @@ import Group from "../models/GroupModel.js";
 import Settlement from "../models/Settlement.js";
 import { requireAuth } from "../middlewares/UserMiddleware.js";
 import { buildGroupAnalytics } from "../services/reportService.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+
 
 const router = Router();
 

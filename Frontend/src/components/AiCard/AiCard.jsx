@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./AiCard.css";
-import { api } from "../../services/api";
+import { api } from "../../services/api.js";
 
 function AiCard() {
   const [message, setMessage] = useState("");
@@ -34,7 +34,7 @@ function AiCard() {
     } finally {
       setLoading(false);
     }
-    
+
   };
 
   // Auto scroll
