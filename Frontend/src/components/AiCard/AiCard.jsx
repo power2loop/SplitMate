@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import "./AiCard.css";
 import { api } from "../../services/api.js";
 
@@ -17,7 +18,6 @@ function AiCard() {
     setLoading(true);
 
     try {
-      // Send to backend
       const data = await api("/aibot", {
         method: "POST",
         body: { message },
@@ -34,7 +34,6 @@ function AiCard() {
     } finally {
       setLoading(false);
     }
-
   };
 
   // Auto scroll
@@ -63,7 +62,11 @@ function AiCard() {
               className={`chat-message ${msg.role === "ai" ? "ai" : "user"}`}
             >
               <strong>{msg.role === "ai" ? "AI " : "You "}</strong>
-              {msg.content}
+              {msg.role === "ai" ? (
+                <ReactMarkdown>{msg.content}</ReactMarkdown>
+              ) : (
+                msg.content
+              )}
             </div>
           ))
         )}
