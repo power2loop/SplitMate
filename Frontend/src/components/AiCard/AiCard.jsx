@@ -34,6 +34,7 @@ function AiCard() {
     } finally {
       setLoading(false);
     }
+    
   };
 
   // Auto scroll

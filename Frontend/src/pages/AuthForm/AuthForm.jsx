@@ -290,6 +290,7 @@ const AuthForm = () => {
         </div>
       )}
     </div>
+    
   );
 };
 
