@@ -6,6 +6,7 @@ import UserRoutes from './src/routes/UserRoutes.js';
 import GroupRoutes from './src/routes/groupRoutes.js';
 import { connectDB } from './src/config/db.js';
 import expenseRoutes from "./src/routes/expenseRoutes.js";
+import aiRoute from "./src/routes/aiRoutes.js"
 import path from "path";
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -43,6 +44,7 @@ app.use(express.static(distPath));
 app.use('/api/users', UserRoutes);
 app.use('/api/groups', GroupRoutes);
 app.use("/api/expenses", expenseRoutes);
+app.use("/api/aibot", aiRoute);
 
 // Catch-all route
 app.get('/*splat', (req, res) => {

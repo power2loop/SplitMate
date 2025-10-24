@@ -1,28 +1,69 @@
-/* .wrapper {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
+
+/* AiAgent.css */
+
+.ai-container {
+    height: 88.8vh;
+    display: flex;
+    flex-direction: row;
+    gap: 20px; /* spacing between left and right panels */
+    padding: 20px;
+    /* background-color: #f5f5f5; */
+    box-sizing: border-box;
 }
 
-h1 {
-  font-size: 50px;
-  font-family: 'Poppins', sans-serif;
-  margin-bottom: 0;
-  line-height: 1;
-  font-weight: 700;
+.ai-left {
+    flex: 3; /* 60% equivalent */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-.dot {
-  color: #4FEBFE;
+.ai-right {
+    flex: 2; /* 40% equivalent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
-p {
-  text-align: center;
-  margin: 18px;
-  font-family: 'Muli', sans-serif;
-  font-weight: normal;
-  
-} */
+/* Optional: improve card inside left panel */
+.ai-left .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+    border-radius: 12px;
+    /* background-color: #fff; */
+    overflow: hidden;
+}
+
+/* Scrollbar styling for conversation */
+.ai-left .card-content {
+    scrollbar-width: thin;
+    scrollbar-color: #a0a0a0 #f0f0f0;
+}
+
+.ai-left .card-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ai-left .card-content::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+.ai-left .card-content::-webkit-scrollbar-thumb {
+    background-color: #a0a0a0;
+    border-radius: 3px;
+}
+
+.ai-right spline {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+
 

@@ -41,7 +41,7 @@ export default function ComingSoon() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
-        <h1 className="title">🚀 Coming Soon</h1>
+        <h1 id="title">🚀 Coming Soon</h1>
         <p className="subtitle">Something awesome is on the way...</p>
 
         <div className="countdown">
