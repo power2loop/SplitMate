@@ -14,7 +14,6 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import "./index.css";
 
-// import L from "./components/Loader/Loader";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
 
 function App() {
