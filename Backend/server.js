@@ -18,11 +18,9 @@ const __dirname = path.dirname(__filename);
 
 // Check if dist folder exists
 const distPath = path.join(__dirname, '../Frontend/dist');
-console.log('Dist path:', distPath);
-console.log('Dist exists:', fs.existsSync(distPath));
-if (fs.existsSync(distPath)) {
-    console.log('Dist contents:', fs.readdirSync(distPath));
-}
+// console.log('Dist path:', distPath);
+// console.log('Dist exists:', fs.existsSync(distPath));
+
 
 const FrontendUrl = process.env.NODE_ENV === 'production'
     ? "https://splitmate-pvhu.onrender.com/"
@@ -48,7 +46,7 @@ app.use("/api/aibot", aiRoute);
 
 // Catch-all route
 app.get('/*splat', (req, res) => {
-    console.log('Catch-all route hit for:', req.url);
+    // console.log('Catch-all route hit for:', req.url);
     res.sendFile(path.join(distPath, 'index.html'));
 });
 

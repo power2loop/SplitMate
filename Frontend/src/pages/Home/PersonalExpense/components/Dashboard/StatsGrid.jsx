@@ -87,21 +87,6 @@ const StatsGrid = ({ expenses }) => {
       .replace(/^₹/, "₹");
   };
 
-  console.log("📊 StatsGrid Debug Info:", {
-    currentMonth: currentMonth + 1,
-    currentYear,
-    lastMonth: lastMonth + 1,
-    lastMonthYear,
-    totalExpenses: expenses.length,
-    thisMonthExpenses: thisMonthExpenses.length,
-    previousMonthExpenses: previousMonthExpenses.length,
-    sameMonthLastYearExpenses: sameMonthLastYearExpenses.length,
-    thisMonthTotal,
-    previousMonthTotal,
-    sameMonthLastYearTotal,
-    totalInvestments,
-  });
-
   return (
     <div className="stats-grid">
       {/* This Month Card */}
